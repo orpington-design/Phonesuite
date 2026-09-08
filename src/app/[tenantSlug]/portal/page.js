@@ -46,7 +46,26 @@ export default function MobileCustomerPortal() {
   const [loading, setLoading] = useState(true);
 
   // Tab State: 'dashboard', 'bills', 'shop', 'score', 'settings'
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTabState] = useState('dashboard');
+
+  const setActiveTab = (newTab) => {
+    setActiveTabState(newTab);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', newTab);
+      window.history.replaceState({}, '', url.toString());
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      if (tabParam && ['dashboard', 'bills', 'shop', 'score', 'settings'].includes(tabParam)) {
+        setActiveTabState(tabParam);
+      }
+    }
+  }, []);
 
   // Business Data State
   const [bills, setBills] = useState(INITIAL_BILLS);
