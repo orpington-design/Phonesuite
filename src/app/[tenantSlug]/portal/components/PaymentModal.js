@@ -49,7 +49,7 @@ export default function PaymentModal({
         left: 0, 
         right: 0, 
         bottom: 0, 
-        background: 'rgba(0, 0, 0, 0.85)', 
+        background: 'rgba(0, 0, 0, 0.45)', 
         backdropFilter: 'blur(10px)',
         display: 'flex', 
         alignItems: 'flex-end',
@@ -61,16 +61,16 @@ export default function PaymentModal({
         style={{ 
           maxWidth: '480px', 
           width: '100%', 
-          background: '#0b1120', 
+          background: '#ffffff', 
           borderTopLeftRadius: '24px', 
           borderTopRightRadius: '24px', 
-          border: '1px solid rgba(255, 255, 255, 0.15)',
+          border: '1px solid #e2e8f0',
           padding: '1.5rem',
-          color: '#ffffff',
+          color: '#0f172a',
           position: 'relative',
           maxHeight: '90vh',
           overflowY: 'auto',
-          boxShadow: '0 -20px 40px rgba(0, 0, 0, 0.6)'
+          boxShadow: '0 -20px 40px rgba(0, 0, 0, 0.15)'
         }}
       >
         {/* Close Button */}
@@ -81,7 +81,7 @@ export default function PaymentModal({
             position: 'absolute',
             top: '1.25rem',
             right: '1.25rem',
-            background: 'rgba(255, 255, 255, 0.1)',
+            background: '#f1f5f9',
             border: 'none',
             borderRadius: '50%',
             width: '32px',
@@ -89,7 +89,7 @@ export default function PaymentModal({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#94a3b8',
+            color: '#64748b',
             cursor: 'pointer'
           }}
         >
@@ -103,21 +103,21 @@ export default function PaymentModal({
                 width: '64px', 
                 height: '64px', 
                 borderRadius: '50%', 
-                background: 'rgba(16, 185, 129, 0.2)', 
-                color: '#34d399', 
+                background: 'rgba(16, 185, 129, 0.12)', 
+                color: '#059669', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
                 margin: '0 auto 1.25rem auto',
-                border: '2px solid #34d399'
+                border: '2px solid #059669'
               }}
             >
               <CheckCircle2 size={38} />
             </div>
-            <h3 style={{ fontSize: '1.3rem', fontWeight: '800', margin: '0 0 0.5rem 0' }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: '800', margin: '0 0 0.5rem 0', color: '#0f172a' }}>
               Payment Successful!
             </h3>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: 0 }}>
+            <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
               £{amount.toFixed(2)} settled via Stripe platform Connect. Invoice status updated.
             </p>
           </div>
@@ -125,16 +125,16 @@ export default function PaymentModal({
           <>
             {/* Header */}
             <div style={{ marginBottom: '1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#38bdf8', marginBottom: '0.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#4318ff', marginBottom: '0.25rem' }}>
                 <Lock size={15} />
-                <span style={{ fontSize: '0.72rem', fontWeight: '700', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: '0.72rem', fontWeight: '800', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
                   Stripe / Square Secure Checkout
                 </span>
               </div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: '800', margin: 0 }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: '#0f172a' }}>
                 Pay Invoice
               </h3>
-              <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: '2px 0 0 0' }}>
+              <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '2px 0 0 0' }}>
                 Merchant: {tenant?.name || 'PhoneSuite UK'}
               </p>
             </div>
@@ -142,25 +142,25 @@ export default function PaymentModal({
             {/* Bill Summary Card */}
             <div 
               style={{ 
-                background: 'rgba(15, 23, 42, 0.8)', 
+                background: '#f8fafc', 
                 borderRadius: '14px', 
                 padding: '0.85rem 1rem', 
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                border: '1px solid #e2e8f0',
                 marginBottom: '1.25rem'
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>
+                  <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '600' }}>
                     #{bill?.invoice_number || bill?.id?.slice(0, 8)}
                   </span>
-                  <div style={{ fontSize: '0.88rem', fontWeight: '700', color: '#fff' }}>
+                  <div style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a' }}>
                     {bill?.description || 'Service Bill'}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>Amount</span>
-                  <div style={{ fontSize: '1.25rem', fontWeight: '800', color: '#34d399' }}>
+                  <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Amount</span>
+                  <div style={{ fontSize: '1.25rem', fontWeight: '800', color: '#059669' }}>
                     £{amount.toFixed(2)}
                   </div>
                 </div>
@@ -174,11 +174,11 @@ export default function PaymentModal({
               disabled={isProcessing}
               style={{
                 width: '100%',
-                background: '#ffffff',
+                background: '#0f172a',
                 border: 'none',
                 borderRadius: '12px',
                 padding: '0.75rem',
-                color: '#000000',
+                color: '#ffffff',
                 fontWeight: '700',
                 fontSize: '0.88rem',
                 display: 'flex',
@@ -187,22 +187,22 @@ export default function PaymentModal({
                 gap: '0.5rem',
                 cursor: 'pointer',
                 marginBottom: '1rem',
-                boxShadow: '0 4px 12px rgba(255, 255, 255, 0.15)'
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
               }}
             >
               <Zap size={16} /> Pay with Apple Pay / Google Pay
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0.75rem 0', color: '#64748b', fontSize: '0.72rem' }}>
-              <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.1)' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0.75rem 0', color: '#94a3b8', fontSize: '0.72rem' }}>
+              <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }} />
               <span>OR PAY WITH CARD</span>
-              <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.1)' }} />
+              <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }} />
             </div>
 
             {/* Card Form */}
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <div>
-                <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '4px', fontWeight: '600' }}>
                   Cardholder Name
                 </label>
                 <input
@@ -212,19 +212,20 @@ export default function PaymentModal({
                   required
                   style={{
                     width: '100%',
-                    background: 'rgba(30, 41, 59, 0.7)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    background: '#f8fafc',
+                    border: '1px solid #cbd5e1',
                     borderRadius: '10px',
                     padding: '0.65rem 0.85rem',
-                    color: '#fff',
+                    color: '#0f172a',
                     fontSize: '0.82rem',
-                    outline: 'none'
+                    outline: 'none',
+                    fontWeight: '500'
                   }}
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>
+                <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '4px', fontWeight: '600' }}>
                   Card Number
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -235,25 +236,26 @@ export default function PaymentModal({
                     required
                     style={{
                       width: '100%',
-                      background: 'rgba(30, 41, 59, 0.7)',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      background: '#f8fafc',
+                      border: '1px solid #cbd5e1',
                       borderRadius: '10px',
                       padding: '0.65rem 0.85rem 0.65rem 2.2rem',
-                      color: '#fff',
+                      color: '#0f172a',
                       fontSize: '0.82rem',
-                      outline: 'none'
+                      outline: 'none',
+                      fontWeight: '500'
                     }}
                   />
                   <CreditCard 
                     size={16} 
-                    style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} 
+                    style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} 
                   />
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>
+                  <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '4px', fontWeight: '600' }}>
                     Expiry Date
                   </label>
                   <input
@@ -264,19 +266,20 @@ export default function PaymentModal({
                     required
                     style={{
                       width: '100%',
-                      background: 'rgba(30, 41, 59, 0.7)',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      background: '#f8fafc',
+                      border: '1px solid #cbd5e1',
                       borderRadius: '10px',
                       padding: '0.65rem 0.85rem',
-                      color: '#fff',
+                      color: '#0f172a',
                       fontSize: '0.82rem',
-                      outline: 'none'
+                      outline: 'none',
+                      fontWeight: '500'
                     }}
                   />
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>
+                  <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '4px', fontWeight: '600' }}>
                     CVC
                   </label>
                   <input
@@ -288,20 +291,21 @@ export default function PaymentModal({
                     maxLength={4}
                     style={{
                       width: '100%',
-                      background: 'rgba(30, 41, 59, 0.7)',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      background: '#f8fafc',
+                      border: '1px solid #cbd5e1',
                       borderRadius: '10px',
                       padding: '0.65rem 0.85rem',
-                      color: '#fff',
+                      color: '#0f172a',
                       fontSize: '0.82rem',
-                      outline: 'none'
+                      outline: 'none',
+                      fontWeight: '500'
                     }}
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#94a3b8', fontSize: '0.7rem', marginTop: '0.25rem' }}>
-                <ShieldCheck size={14} style={{ color: '#10b981' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#64748b', fontSize: '0.7rem', marginTop: '0.25rem' }}>
+                <ShieldCheck size={14} style={{ color: '#059669' }} />
                 <span>256-Bit SSL Encrypted &bull; 3D Secure Verification</span>
               </div>
 
@@ -318,7 +322,7 @@ export default function PaymentModal({
                   fontWeight: '800',
                   fontSize: '0.9rem',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 15px rgba(16, 185, 129, 0.4)'
+                  boxShadow: '0 4px 15px rgba(16, 185, 129, 0.35)'
                 }}
               >
                 {isProcessing ? 'Processing Secure Card...' : `Confirm & Pay £${amount.toFixed(2)}`}

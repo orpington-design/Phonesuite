@@ -285,10 +285,10 @@ export default function MobileCustomerPortal() {
 
   if (loading) {
     return (
-      <div className="mobile-portal-wrapper" style={{ alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+      <div className="mobile-portal-wrapper" style={{ alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '3px solid #38bdf8', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem auto' }} />
-          <p>Loading PhoneSuite Customer Portal...</p>
+          <div style={{ width: '40px', height: '40px', border: '3px solid #4318ff', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem auto' }} />
+          <p style={{ color: '#64748b', fontWeight: '600' }}>Loading PhoneSuite Customer Portal...</p>
         </div>
       </div>
     );
@@ -311,23 +311,23 @@ export default function MobileCustomerPortal() {
                   width: '32px', 
                   height: '32px', 
                   borderRadius: '9px', 
-                  background: 'linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%)',
+                  background: 'linear-gradient(135deg, #4318ff 0%, #06b6d4 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: '#fff',
-                  boxShadow: '0 2px 8px rgba(6, 182, 212, 0.4)'
+                  boxShadow: '0 2px 8px rgba(67, 24, 255, 0.3)'
                 }}
               >
                 <Smartphone size={18} />
               </div>
               <div>
-                <h1 style={{ fontSize: '0.92rem', fontWeight: '800', color: '#ffffff', margin: 0, letterSpacing: '-0.01em' }}>
+                <h1 style={{ fontSize: '0.92rem', fontWeight: '800', color: '#0f172a', margin: 0, letterSpacing: '-0.01em' }}>
                   {tenant?.name || 'PhoneSuite'}
                 </h1>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
-                  <span style={{ fontSize: '0.65rem', color: '#94a3b8', fontWeight: '500' }}>
+                  <span style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '600' }}>
                     Customer Portal
                   </span>
                 </div>
@@ -343,15 +343,15 @@ export default function MobileCustomerPortal() {
                 onClick={() => setIsCartOpen(true)}
                 style={{
                   position: 'relative',
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  background: '#f1f5f9',
+                  border: '1px solid #e2e8f0',
                   borderRadius: '10px',
                   width: '36px',
                   height: '36px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#ffffff',
+                  color: '#0f172a',
                   cursor: 'pointer'
                 }}
                 aria-label="View Shopping Bag"
@@ -363,7 +363,7 @@ export default function MobileCustomerPortal() {
                       position: 'absolute', 
                       top: '-4px', 
                       right: '-4px', 
-                      background: '#f43f5e', 
+                      background: '#ef4444', 
                       color: '#fff', 
                       fontSize: '0.62rem', 
                       fontWeight: '800', 
@@ -373,7 +373,7 @@ export default function MobileCustomerPortal() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      border: '1.5px solid #0b1120'
+                      border: '1.5px solid #ffffff'
                     }}
                   >
                     {cartCount}
@@ -386,15 +386,15 @@ export default function MobileCustomerPortal() {
                 type="button"
                 onClick={() => setIsFullscreen(!isFullscreen)}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  background: '#f1f5f9',
+                  border: '1px solid #e2e8f0',
                   borderRadius: '10px',
                   width: '36px',
                   height: '36px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#94a3b8',
+                  color: '#64748b',
                   cursor: 'pointer'
                 }}
                 title={isFullscreen ? 'Switch to Mobile Phone Shell' : 'Switch to Full Width'}
