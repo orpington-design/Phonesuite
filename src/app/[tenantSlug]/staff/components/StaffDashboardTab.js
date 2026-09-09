@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { 
   TrendingUp, 
   AlertTriangle, 
@@ -41,6 +42,10 @@ export default function StaffDashboardTab({
   setActiveTab,
   onSettleInvoice
 }) {
+  const router = useRouter();
+  const params = useParams();
+  const tenantSlug = params?.tenantSlug || tenant?.slug || 'premiumphonex';
+
   const { language, t } = useStaffLanguage();
   const d = t.dashboard;
 
@@ -131,10 +136,10 @@ export default function StaffDashboardTab({
         {/* 4 Action Cards Row */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.55rem' }}>
           
-          {/* Action 1: SALE / POS (Solid Orange Primary) */}
+          {/* Action 1: SALE / POS (Navigates to /staff/new-sale) */}
           <button
             type="button"
-            onClick={() => setActiveTab('sale')}
+            onClick={() => router.push(`/${tenantSlug}/staff/new-sale`)}
             style={{
               background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
               border: 'none',
@@ -157,7 +162,7 @@ export default function StaffDashboardTab({
               SALE
             </div>
             <div style={{ fontSize: '0.6rem', color: 'rgba(255, 255, 255, 0.85)', marginTop: '1px' }}>
-              POS Desk
+              New POS
             </div>
           </button>
 
@@ -193,7 +198,7 @@ export default function StaffDashboardTab({
           {/* Action 3: REPAIR / Job Ticket */}
           <button
             type="button"
-            onClick={onOpenNewRepair}
+            onClick={() => router.push(`/${tenantSlug}/staff/repairs`)}
             style={{
               background: '#ffffff',
               border: '1px solid #e2e8f0',
@@ -215,14 +220,14 @@ export default function StaffDashboardTab({
               REPAIR
             </div>
             <div style={{ fontSize: '0.6rem', color: '#64748b', marginTop: '1px' }}>
-              Job Ticket
+              Workshop
             </div>
           </button>
 
           {/* Action 4: INVOICE / Create Bill */}
           <button
             type="button"
-            onClick={onOpenNewInvoice}
+            onClick={() => router.push(`/${tenantSlug}/staff/overdue`)}
             style={{
               background: '#ffffff',
               border: '1px solid #e2e8f0',
@@ -244,7 +249,7 @@ export default function StaffDashboardTab({
               INVOICE
             </div>
             <div style={{ fontSize: '0.6rem', color: '#64748b', marginTop: '1px' }}>
-              Create Bill
+              Overdue
             </div>
           </button>
 
@@ -253,178 +258,343 @@ export default function StaffDashboardTab({
 
       {/* ========================================================
           2. ELECTRONICS OPERATIONS RESUME & PORTFOLIO (2x2 GRID)
-          1. Overdue Invoices
-          2. Devices Collections
-          3. Sales
-          4. Repairs
+          1. Overdue Invoices -> /[tenantSlug]/staff/overdue
+          2. Devices Collections -> /[tenantSlug]/staff/collections
+          3. Sales -> /[tenantSlug]/staff/sales
+          4. Repairs -> /[tenantSlug]/staff/repairs
       ======================================================== */}
       <div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
-          <span style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             OPERATIONS &amp; PORTFOLIO
           </span>
-          <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-            STORE METRICS
+          <span style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            TAP CARD TO OPEN
           </span>
         </div>
 
-        {/* 2x2 Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+        {/* 2x2 Sleek Modern Cards Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.85rem' }}>
           
-          {/* CARD 1: OVERDUE INVOICES */}
+          {/* CARD 1: OVERDUE INVOICES (Rose / Crimson Elegance) */}
           <div 
-            onClick={() => setActiveTab('invoices')}
+            onClick={() => router.push(`/${tenantSlug}/staff/overdue`)}
             style={{
-              background: '#ffffff',
-              borderRadius: '18px',
-              border: '1px solid #fecdd3',
-              padding: '1.05rem',
-              boxShadow: '0 3px 12px rgba(225, 29, 72, 0.04)',
+              background: 'linear-gradient(150deg, #ffffff 0%, #fff1f2 45%, #ffe4e6 100%)',
+              borderRadius: '22px',
+              border: '1.5px solid rgba(244, 63, 94, 0.28)',
+              padding: '1.15rem 1rem',
+              boxShadow: '0 10px 25px -5px rgba(225, 29, 72, 0.12), 0 2px 6px rgba(0, 0, 0, 0.02)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              minHeight: '158px',
+              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
             }}
           >
-            {/* Top Row: Icon + Badge */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#ffe4e6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e11d48' }}>
-                <AlertTriangle size={17} />
+            {/* Top Row: Icon + Arrow Indicator */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+              <div 
+                style={{ 
+                  width: '36px', 
+                  height: '36px', 
+                  borderRadius: '12px', 
+                  background: 'rgba(225, 29, 72, 0.12)', 
+                  border: '1px solid rgba(225, 29, 72, 0.2)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#e11d48' 
+                }}
+              >
+                <AlertTriangle size={18} strokeWidth={2.4} />
               </div>
-              <span style={{ fontSize: '0.6rem', fontWeight: '900', padding: '2px 7px', borderRadius: '9999px', background: '#ffe4e6', color: '#be123c', border: '1px solid #fecdd3', textTransform: 'uppercase' }}>
-                OVERDUE
-              </span>
+
+              <div 
+                style={{ 
+                  width: '26px', 
+                  height: '26px', 
+                  borderRadius: '50%', 
+                  background: '#ffffff', 
+                  border: '1px solid rgba(225, 29, 72, 0.25)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#e11d48',
+                  boxShadow: '0 2px 5px rgba(225, 29, 72, 0.1)'
+                }}
+              >
+                <ArrowUpRight size={14} strokeWidth={2.5} />
+              </div>
             </div>
 
-            {/* Label, Value & Subtitle */}
+            {/* Label, Large Value & Subtitle */}
             <div>
-              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.03em', marginBottom: '2px' }}>
+              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#9f1239', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '3px' }}>
                 OVERDUE INVOICES
               </div>
-              <div style={{ fontSize: '1.35rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+              <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#881337', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
                 £{totalOverdueAmount > 0 ? totalOverdueAmount.toFixed(2) : '288.00'}
               </div>
-              <div style={{ fontSize: '0.68rem', color: '#e11d48', marginTop: '4px', fontWeight: '600' }}>
-                {overdueInvoices.length > 0 ? `${overdueInvoices.length} unpaid bills` : '2 unpaid bills'} &bull; Action needed
+              <div style={{ fontSize: '0.68rem', color: '#be123c', marginTop: '4px', fontWeight: '700' }}>
+                {overdueInvoices.length > 0 ? `${overdueInvoices.length} unpaid bills` : '2 unpaid bills'} &bull; Immediate action
               </div>
             </div>
-          </div>
 
-          {/* CARD 2: DEVICES COLLECTIONS (Agreements unpaid -> Repossess device) */}
-          <div 
-            style={{
-              background: '#ffffff',
-              borderRadius: '18px',
-              border: '1px solid #fed7aa',
-              padding: '1.05rem',
-              boxShadow: '0 3px 12px rgba(234, 88, 12, 0.04)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
-            }}
-          >
-            {/* Top Row: Icon + Badge */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff7ed', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ea580c' }}>
-                <Smartphone size={17} />
-              </div>
-              <span style={{ fontSize: '0.6rem', fontWeight: '900', padding: '2px 7px', borderRadius: '9999px', background: '#fff7ed', color: '#c2410c', border: '1px solid #fed7aa', textTransform: 'uppercase' }}>
-                COLLECTIONS
+            {/* Bottom Tap Pill */}
+            <div style={{ marginTop: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(244, 63, 94, 0.15)', paddingTop: '0.5rem' }}>
+              <span style={{ fontSize: '0.65rem', fontWeight: '800', color: '#e11d48' }}>
+                Manage debts &rarr;
+              </span>
+              <span style={{ fontSize: '0.58rem', background: '#ffe4e6', color: '#be123c', padding: '1px 6px', borderRadius: '4px', fontWeight: '800' }}>
+                URGENT
               </span>
             </div>
-
-            {/* Label, Value & Subtitle */}
-            <div>
-              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.03em', marginBottom: '2px' }}>
-                DEVICES COLLECTIONS
-              </div>
-              <div style={{ fontSize: '1.35rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-                {deviceCollections.length} Devices
-              </div>
-              <div style={{ fontSize: '0.68rem', color: '#c2410c', marginTop: '4px', fontWeight: '600' }}>
-                Defaulted agreements to recover
-              </div>
-            </div>
           </div>
 
-          {/* CARD 3: SALES (Store Sales Volume) */}
+          {/* CARD 2: DEVICES COLLECTIONS (Orange / Amber Elegance) */}
           <div 
-            onClick={() => setActiveTab('sale')}
+            onClick={() => router.push(`/${tenantSlug}/staff/collections`)}
             style={{
-              background: '#ffffff',
-              borderRadius: '18px',
-              border: '1px solid #a7f3d0',
-              padding: '1.05rem',
-              boxShadow: '0 3px 12px rgba(5, 150, 105, 0.04)',
+              background: 'linear-gradient(150deg, #ffffff 0%, #fff7ed 45%, #ffedd5 100%)',
+              borderRadius: '22px',
+              border: '1.5px solid rgba(234, 88, 12, 0.28)',
+              padding: '1.15rem 1rem',
+              boxShadow: '0 10px 25px -5px rgba(234, 88, 12, 0.12), 0 2px 6px rgba(0, 0, 0, 0.02)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              minHeight: '158px',
+              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
             }}
           >
-            {/* Top Row: Icon + Badge */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669' }}>
-                <TrendingUp size={17} />
+            {/* Top Row: Icon + Arrow Indicator */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+              <div 
+                style={{ 
+                  width: '36px', 
+                  height: '36px', 
+                  borderRadius: '12px', 
+                  background: 'rgba(234, 88, 12, 0.12)', 
+                  border: '1px solid rgba(234, 88, 12, 0.2)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#ea580c' 
+                }}
+              >
+                <Smartphone size={18} strokeWidth={2.4} />
               </div>
-              <span style={{ fontSize: '0.6rem', fontWeight: '900', padding: '2px 7px', borderRadius: '9999px', background: '#ecfdf5', color: '#047857', border: '1px solid #a7f3d0', textTransform: 'uppercase' }}>
-                SALES
-              </span>
+
+              <div 
+                style={{ 
+                  width: '26px', 
+                  height: '26px', 
+                  borderRadius: '50%', 
+                  background: '#ffffff', 
+                  border: '1px solid rgba(234, 88, 12, 0.25)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#ea580c',
+                  boxShadow: '0 2px 5px rgba(234, 88, 12, 0.1)'
+                }}
+              >
+                <ArrowUpRight size={14} strokeWidth={2.5} />
+              </div>
             </div>
 
-            {/* Label, Value & Subtitle */}
+            {/* Label, Large Value & Subtitle */}
             <div>
-              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.03em', marginBottom: '2px' }}>
-                STORE SALES
+              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#9a3412', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '3px' }}>
+                DEVICES COLLECTIONS
               </div>
-              <div style={{ fontSize: '1.35rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-                £{todaySalesTotal > 0 ? todaySalesTotal.toLocaleString('en-GB', { minimumFractionDigits: 2 }) : '1,425.00'}
+              <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#7c2d12', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
+                {deviceCollections.length} Devices
               </div>
-              <div style={{ fontSize: '0.68rem', color: '#059669', marginTop: '4px', fontWeight: '600' }}>
-                {todayInvoices.length > 0 ? `${todayInvoices.length} sales today` : '4 store orders today'}
+              <div style={{ fontSize: '0.68rem', color: '#c2410c', marginTop: '4px', fontWeight: '700' }}>
+                Defaulted RTO &bull; Legal repossession
               </div>
+            </div>
+
+            {/* Bottom Tap Pill */}
+            <div style={{ marginTop: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(234, 88, 12, 0.15)', paddingTop: '0.5rem' }}>
+              <span style={{ fontSize: '0.65rem', fontWeight: '800', color: '#ea580c' }}>
+                Hardware recovery &rarr;
+              </span>
+              <span style={{ fontSize: '0.58rem', background: '#fed7aa', color: '#9a3412', padding: '1px 6px', borderRadius: '4px', fontWeight: '800' }}>
+                RTO DESK
+              </span>
             </div>
           </div>
 
-          {/* CARD 4: REPAIRS (Active Electronics Repairs) */}
+          {/* CARD 3: STORE SALES (Emerald / Mint Elegance) */}
           <div 
+            onClick={() => router.push(`/${tenantSlug}/staff/sales`)}
             style={{
-              background: '#ffffff',
-              borderRadius: '18px',
-              border: '1px solid #bfdbfe',
-              padding: '1.05rem',
-              boxShadow: '0 3px 12px rgba(37, 99, 235, 0.04)',
+              background: 'linear-gradient(150deg, #ffffff 0%, #ecfdf5 45%, #d1fae5 100%)',
+              borderRadius: '22px',
+              border: '1.5px solid rgba(16, 185, 129, 0.28)',
+              padding: '1.15rem 1rem',
+              boxShadow: '0 10px 25px -5px rgba(5, 150, 105, 0.12), 0 2px 6px rgba(0, 0, 0, 0.02)',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              minHeight: '158px',
+              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
             }}
           >
-            {/* Top Row: Icon + Badge */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
-                <Wrench size={17} />
+            {/* Top Row: Icon + Arrow Indicator */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+              <div 
+                style={{ 
+                  width: '36px', 
+                  height: '36px', 
+                  borderRadius: '12px', 
+                  background: 'rgba(16, 185, 129, 0.12)', 
+                  border: '1px solid rgba(16, 185, 129, 0.2)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#059669' 
+                }}
+              >
+                <TrendingUp size={18} strokeWidth={2.4} />
               </div>
-              <span style={{ fontSize: '0.6rem', fontWeight: '900', padding: '2px 7px', borderRadius: '9999px', background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', textTransform: 'uppercase' }}>
-                REPAIRS
-              </span>
+
+              <div 
+                style={{ 
+                  width: '26px', 
+                  height: '26px', 
+                  borderRadius: '50%', 
+                  background: '#ffffff', 
+                  border: '1px solid rgba(16, 185, 129, 0.25)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#059669',
+                  boxShadow: '0 2px 5px rgba(5, 150, 105, 0.1)'
+                }}
+              >
+                <ArrowUpRight size={14} strokeWidth={2.5} />
+              </div>
             </div>
 
-            {/* Label, Value & Subtitle */}
+            {/* Label, Large Value & Subtitle */}
             <div>
-              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.03em', marginBottom: '2px' }}>
+              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '3px' }}>
+                STORE SALES
+              </div>
+              <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#064e3b', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
+                £{todaySalesTotal > 0 ? todaySalesTotal.toLocaleString('en-GB', { minimumFractionDigits: 2 }) : '1,425.00'}
+              </div>
+              <div style={{ fontSize: '0.68rem', color: '#059669', marginTop: '4px', fontWeight: '700' }}>
+                {todayInvoices.length > 0 ? `${todayInvoices.length} sales today` : '5 store orders'} &bull; Gross revenue
+              </div>
+            </div>
+
+            {/* Bottom Tap Pill */}
+            <div style={{ marginTop: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(16, 185, 129, 0.15)', paddingTop: '0.5rem' }}>
+              <span style={{ fontSize: '0.65rem', fontWeight: '800', color: '#059669' }}>
+                View sales feed &rarr;
+              </span>
+              <span style={{ fontSize: '0.58rem', background: '#a7f3d0', color: '#065f46', padding: '1px 6px', borderRadius: '4px', fontWeight: '800' }}>
+                LIVE POS
+              </span>
+            </div>
+          </div>
+
+          {/* CARD 4: REPAIRS (Royal Blue / Azure Elegance) */}
+          <div 
+            onClick={() => router.push(`/${tenantSlug}/staff/repairs`)}
+            style={{
+              background: 'linear-gradient(150deg, #ffffff 0%, #eff6ff 45%, #dbeafe 100%)',
+              borderRadius: '22px',
+              border: '1.5px solid rgba(37, 99, 235, 0.28)',
+              padding: '1.15rem 1rem',
+              boxShadow: '0 10px 25px -5px rgba(37, 99, 235, 0.12), 0 2px 6px rgba(0, 0, 0, 0.02)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+              minHeight: '158px',
+              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+            }}
+          >
+            {/* Top Row: Icon + Arrow Indicator */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+              <div 
+                style={{ 
+                  width: '36px', 
+                  height: '36px', 
+                  borderRadius: '12px', 
+                  background: 'rgba(37, 99, 235, 0.12)', 
+                  border: '1px solid rgba(37, 99, 235, 0.2)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#2563eb' 
+                }}
+              >
+                <Wrench size={18} strokeWidth={2.4} />
+              </div>
+
+              <div 
+                style={{ 
+                  width: '26px', 
+                  height: '26px', 
+                  borderRadius: '50%', 
+                  background: '#ffffff', 
+                  border: '1px solid rgba(37, 99, 235, 0.25)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#2563eb',
+                  boxShadow: '0 2px 5px rgba(37, 99, 235, 0.1)'
+                }}
+              >
+                <ArrowUpRight size={14} strokeWidth={2.5} />
+              </div>
+            </div>
+
+            {/* Label, Large Value & Subtitle */}
+            <div>
+              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#1e40af', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '3px' }}>
                 ACTIVE REPAIRS
               </div>
-              <div style={{ fontSize: '1.35rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+              <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#1e3a8a', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
                 {activeRepairs.length > 0 ? `${activeRepairs.length} Jobs` : '4 Devices'}
               </div>
-              <div style={{ fontSize: '0.68rem', color: '#2563eb', marginTop: '4px', fontWeight: '600' }}>
+              <div style={{ fontSize: '0.68rem', color: '#2563eb', marginTop: '4px', fontWeight: '700' }}>
                 {readyRepairsCount > 0 ? `${readyRepairsCount} ready for collection` : '1 ready for pickup'}
               </div>
+            </div>
+
+            {/* Bottom Tap Pill */}
+            <div style={{ marginTop: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(37, 99, 235, 0.15)', paddingTop: '0.5rem' }}>
+              <span style={{ fontSize: '0.65rem', fontWeight: '800', color: '#2563eb' }}>
+                Workshop jobs &rarr;
+              </span>
+              <span style={{ fontSize: '0.58rem', background: '#bfdbfe', color: '#1e40af', padding: '1px 6px', borderRadius: '4px', fontWeight: '800' }}>
+                BENCH
+              </span>
             </div>
           </div>
 
         </div>
       </div>
+
 
       {/* ========================================================
           3. DEVICES COLLECTIONS ATTENTION BANNER / WORKFLOW
@@ -452,9 +622,27 @@ export default function StaffDashboardTab({
               </span>
             </div>
           </div>
-          <span style={{ fontSize: '0.62rem', backgroundColor: '#fed7aa', color: '#9a3412', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
-            ACTION REQUIRED
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <span style={{ fontSize: '0.62rem', backgroundColor: '#fed7aa', color: '#9a3412', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+              ACTION REQUIRED
+            </span>
+            <button
+              type="button"
+              onClick={() => router.push(`/${tenantSlug}/staff/collections`)}
+              style={{
+                backgroundColor: '#ffffff',
+                border: '1px solid #fed7aa',
+                color: '#ea580c',
+                borderRadius: '8px',
+                padding: '3px 8px',
+                fontSize: '0.68rem',
+                fontWeight: '800',
+                cursor: 'pointer'
+              }}
+            >
+              View All &rarr;
+            </button>
+          </div>
         </div>
 
         {/* List of defaulted devices to collect back */}
@@ -533,22 +721,40 @@ export default function StaffDashboardTab({
               Live Electronics Repair Jobs ({activeRepairs.length})
             </h3>
           </div>
-          <button
-            type="button"
-            onClick={onOpenNewRepair}
-            style={{
-              fontSize: '0.72rem',
-              fontWeight: '800',
-              color: '#2563eb',
-              background: '#eff6ff',
-              border: '1px solid #bfdbfe',
-              borderRadius: '8px',
-              padding: '4px 10px',
-              cursor: 'pointer'
-            }}
-          >
-            + New Ticket
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <button
+              type="button"
+              onClick={() => router.push(`/${tenantSlug}/staff/repairs`)}
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: '800',
+                color: '#2563eb',
+                background: '#eff6ff',
+                border: '1px solid #bfdbfe',
+                borderRadius: '8px',
+                padding: '4px 10px',
+                cursor: 'pointer'
+              }}
+            >
+              Workshop &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={onOpenNewRepair}
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: '800',
+                color: '#ffffff',
+                background: '#2563eb',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '4px 10px',
+                cursor: 'pointer'
+              }}
+            >
+              + New Ticket
+            </button>
+          </div>
         </div>
 
         {activeRepairs.length === 0 ? (
@@ -732,7 +938,7 @@ export default function StaffDashboardTab({
             </div>
             <button
               type="button"
-              onClick={() => setActiveTab('invoices')}
+              onClick={() => router.push(`/${tenantSlug}/staff/overdue`)}
               style={{
                 backgroundColor: '#ffffff',
                 border: '1px solid #fecdd3',

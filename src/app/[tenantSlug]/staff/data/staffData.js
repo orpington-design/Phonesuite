@@ -256,3 +256,195 @@ export function persistProducts(productsList) {
     localStorage.setItem('phonesuite_shared_products', JSON.stringify(productsList));
   } catch (e) {}
 }
+
+export const INITIAL_DEVICE_COLLECTIONS = [
+  {
+    id: 'col-1',
+    customerName: 'Eleanor Wright',
+    customerPhone: '+44 7822 456789',
+    customerEmail: 'eleanor.w@cloudmail.co.uk',
+    customerAddress: '15 Gloucester Rd, Kensington, London SW7 4PP',
+    deviceModel: 'Apple iPad Pro 12.9" M2',
+    deviceSerial: 'DMPZD880H8N',
+    contractId: 'RTO-2026-0044',
+    agreementDate: '2026-06-15',
+    daysOverdue: 14,
+    amountDue: 68.00,
+    deviceValue: 899.00,
+    status: 'pending_recovery', // 'pending_recovery' | 'recovery_dispatched' | 'retrieved'
+    branch: 'London Central Branch',
+    noticeSentCount: 1,
+    lastNoticeDate: '2026-09-02'
+  },
+  {
+    id: 'col-2',
+    customerName: 'James Rodriguez',
+    customerPhone: '+44 7755 890123',
+    customerEmail: 'j.rodriguez@techhub.io',
+    customerAddress: '88 Camden High St, London NW1 0LT',
+    deviceModel: 'MacBook Pro 16" M2 Max (Space Grey)',
+    deviceSerial: 'C02G80P7MD6M',
+    contractId: 'RTO-2026-0028',
+    agreementDate: '2026-04-10',
+    daysOverdue: 22,
+    amountDue: 220.00,
+    deviceValue: 2450.00,
+    status: 'recovery_dispatched',
+    branch: 'London Central Branch',
+    noticeSentCount: 2,
+    lastNoticeDate: '2026-08-28'
+  },
+  {
+    id: 'col-3',
+    customerName: 'Marcus Bell',
+    customerPhone: '+44 7711 334455',
+    customerEmail: 'm.bell99@gmail.com',
+    customerAddress: '19 Greenwich Church St, London SE10 9BJ',
+    deviceModel: 'Samsung Galaxy S24 Ultra 512GB',
+    deviceSerial: 'RF8N204910A',
+    contractId: 'RTO-2026-0051',
+    agreementDate: '2026-07-01',
+    daysOverdue: 9,
+    amountDue: 85.00,
+    deviceValue: 950.00,
+    status: 'pending_recovery',
+    branch: 'London Central Branch',
+    noticeSentCount: 0,
+    lastNoticeDate: null
+  }
+];
+
+export function getSavedCollections() {
+  if (typeof window === 'undefined') return INITIAL_DEVICE_COLLECTIONS;
+  try {
+    const saved = localStorage.getItem('phonesuite_staff_collections');
+    if (saved) return JSON.parse(saved);
+  } catch (e) {}
+  return INITIAL_DEVICE_COLLECTIONS;
+}
+
+export function persistCollections(list) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem('phonesuite_staff_collections', JSON.stringify(list));
+  } catch (e) {}
+}
+
+export const INITIAL_STAFF_SALES = [
+  {
+    id: 'sale-001',
+    receiptNumber: 'REC-2026-4401',
+    customerName: 'Chloe Bennett',
+    customerPhone: '+44 7933 671234',
+    customerEmail: 'chloe.bennett@designcraft.com',
+    items: [
+      { name: 'Apple 30W USB-C Kit', price: 39.00, qty: 1 },
+      { name: 'MagSafe Silicone Case (Midnight)', price: 30.00, qty: 1 }
+    ],
+    subtotal: 57.50,
+    vat: 11.50,
+    total: 69.00,
+    paymentMethod: 'Card / Contactless',
+    status: 'completed',
+    branch: 'London Central Branch',
+    staffMember: 'Alex Rivera',
+    createdAt: '2026-09-09T13:40:00Z'
+  },
+  {
+    id: 'sale-002',
+    receiptNumber: 'REC-2026-4402',
+    customerName: 'Daniel Harris',
+    customerPhone: '+44 7911 123456',
+    customerEmail: 'd.harris@example.com',
+    items: [
+      { name: 'Anker Magnetic Wireless Power Bank (10,000mAh)', price: 59.00, qty: 1 }
+    ],
+    subtotal: 49.17,
+    vat: 9.83,
+    total: 59.00,
+    paymentMethod: 'Cash Register',
+    status: 'completed',
+    branch: 'London Central Branch',
+    staffMember: 'Sophie Taylor',
+    createdAt: '2026-09-08T16:15:00Z'
+  },
+  {
+    id: 'sale-003',
+    receiptNumber: 'REC-2026-4403',
+    customerName: 'Sarah Jenkins',
+    customerPhone: '+44 7922 112233',
+    customerEmail: 's.jenkins@outlook.com',
+    items: [
+      { name: 'Apple iPhone 15 Pro 128GB - Natural Titanium', price: 899.00, qty: 1 },
+      { name: 'Belkin UltraGlass 2 Screen Protector', price: 35.00, qty: 1 }
+    ],
+    subtotal: 778.33,
+    vat: 155.67,
+    total: 934.00,
+    paymentMethod: 'Rent-to-Own Financing',
+    isRto: true,
+    rtoDetails: {
+      contractNumber: 'RTO-2026-0062',
+      downPayment: 180.00,
+      weeklyInstallment: 41.50,
+      termWeeks: 24
+    },
+    status: 'completed',
+    branch: 'London Central Branch',
+    staffMember: 'Alex Rivera',
+    createdAt: '2026-09-08T11:20:00Z'
+  },
+  {
+    id: 'sale-004',
+    receiptNumber: 'REC-2026-4404',
+    customerName: 'David Kim',
+    customerPhone: '+44 7788 990011',
+    customerEmail: 'david.kim@fintech.co.uk',
+    items: [
+      { name: 'Apple AirPods Pro 2 (USB-C MagSafe)', price: 219.00, qty: 1 },
+      { name: 'Lightning to USB-C Braided Cable 2m', price: 29.00, qty: 1 }
+    ],
+    subtotal: 206.67,
+    vat: 41.33,
+    total: 248.00,
+    paymentMethod: 'Apple Pay / Contactless',
+    status: 'completed',
+    branch: 'London Central Branch',
+    staffMember: 'Sophie Taylor',
+    createdAt: '2026-09-07T15:45:00Z'
+  },
+  {
+    id: 'sale-005',
+    receiptNumber: 'REC-2026-4405',
+    customerName: 'Hannah Moore',
+    customerPhone: '+44 7733 445566',
+    customerEmail: 'hannah.m@studio.com',
+    items: [
+      { name: 'Screen Replacement Service (iPhone 14)', price: 115.00, qty: 1 }
+    ],
+    subtotal: 95.83,
+    vat: 19.17,
+    total: 115.00,
+    paymentMethod: 'Card / Chip & PIN',
+    status: 'completed',
+    branch: 'London Central Branch',
+    staffMember: 'Marcus Vance',
+    createdAt: '2026-09-07T12:10:00Z'
+  }
+];
+
+export function getSavedSales() {
+  if (typeof window === 'undefined') return INITIAL_STAFF_SALES;
+  try {
+    const saved = localStorage.getItem('phonesuite_staff_sales');
+    if (saved) return JSON.parse(saved);
+  } catch (e) {}
+  return INITIAL_STAFF_SALES;
+}
+
+export function persistSales(list) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem('phonesuite_staff_sales', JSON.stringify(list));
+  } catch (e) {}
+}
