@@ -85,7 +85,15 @@ function PortalContent() {
   const [bills, setBills] = useState(INITIAL_BILLS);
   const [repairs, setRepairs] = useState(INITIAL_REPAIRS);
   const [contracts, setContracts] = useState(INITIAL_CONTRACTS);
-  const [products, setProducts] = useState(PRODUCTS_CATALOG);
+  const [products, setProducts] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('phonesuite_shared_products');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return PRODUCTS_CATALOG;
+  });
 
   // Cart State
   const [cart, setCart] = useState([]);
@@ -156,9 +164,15 @@ function PortalContent() {
             storage: ['Standard'],
             colors: ['Default']
           }));
-          setProducts([...mappedInv, ...PRODUCTS_CATALOG]);
+          const sharedCatalog = (typeof window !== 'undefined' && localStorage.getItem('phonesuite_shared_products')) 
+            ? JSON.parse(localStorage.getItem('phonesuite_shared_products')) 
+            : PRODUCTS_CATALOG;
+          setProducts([...mappedInv, ...sharedCatalog]);
         } else {
-          setProducts(PRODUCTS_CATALOG);
+          const sharedCatalog = (typeof window !== 'undefined' && localStorage.getItem('phonesuite_shared_products')) 
+            ? JSON.parse(localStorage.getItem('phonesuite_shared_products')) 
+            : PRODUCTS_CATALOG;
+          setProducts(sharedCatalog);
         }
 
       } catch (err) {

@@ -24,6 +24,9 @@ export default function MarketingLandingPage() {
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <Link href="/staff" style={{ color: '#2563eb', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '700', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '0.4rem 0.75rem', borderRadius: '8px' }}>
+              Staff Mobile App
+            </Link>
             <Link href="/customer" style={{ color: '#0284c7', textDecoration: 'none', fontSize: '0.95rem', fontWeight: '600' }}>
               Customer Portal
             </Link>
