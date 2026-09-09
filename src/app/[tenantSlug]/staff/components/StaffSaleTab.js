@@ -177,34 +177,37 @@ export default function StaffSaleTab({
       {/* Title Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h2 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
             {s.title}
           </h2>
-          <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '2px 0 0 0' }}>
+          <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '3px 0 0 0', fontWeight: '500' }}>
             {s.subtitle}
           </p>
         </div>
       </div>
 
       {/* STEP 1: Select Customer */}
-      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.82rem', fontWeight: '800', color: '#0f172a' }}>
-            <User size={16} color="#2563eb" />
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.1rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: '800', color: '#0f172a' }}>
+            <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+              <User size={15} strokeWidth={2.4} />
+            </div>
             <span>{s.stepCustomer}</span>
           </div>
           <button
             type="button"
             onClick={onOpenNewCustomer}
             style={{
-              background: '#eff6ff',
-              border: 'none',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
               borderRadius: '8px',
-              padding: '4px 8px',
+              padding: '5px 10px',
               fontSize: '0.72rem',
               fontWeight: '700',
-              color: '#2563eb',
-              cursor: 'pointer'
+              color: '#0f172a',
+              cursor: 'pointer',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
             }}
           >
             {s.orQuickAddCustomer}
@@ -217,13 +220,14 @@ export default function StaffSaleTab({
           onChange={(e) => setSelectedCustomerId(e.target.value)}
           style={{
             width: '100%',
-            padding: '0.65rem 0.85rem',
-            borderRadius: '10px',
-            border: '1px solid #cbd5e1',
-            backgroundColor: '#f8fafc',
+            padding: '0.7rem 0.85rem',
+            borderRadius: '12px',
+            border: '1px solid #e2e8f0',
+            backgroundColor: '#ffffff',
             fontSize: '0.82rem',
             color: '#0f172a',
-            marginBottom: '0.6rem'
+            outline: 'none',
+            marginBottom: '0.75rem'
           }}
         >
           {customers.map(c => (
@@ -235,16 +239,16 @@ export default function StaffSaleTab({
 
         {/* Active Customer Details Pill */}
         {activeCustomer && (
-          <div style={{ backgroundColor: '#f1f5f9', borderRadius: '12px', padding: '0.65rem 0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.75rem' }}>
+          <div style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '0.75rem 0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.75rem' }}>
             <div>
               <span style={{ fontWeight: '800', color: '#0f172a' }}>{activeCustomer.name}</span>
               <span style={{ color: '#64748b', marginLeft: '6px' }}>{activeCustomer.phone}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '2px 6px', borderRadius: '6px', fontWeight: '800', fontSize: '0.68rem' }}>
+              <span style={{ backgroundColor: '#ecfdf5', color: '#059669', padding: '2px 8px', borderRadius: '6px', fontWeight: '800', fontSize: '0.68rem', border: '1px solid #a7f3d0' }}>
                 Score: {activeCustomer.credit_score}
               </span>
-              <span style={{ fontWeight: '700', color: '#334155' }}>
+              <span style={{ fontWeight: '800', color: '#0f172a' }}>
                 Limit: £{Number(activeCustomer.credit_limit || 2000).toFixed(0)}
               </span>
             </div>
@@ -253,29 +257,31 @@ export default function StaffSaleTab({
       </div>
 
       {/* STEP 2: Select Items or Custom Service */}
-      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.1rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
         
-        {/* Toggle between Product Catalog vs Custom Service */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.4rem', marginBottom: '0.75rem' }}>
+        {/* Toggle between Product Catalog vs Custom Service (Segmented Pill Style) */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.4rem', marginBottom: '0.85rem', background: '#f1f5f9', padding: '4px', borderRadius: '12px' }}>
           <button
             type="button"
             onClick={() => setItemsTab('catalog')}
             style={{
               padding: '0.55rem',
-              borderRadius: '10px',
-              border: itemsTab === 'catalog' ? '1.5px solid #2563eb' : '1px solid #e2e8f0',
-              backgroundColor: itemsTab === 'catalog' ? '#eff6ff' : '#ffffff',
-              color: itemsTab === 'catalog' ? '#2563eb' : '#64748b',
-              fontWeight: '800',
+              borderRadius: '9px',
+              border: 'none',
+              backgroundColor: itemsTab === 'catalog' ? '#ffffff' : 'transparent',
+              color: itemsTab === 'catalog' ? '#0f172a' : '#64748b',
+              fontWeight: itemsTab === 'catalog' ? '800' : '600',
               fontSize: '0.78rem',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.4rem'
+              gap: '0.4rem',
+              boxShadow: itemsTab === 'catalog' ? '0 2px 6px rgba(0,0,0,0.08)' : 'none',
+              transition: 'all 0.15s ease'
             }}
           >
-            <Package size={15} />
+            <Package size={15} strokeWidth={2.2} />
             {s.tabCatalog}
           </button>
 
@@ -284,20 +290,22 @@ export default function StaffSaleTab({
             onClick={() => setItemsTab('custom_service')}
             style={{
               padding: '0.55rem',
-              borderRadius: '10px',
-              border: itemsTab === 'custom_service' ? '1.5px solid #2563eb' : '1px solid #e2e8f0',
-              backgroundColor: itemsTab === 'custom_service' ? '#eff6ff' : '#ffffff',
-              color: itemsTab === 'custom_service' ? '#2563eb' : '#64748b',
-              fontWeight: '800',
+              borderRadius: '9px',
+              border: 'none',
+              backgroundColor: itemsTab === 'custom_service' ? '#ffffff' : 'transparent',
+              color: itemsTab === 'custom_service' ? '#0f172a' : '#64748b',
+              fontWeight: itemsTab === 'custom_service' ? '800' : '600',
               fontSize: '0.78rem',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.4rem'
+              gap: '0.4rem',
+              boxShadow: itemsTab === 'custom_service' ? '0 2px 6px rgba(0,0,0,0.08)' : 'none',
+              transition: 'all 0.15s ease'
             }}
           >
-            <Wrench size={15} />
+            <Wrench size={15} strokeWidth={2.2} />
             {s.tabCustomService}
           </button>
         </div>
@@ -323,32 +331,37 @@ export default function StaffSaleTab({
               />
             </div>
 
-            {/* Category Filter Pills */}
-            <div style={{ display: 'flex', gap: '0.35rem', overflowX: 'auto', paddingBottom: '0.4rem', marginBottom: '0.6rem' }}>
-              {SHOP_CATEGORY_OPTIONS.map(c => (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={() => setCatalogCategory(c.id)}
-                  style={{
-                    padding: '0.35rem 0.7rem',
-                    borderRadius: '9999px',
-                    border: catalogCategory === c.id ? '1.5px solid #2563eb' : '1px solid #e2e8f0',
-                    backgroundColor: catalogCategory === c.id ? '#2563eb' : '#ffffff',
-                    color: catalogCategory === c.id ? '#ffffff' : '#64748b',
-                    fontSize: '0.72rem',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  {c.label}
-                </button>
-              ))}
+            {/* Category Filter Pills (Apple Segmented Style) */}
+            <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '0.4rem', marginBottom: '0.75rem', scrollbarWidth: 'none' }}>
+              {SHOP_CATEGORY_OPTIONS.map(c => {
+                const isActive = catalogCategory === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setCatalogCategory(c.id)}
+                    style={{
+                      padding: '0.4rem 0.75rem',
+                      borderRadius: '10px',
+                      border: isActive ? '1px solid #0f172a' : '1px solid #e2e8f0',
+                      backgroundColor: isActive ? '#0f172a' : '#ffffff',
+                      color: isActive ? '#ffffff' : '#64748b',
+                      fontSize: '0.74rem',
+                      fontWeight: isActive ? '800' : '600',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      boxShadow: isActive ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    {c.label}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Scrollable mini product list */}
-            <div style={{ maxHeight: '200px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <div style={{ maxHeight: '220px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
               {filteredProducts.slice(0, 8).map(prod => (
                 <div
                   key={prod.id}
@@ -356,24 +369,25 @@ export default function StaffSaleTab({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '0.5rem',
-                    borderRadius: '10px',
-                    border: '1px solid #f1f5f9',
-                    backgroundColor: '#f8fafc'
+                    padding: '0.6rem 0.75rem',
+                    borderRadius: '12px',
+                    border: '1px solid #e2e8f0',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                     <img 
                       src={prod.image} 
                       alt={prod.name} 
-                      style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover' }} 
+                      style={{ width: '40px', height: '40px', borderRadius: '10px', objectFit: 'cover', border: '1px solid #e2e8f0' }} 
                     />
                     <div>
-                      <div style={{ fontWeight: '700', fontSize: '0.78rem', color: '#0f172a' }}>
+                      <div style={{ fontWeight: '800', fontSize: '0.8rem', color: '#0f172a' }}>
                         {prod.name}
                       </div>
-                      <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
-                        Stock: {prod.stock || 5} &bull; £{Number(prod.price).toFixed(2)}
+                      <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '1px' }}>
+                        Stock: <strong style={{ color: '#0f172a' }}>{prod.stock || 5}</strong> &bull; <span style={{ color: '#ea580c', fontWeight: '800' }}>£{Number(prod.price).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
@@ -382,20 +396,21 @@ export default function StaffSaleTab({
                     type="button"
                     onClick={() => handleAddToBasket(prod)}
                     style={{
-                      backgroundColor: '#2563eb',
+                      backgroundColor: '#0f172a',
                       color: '#ffffff',
                       border: 'none',
                       borderRadius: '8px',
-                      padding: '4px 9px',
-                      fontSize: '0.72rem',
+                      padding: '5px 11px',
+                      fontSize: '0.74rem',
                       fontWeight: '800',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '3px'
+                      gap: '4px',
+                      boxShadow: '0 2px 6px rgba(15, 23, 42, 0.15)'
                     }}
                   >
-                    <Plus size={13} />
+                    <Plus size={13} strokeWidth={2.4} />
                     Add
                   </button>
                 </div>
@@ -582,27 +597,29 @@ export default function StaffSaleTab({
         </div>
 
         {/* 3 Mode buttons */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem', marginBottom: '0.85rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.45rem', marginBottom: '0.9rem' }}>
           
           <button
             type="button"
             onClick={() => setPaymentMode('outright_card')}
             style={{
-              padding: '0.6rem 0.4rem',
-              borderRadius: '10px',
-              border: paymentMode === 'outright_card' ? '1.5px solid #2563eb' : '1px solid #e2e8f0',
-              backgroundColor: paymentMode === 'outright_card' ? '#eff6ff' : '#ffffff',
-              color: paymentMode === 'outright_card' ? '#2563eb' : '#475569',
-              fontWeight: '700',
+              padding: '0.7rem 0.4rem',
+              borderRadius: '12px',
+              border: paymentMode === 'outright_card' ? '1.5px solid #0f172a' : '1px solid #e2e8f0',
+              backgroundColor: paymentMode === 'outright_card' ? '#f8fafc' : '#ffffff',
+              color: paymentMode === 'outright_card' ? '#0f172a' : '#64748b',
+              fontWeight: paymentMode === 'outright_card' ? '800' : '600',
               fontSize: '0.74rem',
               cursor: 'pointer',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '3px'
+              gap: '4px',
+              boxShadow: paymentMode === 'outright_card' ? '0 2px 8px rgba(15, 23, 42, 0.08)' : 'none',
+              transition: 'all 0.15s ease'
             }}
           >
-            <CreditCard size={18} />
+            <CreditCard size={18} strokeWidth={2.2} />
             <span>Card / Stripe</span>
           </button>
 
@@ -610,21 +627,23 @@ export default function StaffSaleTab({
             type="button"
             onClick={() => setPaymentMode('outright_cash')}
             style={{
-              padding: '0.6rem 0.4rem',
-              borderRadius: '10px',
-              border: paymentMode === 'outright_cash' ? '1.5px solid #059669' : '1px solid #e2e8f0',
-              backgroundColor: paymentMode === 'outright_cash' ? '#ecfdf5' : '#ffffff',
-              color: paymentMode === 'outright_cash' ? '#059669' : '#475569',
-              fontWeight: '700',
+              padding: '0.7rem 0.4rem',
+              borderRadius: '12px',
+              border: paymentMode === 'outright_cash' ? '1.5px solid #0f172a' : '1px solid #e2e8f0',
+              backgroundColor: paymentMode === 'outright_cash' ? '#f8fafc' : '#ffffff',
+              color: paymentMode === 'outright_cash' ? '#0f172a' : '#64748b',
+              fontWeight: paymentMode === 'outright_cash' ? '800' : '600',
               fontSize: '0.74rem',
               cursor: 'pointer',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '3px'
+              gap: '4px',
+              boxShadow: paymentMode === 'outright_cash' ? '0 2px 8px rgba(15, 23, 42, 0.08)' : 'none',
+              transition: 'all 0.15s ease'
             }}
           >
-            <Banknote size={18} />
+            <Banknote size={18} strokeWidth={2.2} />
             <span>Cash Desk</span>
           </button>
 
@@ -632,21 +651,23 @@ export default function StaffSaleTab({
             type="button"
             onClick={() => setPaymentMode('rto')}
             style={{
-              padding: '0.6rem 0.4rem',
-              borderRadius: '10px',
-              border: paymentMode === 'rto' ? '1.5px solid #7c3aed' : '1px solid #e2e8f0',
-              backgroundColor: paymentMode === 'rto' ? '#f5f3ff' : '#ffffff',
-              color: paymentMode === 'rto' ? '#7c3aed' : '#475569',
-              fontWeight: '800',
+              padding: '0.7rem 0.4rem',
+              borderRadius: '12px',
+              border: paymentMode === 'rto' ? '1.5px solid #ff7a00' : '1px solid #e2e8f0',
+              backgroundColor: paymentMode === 'rto' ? '#fff7ed' : '#ffffff',
+              color: paymentMode === 'rto' ? '#ea580c' : '#64748b',
+              fontWeight: paymentMode === 'rto' ? '800' : '600',
               fontSize: '0.74rem',
               cursor: 'pointer',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '3px'
+              gap: '4px',
+              boxShadow: paymentMode === 'rto' ? '0 2px 8px rgba(234, 88, 12, 0.15)' : 'none',
+              transition: 'all 0.15s ease'
             }}
           >
-            <Sparkles size={18} />
+            <Sparkles size={18} strokeWidth={2.2} />
             <span>0% RTO Plan</span>
           </button>
 
@@ -654,30 +675,30 @@ export default function StaffSaleTab({
 
         {/* If RTO Selected: Render Financing Term Configurator */}
         {paymentMode === 'rto' && (
-          <div style={{ backgroundColor: '#f5f3ff', borderRadius: '14px', padding: '0.85rem', border: '1px solid #ddd6fe', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+          <div style={{ backgroundColor: '#fff7ed', borderRadius: '14px', padding: '0.9rem', border: '1px solid #fed7aa', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#7c3aed', fontSize: '0.78rem', fontWeight: '800' }}>
-              <Sparkles size={15} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#ea580c', fontSize: '0.8rem', fontWeight: '800' }}>
+              <Sparkles size={15} strokeWidth={2.4} />
               <span>Rent-to-Own Financing Agreement (0% APR)</span>
             </div>
 
             {/* Term selector */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#4c1d95', marginBottom: '0.3rem' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '800', color: '#9a3412', marginBottom: '0.35rem' }}>
                 {s.rtoTenure}:
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.35rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem' }}>
                 {[6, 12, 18, 24].map(months => (
                   <button
                     key={months}
                     type="button"
                     onClick={() => setRtoTenureMonths(months)}
                     style={{
-                      padding: '0.4rem',
+                      padding: '0.45rem',
                       borderRadius: '8px',
-                      border: rtoTenureMonths === months ? '2px solid #7c3aed' : '1px solid #c4b5fd',
-                      backgroundColor: rtoTenureMonths === months ? '#7c3aed' : '#ffffff',
-                      color: rtoTenureMonths === months ? '#ffffff' : '#5b21b6',
+                      border: rtoTenureMonths === months ? '1.5px solid #ea580c' : '1px solid #fed7aa',
+                      backgroundColor: rtoTenureMonths === months ? '#ea580c' : '#ffffff',
+                      color: rtoTenureMonths === months ? '#ffffff' : '#9a3412',
                       fontWeight: '800',
                       fontSize: '0.75rem',
                       cursor: 'pointer'
@@ -692,7 +713,7 @@ export default function StaffSaleTab({
             {/* Deposit Input */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#4c1d95', marginBottom: '0.2rem' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '800', color: '#9a3412', marginBottom: '0.2rem' }}>
                   {s.rtoDeposit}
                 </label>
                 <input
@@ -702,19 +723,21 @@ export default function StaffSaleTab({
                   onChange={(e) => setRtoDeposit(e.target.value)}
                   style={{
                     width: '100%',
-                    padding: '0.55rem 0.65rem',
+                    padding: '0.6rem 0.75rem',
                     borderRadius: '8px',
-                    border: '1px solid #c4b5fd',
+                    border: '1px solid #fed7aa',
+                    backgroundColor: '#ffffff',
                     fontSize: '0.85rem',
-                    fontWeight: '800'
+                    fontWeight: '800',
+                    outline: 'none'
                   }}
                 />
               </div>
 
               {/* Monthly payment pill */}
-              <div style={{ backgroundColor: '#ffffff', borderRadius: '8px', padding: '0.55rem', border: '1px solid #c4b5fd', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <span style={{ fontSize: '0.65rem', color: '#6b21a8', fontWeight: '700' }}>{s.rtoMonthlyEst}</span>
-                <span style={{ fontSize: '1.05rem', fontWeight: '900', color: '#7c3aed' }}>
+              <div style={{ backgroundColor: '#ffffff', borderRadius: '8px', padding: '0.6rem', border: '1px solid #fed7aa', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <span style={{ fontSize: '0.65rem', color: '#9a3412', fontWeight: '800' }}>{s.rtoMonthlyEst}</span>
+                <span style={{ fontSize: '1.05rem', fontWeight: '900', color: '#ea580c' }}>
                   £{monthlyRTO.toFixed(2)}/mo
                 </span>
               </div>
@@ -737,24 +760,26 @@ export default function StaffSaleTab({
           disabled={basket.length === 0}
           onClick={handleFinishSale}
           style={{
-            marginTop: '0.85rem',
+            marginTop: '1rem',
             width: '100%',
-            padding: '1rem',
+            padding: '0.95rem',
             borderRadius: '14px',
-            backgroundColor: basket.length === 0 ? '#94a3b8' : (paymentMode === 'rto' ? '#7c3aed' : '#2563eb'),
+            background: basket.length === 0 ? '#94a3b8' : 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
             color: '#ffffff',
             border: 'none',
-            fontSize: '0.95rem',
+            fontSize: '0.94rem',
             fontWeight: '900',
+            letterSpacing: '0.01em',
             cursor: basket.length === 0 ? 'not-allowed' : 'pointer',
-            boxShadow: basket.length === 0 ? 'none' : '0 6px 18px rgba(37, 99, 235, 0.35)',
+            boxShadow: basket.length === 0 ? 'none' : '0 6px 20px rgba(234, 88, 12, 0.35)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '0.5rem'
+            gap: '0.5rem',
+            transition: 'all 0.15s ease'
           }}
         >
-          <CheckCircle2 size={20} />
+          <CheckCircle2 size={19} strokeWidth={2.5} />
           {paymentMode === 'rto' ? s.btnGenerateAgreement : s.btnCompleteSale}
         </button>
 

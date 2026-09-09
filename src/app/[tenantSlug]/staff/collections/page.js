@@ -155,33 +155,33 @@ export default function DeviceCollectionsPage() {
       <div className="mobile-app-shell">
 
         {/* Top Header */}
-        <header className="mobile-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <header className="mobile-header mobile-header-dark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#0b132b', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
           <button
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff`)}
             style={{
-              background: '#f1f5f9',
-              border: 'none',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
               borderRadius: '10px',
-              padding: '6px 10px',
+              padding: '6px 12px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              color: '#0f172a',
+              gap: '6px',
+              color: '#ffffff',
               fontSize: '0.8rem',
               fontWeight: '700',
               cursor: 'pointer'
             }}
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} strokeWidth={2.4} />
             <span>Dashboard</span>
           </button>
 
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '0.95rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
+            <h1 style={{ fontSize: '0.96rem', fontWeight: '900', color: '#ffffff', margin: 0, letterSpacing: '-0.02em' }}>
               Device Collections
             </h1>
-            <span style={{ fontSize: '0.65rem', color: '#ea580c', fontWeight: '800', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.64rem', color: '#fb923c', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Hardware Recovery &amp; RTO
             </span>
           </div>
@@ -190,17 +190,17 @@ export default function DeviceCollectionsPage() {
             type="button"
             onClick={() => setIsNewModalOpen(true)}
             style={{
-              background: '#ea580c',
+              background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
               color: '#ffffff',
               border: 'none',
               borderRadius: '10px',
-              width: '32px',
-              height: '32px',
+              width: '34px',
+              height: '34px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              boxShadow: '0 2px 6px rgba(234, 88, 12, 0.3)'
+              boxShadow: '0 2px 8px rgba(234, 88, 12, 0.35)'
             }}
             title="Add Repossession Case"
           >
@@ -214,62 +214,63 @@ export default function DeviceCollectionsPage() {
           {/* Recovery Overview Hero Banner */}
           <div 
             style={{
-              background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)',
+              background: '#ffffff',
               border: '1.5px solid #fed7aa',
-              borderRadius: '22px',
-              padding: '1.25rem',
-              boxShadow: '0 8px 24px -4px rgba(234, 88, 12, 0.12)'
+              borderRadius: '16px',
+              padding: '1.2rem',
+              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.06)'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
-              <span style={{ fontSize: '0.7rem', fontWeight: '800', color: '#9a3412', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+              <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#9a3412', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 REPOSSESSION &amp; RECOVERY DESK
               </span>
-              <span style={{ fontSize: '0.62rem', background: '#ea580c', color: '#fff', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+              <span style={{ fontSize: '0.62rem', background: '#fff7ed', color: '#ea580c', border: '1px solid #fed7aa', padding: '2px 8px', borderRadius: '6px', fontWeight: '800' }}>
                 {pendingCount + dispatchedCount} ACTIVE CASES
               </span>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem', alignItems: 'center' }}>
               <div>
-                <div style={{ fontSize: '1.85rem', fontWeight: '900', color: '#9a3412', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                <div style={{ fontSize: '1.85rem', fontWeight: '900', color: '#ea580c', letterSpacing: '-0.03em', lineHeight: 1 }}>
                   £{totalDueAmount.toFixed(2)}
                 </div>
-                <div style={{ fontSize: '0.72rem', color: '#c2410c', marginTop: '4px', fontWeight: '600' }}>
+                <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '6px', fontWeight: '500' }}>
                   Defaulted installment payments
                 </div>
               </div>
 
-              <div style={{ background: 'rgba(255, 255, 255, 0.7)', borderRadius: '14px', padding: '0.6rem 0.8rem', border: '1px solid rgba(234, 88, 12, 0.2)' }}>
-                <span style={{ fontSize: '0.62rem', color: '#78350f', fontWeight: '700', textTransform: 'uppercase' }}>
+              <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '0.65rem 0.85rem', border: '1px solid #e2e8f0' }}>
+                <span style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                   Device Assets Value
                 </span>
-                <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#0f172a' }}>
+                <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#0f172a', marginTop: '2px' }}>
                   £{totalDeviceAssetValue.toLocaleString('en-GB', { minimumFractionDigits: 2 })}
                 </div>
-                <span style={{ fontSize: '0.6rem', color: '#059669', fontWeight: '700' }}>
-                  Protected by legal contract
+                <span style={{ fontSize: '0.62rem', color: '#10b981', fontWeight: '800' }}>
+                  Legal agreement protected
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Filter Pills */}
-          <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '2px' }}>
+          {/* Filter Pills (Apple Segmented Style) */}
+          <div style={{ display: 'flex', gap: '0.45rem', overflowX: 'auto', paddingBottom: '2px', scrollbarWidth: 'none' }}>
             <button
               type="button"
               onClick={() => setActiveFilter('all')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: activeFilter === 'all' ? '800' : '600',
+                border: activeFilter === 'all' ? '1px solid #0f172a' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: activeFilter === 'all' ? '#0f172a' : '#ffffff',
                 color: activeFilter === 'all' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: activeFilter === 'all' ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               All ({collections.length})
@@ -279,16 +280,17 @@ export default function DeviceCollectionsPage() {
               type="button"
               onClick={() => setActiveFilter('pending_recovery')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: activeFilter === 'pending_recovery' ? '800' : '600',
+                border: activeFilter === 'pending_recovery' ? '1px solid #ea580c' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: activeFilter === 'pending_recovery' ? '#ea580c' : '#ffffff',
                 color: activeFilter === 'pending_recovery' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: activeFilter === 'pending_recovery' ? '0 2px 6px rgba(234, 88, 12, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               Notice Required ({pendingCount})
@@ -298,16 +300,17 @@ export default function DeviceCollectionsPage() {
               type="button"
               onClick={() => setActiveFilter('recovery_dispatched')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: activeFilter === 'recovery_dispatched' ? '800' : '600',
+                border: activeFilter === 'recovery_dispatched' ? '1px solid #dc2626' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: activeFilter === 'recovery_dispatched' ? '#dc2626' : '#ffffff',
                 color: activeFilter === 'recovery_dispatched' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: activeFilter === 'recovery_dispatched' ? '0 2px 6px rgba(220, 38, 38, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               Agent Dispatched ({dispatchedCount})
@@ -317,16 +320,17 @@ export default function DeviceCollectionsPage() {
               type="button"
               onClick={() => setActiveFilter('retrieved')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: activeFilter === 'retrieved' ? '800' : '600',
+                border: activeFilter === 'retrieved' ? '1px solid #059669' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: activeFilter === 'retrieved' ? '#059669' : '#ffffff',
                 color: activeFilter === 'retrieved' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: activeFilter === 'retrieved' ? '0 2px 6px rgba(5, 150, 105, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               Retrieved ({retrievedCount})
@@ -335,7 +339,7 @@ export default function DeviceCollectionsPage() {
 
           {/* Search Input */}
           <div style={{ position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+            <Search size={17} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
             <input
               type="text"
               placeholder="Search by customer, device or contract #..."
@@ -343,12 +347,14 @@ export default function DeviceCollectionsPage() {
               onChange={(e) => setSearch(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.65rem 1rem 0.65rem 2.3rem',
+                padding: '0.72rem 1rem 0.72rem 2.5rem',
                 borderRadius: '14px',
-                border: '1px solid #cbd5e1',
+                border: '1px solid #e2e8f0',
                 backgroundColor: '#ffffff',
                 fontSize: '0.82rem',
-                color: '#0f172a'
+                color: '#0f172a',
+                outline: 'none',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
               }}
             />
           </div>
@@ -463,19 +469,21 @@ export default function DeviceCollectionsPage() {
                         <a
                           href={`tel:${item.customerPhone}`}
                           style={{
-                            background: '#f1f5f9',
+                            background: '#ffffff',
                             color: '#0f172a',
+                            border: '1px solid #e2e8f0',
                             borderRadius: '10px',
-                            padding: '6px 9px',
-                            fontSize: '0.72rem',
+                            padding: '6px 10px',
+                            fontSize: '0.74rem',
                             fontWeight: '700',
                             textDecoration: 'none',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '4px'
+                            gap: '4px',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
                           }}
                         >
-                          <Phone size={13} />
+                          <Phone size={13} strokeWidth={2.2} />
                           Call
                         </a>
 
@@ -484,20 +492,20 @@ export default function DeviceCollectionsPage() {
                           type="button"
                           onClick={() => handleSendNotice(item)}
                           style={{
-                            background: '#22c55e',
-                            color: '#ffffff',
-                            border: 'none',
+                            background: 'rgba(16, 185, 129, 0.08)',
+                            color: '#059669',
+                            border: '1px solid rgba(16, 185, 129, 0.25)',
                             borderRadius: '10px',
-                            padding: '6px 9px',
-                            fontSize: '0.72rem',
-                            fontWeight: '800',
+                            padding: '6px 10px',
+                            fontSize: '0.74rem',
+                            fontWeight: '700',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '4px'
                           }}
                         >
-                          <MessageSquare size={13} />
+                          <MessageSquare size={13} strokeWidth={2.2} />
                           WhatsApp Notice
                         </button>
 
@@ -510,16 +518,17 @@ export default function DeviceCollectionsPage() {
                             color: '#ffffff',
                             border: 'none',
                             borderRadius: '10px',
-                            padding: '6px 9px',
-                            fontSize: '0.72rem',
+                            padding: '6px 10px',
+                            fontSize: '0.74rem',
                             fontWeight: '800',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '4px'
+                            gap: '4px',
+                            boxShadow: '0 2px 6px rgba(15, 23, 42, 0.15)'
                           }}
                         >
-                          <Truck size={13} />
+                          <Truck size={13} strokeWidth={2.2} />
                           {isDispatched ? 'Dispatched' : 'Dispatch'}
                         </button>
 
@@ -528,20 +537,21 @@ export default function DeviceCollectionsPage() {
                           type="button"
                           onClick={() => handleMarkRetrieved(item.id)}
                           style={{
-                            background: '#059669',
+                            background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
                             color: '#ffffff',
                             border: 'none',
                             borderRadius: '10px',
-                            padding: '6px 9px',
-                            fontSize: '0.72rem',
+                            padding: '6px 11px',
+                            fontSize: '0.74rem',
                             fontWeight: '800',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '4px'
+                            gap: '4px',
+                            boxShadow: '0 2px 8px rgba(234, 88, 12, 0.25)'
                           }}
                         >
-                          <CheckCircle2 size={13} />
+                          <CheckCircle2 size={13} strokeWidth={2.4} />
                           Recovered
                         </button>
                       </div>

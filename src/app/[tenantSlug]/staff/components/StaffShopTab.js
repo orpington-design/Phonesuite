@@ -47,15 +47,15 @@ export default function StaffShopTab({
       {/* Top Banner & Action */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <h2 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
               {sh.title}
             </h2>
-            <span style={{ fontSize: '0.62rem', backgroundColor: '#ecfdf5', color: '#059669', padding: '2px 6px', borderRadius: '6px', fontWeight: '800' }}>
+            <span style={{ fontSize: '0.62rem', backgroundColor: '#ecfdf5', color: '#059669', padding: '2px 7px', borderRadius: '6px', fontWeight: '800', border: '1px solid #a7f3d0' }}>
               ONLINE
             </span>
           </div>
-          <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '2px 0 0 0' }}>
+          <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '3px 0 0 0', fontWeight: '500' }}>
             {sh.subtitle}
           </p>
         </div>
@@ -64,29 +64,30 @@ export default function StaffShopTab({
           type="button"
           onClick={onOpenNewProduct}
           style={{
-            backgroundColor: '#2563eb',
+            background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
             color: '#ffffff',
             border: 'none',
             borderRadius: '12px',
-            padding: '0.6rem 0.9rem',
+            padding: '0.62rem 0.95rem',
             fontSize: '0.8rem',
-            fontWeight: '700',
+            fontWeight: '800',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             gap: '0.4rem',
-            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
+            boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)',
+            letterSpacing: '0.01em'
           }}
         >
-          <Plus size={16} />
+          <Plus size={16} strokeWidth={2.5} />
           {sh.btnAddProduct}
         </button>
       </div>
 
       {/* Live sync notice banner */}
-      <div style={{ backgroundColor: '#eff6ff', border: '1px solid #dbeafe', borderRadius: '14px', padding: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.75rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#1d4ed8', fontWeight: '600' }}>
-          <Sparkles size={16} />
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '0.75rem 0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#334155', fontWeight: '600' }}>
+          <Sparkles size={16} color="#ea580c" />
           <span>Any edit or product added here appears instantly on the Customer Portal.</span>
         </div>
         <a
@@ -94,8 +95,8 @@ export default function StaffShopTab({
           target="_blank"
           rel="noreferrer"
           style={{
-            color: '#2563eb',
-            fontWeight: '700',
+            color: '#ea580c',
+            fontWeight: '800',
             textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
@@ -104,13 +105,13 @@ export default function StaffShopTab({
             marginLeft: '8px'
           }}
         >
-          View Shop <ExternalLink size={12} />
+          View Shop <ExternalLink size={12} strokeWidth={2.4} />
         </a>
       </div>
 
       {/* Search Input */}
       <div style={{ position: 'relative' }}>
-        <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+        <Search size={17} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
         <input
           type="text"
           placeholder={sh.searchProducts}
@@ -118,18 +119,20 @@ export default function StaffShopTab({
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{
             width: '100%',
-            padding: '0.65rem 1rem 0.65rem 2.3rem',
-            borderRadius: '12px',
-            border: '1px solid #cbd5e1',
+            padding: '0.72rem 1rem 0.72rem 2.5rem',
+            borderRadius: '14px',
+            border: '1px solid #e2e8f0',
             backgroundColor: '#ffffff',
             fontSize: '0.82rem',
-            color: '#0f172a'
+            color: '#0f172a',
+            outline: 'none',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
           }}
         />
       </div>
 
-      {/* Category Pills */}
-      <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '0.3rem' }}>
+      {/* Category Pills (Apple Segmented Style) */}
+      <div style={{ display: 'flex', gap: '0.45rem', overflowX: 'auto', paddingBottom: '0.3rem', scrollbarWidth: 'none' }}>
         {SHOP_CATEGORY_OPTIONS.map(c => {
           const isActive = selectedCategory === c.id;
           return (
@@ -138,15 +141,17 @@ export default function StaffShopTab({
               type="button"
               onClick={() => setSelectedCategory(c.id)}
               style={{
-                padding: '0.45rem 0.8rem',
-                borderRadius: '9999px',
-                border: isActive ? '1.5px solid #2563eb' : '1px solid #e2e8f0',
-                backgroundColor: isActive ? '#2563eb' : '#ffffff',
-                color: isActive ? '#ffffff' : '#475569',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                border: isActive ? '1px solid #0f172a' : '1px solid #e2e8f0',
+                backgroundColor: isActive ? '#0f172a' : '#ffffff',
+                color: isActive ? '#ffffff' : '#64748b',
                 fontWeight: isActive ? '800' : '600',
-                fontSize: '0.75rem',
+                fontSize: '0.76rem',
                 cursor: 'pointer',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
+                boxShadow: isActive ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               {c.label}
@@ -154,6 +159,7 @@ export default function StaffShopTab({
           );
         })}
       </div>
+
 
       {/* Products Grid */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -218,34 +224,35 @@ export default function StaffShopTab({
               {/* Right: Prices & Action Buttons */}
               <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem' }}>
                 <div>
-                  <div style={{ fontSize: '1rem', fontWeight: '900', color: '#0f172a' }}>
+                  <div style={{ fontSize: '1.05rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em' }}>
                     £{Number(product.price).toFixed(2)}
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: '#2563eb', fontWeight: '700' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#ea580c', fontWeight: '800' }}>
                     £{Number(product.rtoMonthly || (product.price / 24)).toFixed(2)}/mo RTO
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   {/* Edit Button */}
                   <button
                     type="button"
                     onClick={() => onOpenEditProduct(product)}
                     style={{
-                      backgroundColor: '#eff6ff',
-                      color: '#2563eb',
-                      border: '1px solid #bfdbfe',
+                      backgroundColor: '#ffffff',
+                      color: '#0f172a',
+                      border: '1px solid #e2e8f0',
                       borderRadius: '8px',
-                      padding: '4px 8px',
-                      fontSize: '0.72rem',
+                      padding: '5px 10px',
+                      fontSize: '0.74rem',
                       fontWeight: '700',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '3px'
+                      gap: '4px',
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
                     }}
                   >
-                    <Edit3 size={12} />
+                    <Edit3 size={13} strokeWidth={2.2} />
                     {sh.editProduct}
                   </button>
 
@@ -255,16 +262,16 @@ export default function StaffShopTab({
                     onClick={() => onDeleteProduct(product.id)}
                     title={sh.deleteProduct}
                     style={{
-                      backgroundColor: '#fff1f2',
+                      backgroundColor: 'rgba(244, 63, 94, 0.08)',
                       color: '#e11d48',
-                      border: '1px solid #fecdd3',
+                      border: '1px solid rgba(244, 63, 94, 0.25)',
                       borderRadius: '8px',
-                      padding: '4px 6px',
-                      fontSize: '0.72rem',
+                      padding: '5px 8px',
+                      fontSize: '0.74rem',
                       cursor: 'pointer'
                     }}
                   >
-                    <Trash2 size={12} />
+                    <Trash2 size={13} strokeWidth={2.2} />
                   </button>
                 </div>
 

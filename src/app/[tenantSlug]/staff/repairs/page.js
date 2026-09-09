@@ -144,33 +144,33 @@ export default function StaffRepairsPage() {
       <div className="mobile-app-shell">
 
         {/* Top Header */}
-        <header className="mobile-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <header className="mobile-header mobile-header-dark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#0b132b', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
           <button
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff`)}
             style={{
-              background: '#f1f5f9',
-              border: 'none',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
               borderRadius: '10px',
-              padding: '6px 10px',
+              padding: '6px 12px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              color: '#0f172a',
+              gap: '6px',
+              color: '#ffffff',
               fontSize: '0.8rem',
               fontWeight: '700',
               cursor: 'pointer'
             }}
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} strokeWidth={2.4} />
             <span>Dashboard</span>
           </button>
 
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '0.95rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
+            <h1 style={{ fontSize: '0.96rem', fontWeight: '900', color: '#ffffff', margin: 0, letterSpacing: '-0.02em' }}>
               Workshop &amp; Repairs
             </h1>
-            <span style={{ fontSize: '0.65rem', color: '#2563eb', fontWeight: '800', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.64rem', color: '#60a5fa', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Electronics Diagnostics
             </span>
           </div>
@@ -179,17 +179,17 @@ export default function StaffRepairsPage() {
             type="button"
             onClick={() => setIsNewJobModalOpen(true)}
             style={{
-              background: '#2563eb',
+              background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
               color: '#ffffff',
               border: 'none',
               borderRadius: '10px',
-              width: '32px',
-              height: '32px',
+              width: '34px',
+              height: '34px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              boxShadow: '0 2px 6px rgba(37, 99, 235, 0.3)'
+              boxShadow: '0 2px 8px rgba(234, 88, 12, 0.35)'
             }}
             title="Create Repair Ticket"
           >
@@ -203,62 +203,63 @@ export default function StaffRepairsPage() {
           {/* Repairs Hero Summary */}
           <div 
             style={{
-              background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
-              border: '1.5px solid #bfdbfe',
-              borderRadius: '22px',
-              padding: '1.25rem',
-              boxShadow: '0 8px 24px -4px rgba(37, 99, 235, 0.12)'
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '1.2rem',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
-              <span style={{ fontSize: '0.7rem', fontWeight: '800', color: '#1e40af', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+              <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 HARDWARE WORKSHOP BENCH
               </span>
-              <span style={{ fontSize: '0.62rem', background: '#2563eb', color: '#fff', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+              <span style={{ fontSize: '0.62rem', background: '#eff6ff', color: '#2563eb', border: '1px solid #bfdbfe', padding: '2px 8px', borderRadius: '6px', fontWeight: '800' }}>
                 {activeRepairs.length} ACTIVE JOBS
               </span>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem', alignItems: 'center' }}>
               <div>
-                <div style={{ fontSize: '2rem', fontWeight: '900', color: '#1e3a8a', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                <div style={{ fontSize: '2rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.03em', lineHeight: 1 }}>
                   {activeRepairs.length} Devices
                 </div>
-                <div style={{ fontSize: '0.72rem', color: '#2563eb', marginTop: '4px', fontWeight: '600' }}>
+                <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '6px', fontWeight: '500' }}>
                   {readyRepairs.length} ready for customer pickup
                 </div>
               </div>
 
-              <div style={{ background: 'rgba(255, 255, 255, 0.75)', borderRadius: '14px', padding: '0.6rem 0.8rem', border: '1px solid rgba(37, 99, 235, 0.2)' }}>
-                <span style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+              <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '0.65rem 0.85rem', border: '1px solid #e2e8f0' }}>
+                <span style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                   Pipeline Revenue
                 </span>
-                <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#0f172a' }}>
+                <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#0f172a', marginTop: '2px' }}>
                   £{totalPipelineRevenue.toFixed(2)}
                 </div>
-                <span style={{ fontSize: '0.6rem', color: '#059669', fontWeight: '700' }}>
+                <span style={{ fontSize: '0.62rem', color: '#10b981', fontWeight: '800' }}>
                   Labor &amp; OEM Parts
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Status Filters */}
-          <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '2px' }}>
+          {/* Status Filters (Apple Segmented Style) */}
+          <div style={{ display: 'flex', gap: '0.45rem', overflowX: 'auto', paddingBottom: '2px', scrollbarWidth: 'none' }}>
             <button
               type="button"
               onClick={() => setStatusFilter('all')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: statusFilter === 'all' ? '800' : '600',
+                border: statusFilter === 'all' ? '1px solid #0f172a' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: statusFilter === 'all' ? '#0f172a' : '#ffffff',
                 color: statusFilter === 'all' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: statusFilter === 'all' ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               All ({repairs.length})
@@ -268,16 +269,17 @@ export default function StaffRepairsPage() {
               type="button"
               onClick={() => setStatusFilter('ready')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: statusFilter === 'ready' ? '800' : '600',
+                border: statusFilter === 'ready' ? '1px solid #059669' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                background: statusFilter === 'ready' ? '#10b981' : '#ffffff',
+                background: statusFilter === 'ready' ? '#059669' : '#ffffff',
                 color: statusFilter === 'ready' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: statusFilter === 'ready' ? '0 2px 6px rgba(5, 150, 105, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               Ready ({readyRepairs.length})
@@ -287,16 +289,17 @@ export default function StaffRepairsPage() {
               type="button"
               onClick={() => setStatusFilter('repairing')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: statusFilter === 'repairing' ? '800' : '600',
+                border: statusFilter === 'repairing' ? '1px solid #0f172a' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                background: statusFilter === 'repairing' ? '#2563eb' : '#ffffff',
+                background: statusFilter === 'repairing' ? '#0f172a' : '#ffffff',
                 color: statusFilter === 'repairing' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: statusFilter === 'repairing' ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               Repairing
@@ -306,16 +309,17 @@ export default function StaffRepairsPage() {
               type="button"
               onClick={() => setStatusFilter('diagnosing')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: statusFilter === 'diagnosing' ? '800' : '600',
+                border: statusFilter === 'diagnosing' ? '1px solid #0f172a' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                background: statusFilter === 'diagnosing' ? '#8b5cf6' : '#ffffff',
+                background: statusFilter === 'diagnosing' ? '#0f172a' : '#ffffff',
                 color: statusFilter === 'diagnosing' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: statusFilter === 'diagnosing' ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               Diagnosing
@@ -325,16 +329,17 @@ export default function StaffRepairsPage() {
               type="button"
               onClick={() => setStatusFilter('received')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: statusFilter === 'received' ? '800' : '600',
+                border: statusFilter === 'received' ? '1px solid #ea580c' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: statusFilter === 'received' ? '#ea580c' : '#ffffff',
                 color: statusFilter === 'received' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: statusFilter === 'received' ? '0 2px 6px rgba(234, 88, 12, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               Intake
@@ -343,7 +348,7 @@ export default function StaffRepairsPage() {
 
           {/* Search */}
           <div style={{ position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+            <Search size={17} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
             <input
               type="text"
               placeholder="Search by customer, device model or ticket #..."
@@ -351,12 +356,14 @@ export default function StaffRepairsPage() {
               onChange={(e) => setSearch(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.65rem 1rem 0.65rem 2.3rem',
+                padding: '0.72rem 1rem 0.72rem 2.5rem',
                 borderRadius: '14px',
-                border: '1px solid #cbd5e1',
+                border: '1px solid #e2e8f0',
                 backgroundColor: '#ffffff',
                 fontSize: '0.82rem',
-                color: '#0f172a'
+                color: '#0f172a',
+                outline: 'none',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
               }}
             />
           </div>
@@ -489,19 +496,21 @@ export default function StaffRepairsPage() {
                       <a
                         href={`tel:${rep.customer_phone}`}
                         style={{
-                          background: '#f1f5f9',
+                          background: '#ffffff',
                           color: '#0f172a',
-                          borderRadius: '8px',
-                          padding: '6px 9px',
-                          fontSize: '0.72rem',
+                          border: '1px solid #e2e8f0',
+                          borderRadius: '10px',
+                          padding: '6px 10px',
+                          fontSize: '0.74rem',
                           fontWeight: '700',
                           textDecoration: 'none',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '4px'
+                          gap: '4px',
+                          boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
                         }}
                       >
-                        <Phone size={13} />
+                        <Phone size={13} strokeWidth={2.2} />
                         Call
                       </a>
 
@@ -509,20 +518,20 @@ export default function StaffRepairsPage() {
                         type="button"
                         onClick={() => handleWhatsAppUpdate(rep)}
                         style={{
-                          background: '#22c55e',
-                          color: '#ffffff',
-                          border: 'none',
-                          borderRadius: '8px',
-                          padding: '6px 10px',
-                          fontSize: '0.72rem',
-                          fontWeight: '800',
+                          background: 'rgba(16, 185, 129, 0.08)',
+                          color: '#059669',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          borderRadius: '10px',
+                          padding: '6px 11px',
+                          fontSize: '0.74rem',
+                          fontWeight: '700',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '4px'
                         }}
                       >
-                        <MessageSquare size={13} />
+                        <MessageSquare size={13} strokeWidth={2.2} />
                         WhatsApp
                       </button>
 
@@ -531,21 +540,22 @@ export default function StaffRepairsPage() {
                           type="button"
                           onClick={() => advanceStatus(rep.id)}
                           style={{
-                            background: isReady ? '#059669' : '#0f172a',
+                            background: isReady ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : '#0f172a',
                             color: '#ffffff',
                             border: 'none',
-                            borderRadius: '8px',
+                            borderRadius: '10px',
                             padding: '6px 12px',
-                            fontSize: '0.72rem',
+                            fontSize: '0.74rem',
                             fontWeight: '800',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '4px'
+                            gap: '4px',
+                            boxShadow: isReady ? '0 2px 8px rgba(16, 185, 129, 0.25)' : '0 2px 8px rgba(15, 23, 42, 0.18)'
                           }}
                         >
                           <span>{isReady ? 'Customer Pickup' : `Advance ->`}</span>
-                          <ChevronRight size={13} />
+                          <ChevronRight size={13} strokeWidth={2.4} />
                         </button>
                       ) : (
                         <span style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '3px' }}>

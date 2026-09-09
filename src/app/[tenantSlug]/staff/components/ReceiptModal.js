@@ -37,7 +37,7 @@ export default function ReceiptModal({
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.7)',
+      backgroundColor: 'rgba(11, 19, 43, 0.7)',
       backdropFilter: 'blur(8px)',
       WebkitBackdropFilter: 'blur(8px)',
       display: 'flex',
@@ -53,10 +53,11 @@ export default function ReceiptModal({
           maxWidth: '440px',
           maxHeight: '92vh',
           backgroundColor: '#ffffff',
-          borderRadius: '20px',
+          borderRadius: '24px',
           padding: '1.5rem',
           overflowY: 'auto',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          border: '1px solid #e2e8f0',
           position: 'relative'
         }}
       >
@@ -87,8 +88,8 @@ export default function ReceiptModal({
         <div id="printable-receipt-area" style={{ textAlign: 'center', paddingTop: '0.5rem' }}>
           
           {/* Brand & Store Header */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '44px', height: '44px', borderRadius: '12px', background: 'linear-gradient(135deg, #4318ff 0%, #06b6d4 100%)', color: '#fff', marginBottom: '0.5rem' }}>
-            <Smartphone size={24} />
+          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)', color: '#fff', marginBottom: '0.5rem', boxShadow: '0 4px 12px rgba(234, 88, 12, 0.3)' }}>
+            <Smartphone size={26} />
           </div>
           <h2 style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f172a', margin: '0 0 2px 0' }}>
             {tenantName}
@@ -188,18 +189,19 @@ export default function ReceiptModal({
             type="button"
             onClick={handlePrint}
             style={{
-              padding: '0.75rem',
+              padding: '0.8rem',
               borderRadius: '12px',
-              backgroundColor: '#eff6ff',
-              color: '#2563eb',
-              border: '1px solid #bfdbfe',
+              backgroundColor: '#ffffff',
+              color: '#0f172a',
+              border: '1px solid #e2e8f0',
               fontSize: '0.85rem',
-              fontWeight: '700',
+              fontWeight: '800',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.4rem'
+              gap: '0.4rem',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
             }}
           >
             <Printer size={16} />
@@ -210,14 +212,15 @@ export default function ReceiptModal({
             type="button"
             onClick={onClose}
             style={{
-              padding: '0.75rem',
+              padding: '0.8rem',
               borderRadius: '12px',
               backgroundColor: '#0f172a',
               color: '#ffffff',
               border: 'none',
               fontSize: '0.85rem',
-              fontWeight: '700',
-              cursor: 'pointer'
+              fontWeight: '800',
+              cursor: 'pointer',
+              boxShadow: '0 2px 8px rgba(15, 23, 42, 0.15)'
             }}
           >
             {m.btnClose}

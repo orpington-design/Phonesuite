@@ -72,7 +72,7 @@ export default function NewInvoiceModal({
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.65)',
+      backgroundColor: 'rgba(11, 19, 43, 0.65)',
       backdropFilter: 'blur(6px)',
       WebkitBackdropFilter: 'blur(6px)',
       display: 'flex',
@@ -92,6 +92,7 @@ export default function NewInvoiceModal({
           padding: '1.25rem 1.25rem 2rem 1.25rem',
           overflowY: 'auto',
           boxShadow: '0 -10px 40px rgba(0,0,0,0.2)',
+          border: '1px solid #e2e8f0',
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -103,8 +104,8 @@ export default function NewInvoiceModal({
               width: '38px',
               height: '38px',
               borderRadius: '10px',
-              backgroundColor: '#ecfdf5',
-              color: '#059669',
+              backgroundColor: '#ffedd5',
+              color: '#ea580c',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -201,25 +202,29 @@ export default function NewInvoiceModal({
               Invoice Category
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem' }}>
-              {['Repair Invoice', 'POS Store Sale', 'RTO Installment'].map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => setInvoiceType(type)}
-                  style={{
-                    padding: '0.45rem 0.5rem',
-                    borderRadius: '8px',
-                    border: invoiceType === type ? '1.5px solid #059669' : '1px solid #e2e8f0',
-                    backgroundColor: invoiceType === type ? '#ecfdf5' : '#ffffff',
-                    color: invoiceType === type ? '#059669' : '#475569',
-                    fontSize: '0.75rem',
-                    fontWeight: invoiceType === type ? '700' : '500',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {type}
-                </button>
-              ))}
+              {['Repair Invoice', 'POS Store Sale', 'RTO Installment'].map((type) => {
+                const isActive = invoiceType === type;
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => setInvoiceType(type)}
+                    style={{
+                      padding: '0.55rem 0.5rem',
+                      borderRadius: '10px',
+                      border: isActive ? 'none' : '1px solid #e2e8f0',
+                      backgroundColor: isActive ? '#0f172a' : '#ffffff',
+                      color: isActive ? '#ffffff' : '#64748b',
+                      fontSize: '0.75rem',
+                      fontWeight: '800',
+                      cursor: 'pointer',
+                      boxShadow: isActive ? '0 2px 6px rgba(15, 23, 42, 0.15)' : 'none'
+                    }}
+                  >
+                    {type}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -337,13 +342,13 @@ export default function NewInvoiceModal({
               width: '100%',
               padding: '0.9rem',
               borderRadius: '12px',
-              backgroundColor: '#059669',
+              background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
               color: '#ffffff',
               border: 'none',
               fontSize: '0.92rem',
               fontWeight: '700',
               cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(5, 150, 105, 0.35)',
+              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

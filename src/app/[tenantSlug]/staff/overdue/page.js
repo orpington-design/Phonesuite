@@ -53,33 +53,33 @@ export default function OverdueInvoicesPage() {
       <div className="mobile-app-shell">
         
         {/* Top Header */}
-        <header className="mobile-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <header className="mobile-header mobile-header-dark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#0b132b', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
           <button
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff`)}
             style={{
-              background: '#f1f5f9',
-              border: 'none',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
               borderRadius: '10px',
-              padding: '6px 10px',
+              padding: '6px 12px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              color: '#0f172a',
+              gap: '6px',
+              color: '#ffffff',
               fontSize: '0.8rem',
               fontWeight: '700',
               cursor: 'pointer'
             }}
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} strokeWidth={2.4} />
             <span>Dashboard</span>
           </button>
 
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '0.95rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
+            <h1 style={{ fontSize: '0.96rem', fontWeight: '900', color: '#ffffff', margin: 0, letterSpacing: '-0.02em' }}>
               Overdue Invoices
             </h1>
-            <span style={{ fontSize: '0.65rem', color: '#e11d48', fontWeight: '700' }}>
+            <span style={{ fontSize: '0.64rem', color: '#f87171', fontWeight: '800', letterSpacing: '0.04em' }}>
               Immediate Collection
             </span>
           </div>
@@ -88,15 +88,14 @@ export default function OverdueInvoicesPage() {
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff?tab=invoices`)}
             style={{
-              background: '#e11d48',
-              color: '#ffffff',
-              border: 'none',
+              background: 'rgba(239, 68, 68, 0.18)',
+              color: '#f87171',
+              border: '1px solid rgba(239, 68, 68, 0.35)',
               borderRadius: '10px',
-              padding: '6px 10px',
+              padding: '6px 11px',
               fontSize: '0.74rem',
               fontWeight: '800',
-              cursor: 'pointer',
-              boxShadow: '0 2px 8px rgba(225, 29, 72, 0.3)'
+              cursor: 'pointer'
             }}
           >
             All Invoices
@@ -109,34 +108,34 @@ export default function OverdueInvoicesPage() {
           {/* Total Debt Hero Card */}
           <div 
             style={{
-              background: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
+              background: '#ffffff',
               border: '1.5px solid #fecdd3',
-              borderRadius: '20px',
-              padding: '1.25rem',
-              boxShadow: '0 8px 24px -4px rgba(225, 29, 72, 0.12)'
+              borderRadius: '16px',
+              padding: '1.2rem',
+              boxShadow: '0 4px 14px rgba(225, 29, 72, 0.06)'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ fontSize: '0.7rem', fontWeight: '800', color: '#9f1239', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#9f1239', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 TOTAL OVERDUE BALANCE
               </span>
-              <span style={{ fontSize: '0.62rem', background: '#e11d48', color: '#fff', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+              <span style={{ fontSize: '0.62rem', background: '#fee2e2', color: '#b91c1c', border: '1px solid #fecdd3', padding: '2px 8px', borderRadius: '6px', fontWeight: '800' }}>
                 ACTION REQUIRED
               </span>
             </div>
 
-            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#9f1239', letterSpacing: '-0.03em', lineHeight: 1 }}>
+            <div style={{ fontSize: '2rem', fontWeight: '900', color: '#e11d48', letterSpacing: '-0.03em', lineHeight: 1 }}>
               £{totalOverdue.toFixed(2)}
             </div>
             
-            <div style={{ fontSize: '0.75rem', color: '#be123c', marginTop: '6px', fontWeight: '600' }}>
+            <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '8px', fontWeight: '500' }}>
               {overdueList.length} customer accounts with past-due payment schedules
             </div>
           </div>
 
           {/* Search Bar */}
           <div style={{ position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+            <Search size={17} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
             <input
               type="text"
               placeholder="Search by customer, invoice #..."
@@ -144,12 +143,14 @@ export default function OverdueInvoicesPage() {
               onChange={(e) => setSearch(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.65rem 1rem 0.65rem 2.3rem',
-                borderRadius: '12px',
-                border: '1px solid #cbd5e1',
+                padding: '0.72rem 1rem 0.72rem 2.5rem',
+                borderRadius: '14px',
+                border: '1px solid #e2e8f0',
                 backgroundColor: '#ffffff',
                 fontSize: '0.82rem',
-                color: '#0f172a'
+                color: '#0f172a',
+                outline: 'none',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
               }}
             />
           </div>
@@ -169,21 +170,21 @@ export default function OverdueInvoicesPage() {
                   style={{
                     background: '#ffffff',
                     border: '1.5px solid #fecdd3',
-                    borderRadius: '18px',
+                    borderRadius: '16px',
                     padding: '1.1rem',
-                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.03)',
+                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '0.6rem'
+                    gap: '0.65rem'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <span style={{ fontWeight: '900', fontSize: '0.95rem', color: '#0f172a' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                        <span style={{ fontWeight: '900', fontSize: '0.94rem', color: '#0f172a' }}>
                           {inv.customer_name}
                         </span>
-                        <span style={{ fontSize: '0.6rem', padding: '2px 6px', background: '#fee2e2', color: '#b91c1c', borderRadius: '4px', fontWeight: '800' }}>
+                        <span style={{ fontSize: '0.62rem', padding: '2px 7px', background: '#fee2e2', color: '#b91c1c', borderRadius: '5px', fontWeight: '800' }}>
                           OVERDUE
                         </span>
                       </div>
@@ -193,7 +194,7 @@ export default function OverdueInvoicesPage() {
                     </div>
 
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '1.2rem', fontWeight: '900', color: '#e11d48' }}>
+                      <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#e11d48' }}>
                         £{Number(inv.amount).toFixed(2)}
                       </div>
                       <div style={{ fontSize: '0.68rem', color: '#be123c', fontWeight: '700' }}>
@@ -206,30 +207,30 @@ export default function OverdueInvoicesPage() {
                     {inv.description}
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.6rem', marginTop: '0.2rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '0.2rem' }}>
                     <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
                       Phone: <strong style={{ color: '#0f172a' }}>{inv.customer_phone}</strong>
                     </span>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                       <button
                         type="button"
                         onClick={() => handleWhatsAppReminder(inv)}
                         style={{
-                          background: '#22c55e',
-                          color: '#ffffff',
-                          border: 'none',
-                          borderRadius: '8px',
-                          padding: '6px 10px',
-                          fontSize: '0.72rem',
-                          fontWeight: '800',
+                          background: 'rgba(16, 185, 129, 0.08)',
+                          color: '#059669',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          borderRadius: '10px',
+                          padding: '6px 11px',
+                          fontSize: '0.74rem',
+                          fontWeight: '700',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '4px'
                         }}
                       >
-                        <MessageSquare size={13} />
+                        <MessageSquare size={13} strokeWidth={2.2} />
                         WhatsApp
                       </button>
 
@@ -237,20 +238,21 @@ export default function OverdueInvoicesPage() {
                         type="button"
                         onClick={() => handleSettle(inv.id)}
                         style={{
-                          background: '#059669',
+                          background: '#0f172a',
                           color: '#ffffff',
                           border: 'none',
-                          borderRadius: '8px',
-                          padding: '6px 10px',
-                          fontSize: '0.72rem',
+                          borderRadius: '10px',
+                          padding: '6px 12px',
+                          fontSize: '0.74rem',
                           fontWeight: '800',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '4px'
+                          gap: '4px',
+                          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.18)'
                         }}
                       >
-                        <CheckCircle2 size={13} />
+                        <CheckCircle2 size={13} strokeWidth={2.4} />
                         Mark Paid
                       </button>
                     </div>

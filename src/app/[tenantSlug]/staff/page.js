@@ -333,38 +333,39 @@ function StaffContent() {
       <div className={`mobile-app-shell ${isFullscreen ? 'fullscreen-mode' : ''}`}>
         
         {/* Sticky Staff App Header */}
-        <header className="mobile-header" style={{ borderBottom: '1px solid #e2e8f0', backgroundColor: 'rgba(255, 255, 255, 0.96)' }}>
+        <header className="mobile-header mobile-header-dark" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', backgroundColor: '#0b132b' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             
             {/* Brand Logo & Staff Ops Badge */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
               <div 
                 style={{ 
-                  width: '34px', 
-                  height: '34px', 
-                  borderRadius: '10px', 
-                  background: 'linear-gradient(135deg, #0A1128 0%, #2563eb 100%)',
+                  width: '36px', 
+                  height: '36px', 
+                  borderRadius: '11px', 
+                  background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#fff',
-                  boxShadow: '0 2px 8px rgba(37, 99, 235, 0.3)'
+                  color: '#ff7a00',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35)'
                 }}
               >
-                <Smartphone size={18} />
+                <Smartphone size={18} strokeWidth={2.4} />
               </div>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <h1 style={{ fontSize: '0.92rem', fontWeight: '900', color: '#0f172a', margin: 0, letterSpacing: '-0.01em' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <h1 style={{ fontSize: '0.94rem', fontWeight: '900', color: '#ffffff', margin: 0, letterSpacing: '-0.02em' }}>
                     {tenant?.name || 'PhoneSuite'}
                   </h1>
-                  <span style={{ fontSize: '0.6rem', padding: '1px 5px', borderRadius: '4px', backgroundColor: '#eff6ff', color: '#2563eb', fontWeight: '800', border: '1px solid #bfdbfe' }}>
+                  <span style={{ fontSize: '0.6rem', padding: '1.5px 6px', borderRadius: '5px', backgroundColor: 'rgba(234, 88, 12, 0.18)', color: '#ff7a00', fontWeight: '800', border: '1px solid rgba(234, 88, 12, 0.4)', letterSpacing: '0.04em' }}>
                     STAFF
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
-                  <span style={{ fontSize: '0.66rem', color: '#64748b', fontWeight: '600' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '1px' }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }} />
+                  <span style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: '600' }}>
                     {branch?.name || 'London Central Branch'}
                   </span>
                 </div>
@@ -380,15 +381,15 @@ function StaffContent() {
                   type="button"
                   onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                   style={{
-                    background: '#f1f5f9',
-                    border: '1px solid #e2e8f0',
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(255, 255, 255, 0.14)',
                     borderRadius: '10px',
                     height: '36px',
-                    padding: '0 8px',
+                    padding: '0 9px',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '4px',
-                    color: '#0f172a',
+                    gap: '5px',
+                    color: '#ffffff',
                     cursor: 'pointer',
                     fontSize: '0.78rem',
                     fontWeight: '700',
@@ -398,7 +399,7 @@ function StaffContent() {
                   title={language === 'en' ? 'Mudar para Português (Brasil)' : 'Switch to English (UK)'}
                 >
                   <span style={{ fontSize: '1.05rem', lineHeight: 1 }}>{language === 'en' ? '🇬🇧' : '🇧🇷'}</span>
-                  <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#334155' }}>
+                  <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#f1f5f9' }}>
                     {language === 'en' ? 'EN' : 'PT'}
                   </span>
                 </button>
@@ -415,10 +416,10 @@ function StaffContent() {
                         position: 'absolute',
                         top: 'calc(100% + 6px)',
                         right: 0,
-                        background: '#ffffff',
+                        background: '#0b132b',
                         borderRadius: '12px',
-                        boxShadow: '0 10px 25px -5px rgba(0,0,0,0.18), 0 4px 6px -2px rgba(0,0,0,0.08)',
-                        border: '1px solid #e2e8f0',
+                        boxShadow: '0 12px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.12)',
+                        border: '1px solid rgba(255, 255, 255, 0.12)',
                         padding: '6px',
                         minWidth: '165px',
                         zIndex: 99,
@@ -437,8 +438,8 @@ function StaffContent() {
                           padding: '8px 10px',
                           borderRadius: '8px',
                           border: 'none',
-                          background: language === 'en' ? '#eff6ff' : 'transparent',
-                          color: language === 'en' ? '#2563eb' : '#334155',
+                          background: language === 'en' ? 'rgba(234, 88, 12, 0.18)' : 'transparent',
+                          color: language === 'en' ? '#ff7a00' : '#f1f5f9',
                           fontWeight: language === 'en' ? '700' : '500',
                           fontSize: '0.8rem',
                           cursor: 'pointer',
@@ -450,7 +451,7 @@ function StaffContent() {
                           <span style={{ fontSize: '1.15rem' }}>🇬🇧</span>
                           <span>English (UK)</span>
                         </span>
-                        {language === 'en' && <Check size={14} color="#2563eb" strokeWidth={2.5} />}
+                        {language === 'en' && <Check size={14} color="#ff7a00" strokeWidth={2.5} />}
                       </button>
 
                       <button
@@ -463,8 +464,8 @@ function StaffContent() {
                           padding: '8px 10px',
                           borderRadius: '8px',
                           border: 'none',
-                          background: language === 'pt' ? '#eff6ff' : 'transparent',
-                          color: language === 'pt' ? '#2563eb' : '#334155',
+                          background: language === 'pt' ? 'rgba(234, 88, 12, 0.18)' : 'transparent',
+                          color: language === 'pt' ? '#ff7a00' : '#f1f5f9',
                           fontWeight: language === 'pt' ? '700' : '500',
                           fontSize: '0.8rem',
                           cursor: 'pointer',
@@ -476,7 +477,7 @@ function StaffContent() {
                           <span style={{ fontSize: '1.15rem' }}>🇧🇷</span>
                           <span>Português (BR)</span>
                         </span>
-                        {language === 'pt' && <Check size={14} color="#2563eb" strokeWidth={2.5} />}
+                        {language === 'pt' && <Check size={14} color="#ff7a00" strokeWidth={2.5} />}
                       </button>
                     </div>
                   </>
@@ -488,15 +489,15 @@ function StaffContent() {
                 type="button"
                 onClick={() => setIsFullscreen(!isFullscreen)}
                 style={{
-                  background: '#f1f5f9',
-                  border: '1px solid #e2e8f0',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.14)',
                   borderRadius: '10px',
                   width: '36px',
                   height: '36px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#64748b',
+                  color: '#cbd5e1',
                   cursor: 'pointer'
                 }}
                 title={isFullscreen ? t.header.phoneShell : t.header.fullWidth}

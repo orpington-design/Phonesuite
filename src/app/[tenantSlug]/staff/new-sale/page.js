@@ -213,19 +213,19 @@ export default function NewSalePage() {
       <div className="mobile-app-shell">
 
         {/* Top Header */}
-        <header className="mobile-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <header className="mobile-header mobile-header-dark" style={{ background: '#0b132b', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <button
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff`)}
             style={{
-              background: '#f1f5f9',
-              border: 'none',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
               borderRadius: '10px',
-              padding: '6px 10px',
+              padding: '6px 12px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              color: '#0f172a',
+              gap: '6px',
+              color: '#ffffff',
               fontSize: '0.8rem',
               fontWeight: '700',
               cursor: 'pointer'
@@ -236,10 +236,10 @@ export default function NewSalePage() {
           </button>
 
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '0.95rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
+            <h1 style={{ fontSize: '0.95rem', fontWeight: '900', color: '#ffffff', margin: 0, letterSpacing: '-0.01em' }}>
               New POS Sale
             </h1>
-            <span style={{ fontSize: '0.65rem', color: '#ea580c', fontWeight: '800', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.65rem', color: '#ea580c', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Checkout &amp; Financing
             </span>
           </div>
@@ -247,15 +247,16 @@ export default function NewSalePage() {
           <div style={{ position: 'relative' }}>
             <div 
               style={{ 
-                width: '32px', 
-                height: '32px', 
+                width: '34px', 
+                height: '34px', 
                 borderRadius: '10px', 
-                background: cart.length > 0 ? '#ea580c' : '#f1f5f9', 
-                color: cart.length > 0 ? '#ffffff' : '#64748b', 
+                background: cart.length > 0 ? 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)' : 'rgba(255, 255, 255, 0.08)', 
+                color: '#ffffff', 
+                border: cart.length > 0 ? 'none' : '1px solid rgba(255, 255, 255, 0.14)',
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
-                boxShadow: cart.length > 0 ? '0 2px 8px rgba(234, 88, 12, 0.3)' : 'none'
+                boxShadow: cart.length > 0 ? '0 2px 10px rgba(234, 88, 12, 0.4)' : 'none'
               }}
             >
               <ShoppingCart size={17} />
@@ -275,7 +276,8 @@ export default function NewSalePage() {
                   borderRadius: '50%', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  justifyContent: 'center' 
+                  justifyContent: 'center',
+                  border: '1.5px solid #ffffff'
                 }}
               >
                 {cart.reduce((sum, i) => sum + i.qty, 0)}
@@ -292,33 +294,38 @@ export default function NewSalePage() {
             style={{ 
               background: '#ffffff', 
               border: '1px solid #e2e8f0', 
-              borderRadius: '18px', 
-              padding: '0.85rem 1rem',
+              borderRadius: '20px', 
+              padding: '1rem',
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ fontSize: '0.7rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase' }}>
-                CUSTOMER ACCOUNT
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#f1f5f9', color: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <User size={15} />
+                </div>
+                <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  CUSTOMER ACCOUNT
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsNewCustModalOpen(true)}
                 style={{
-                  background: '#eff6ff',
-                  color: '#2563eb',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '3px 8px',
-                  fontSize: '0.68rem',
+                  background: '#f8fafc',
+                  color: '#0f172a',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  padding: '4px 10px',
+                  fontSize: '0.72rem',
                   fontWeight: '800',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '3px'
+                  gap: '4px'
                 }}
               >
-                <UserPlus size={12} />
+                <UserPlus size={13} color="#ea580c" />
                 + New Customer
               </button>
             </div>
@@ -331,13 +338,14 @@ export default function NewSalePage() {
               }}
               style={{
                 width: '100%',
-                padding: '0.65rem 0.85rem',
+                padding: '0.75rem 0.9rem',
                 borderRadius: '12px',
-                border: '1.5px solid #cbd5e1',
+                border: '1px solid #cbd5e1',
                 backgroundColor: '#ffffff',
                 fontSize: '0.85rem',
                 fontWeight: '700',
-                color: '#0f172a'
+                color: '#0f172a',
+                outline: 'none'
               }}
             >
               {customers.map(c => (
@@ -348,9 +356,9 @@ export default function NewSalePage() {
             </select>
 
             {selectedCustomer && (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px', fontSize: '0.7rem', color: '#64748b' }}>
-                <span>Credit Score: <strong style={{ color: '#059669' }}>{selectedCustomer.credit_score || 750}</strong></span>
-                <span>Limit: <strong style={{ color: '#0f172a' }}>£{Number(selectedCustomer.credit_limit || 2000).toFixed(2)}</strong></span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', fontSize: '0.72rem', color: '#64748b' }}>
+                <span>Credit Score: <strong style={{ color: '#059669', fontWeight: '800' }}>{selectedCustomer.credit_score || 750}</strong></span>
+                <span style={{ background: '#f8fafc', padding: '2px 8px', borderRadius: '6px', border: '1px solid #f1f5f9' }}>Limit: <strong style={{ color: '#0f172a' }}>£{Number(selectedCustomer.credit_limit || 2000).toFixed(2)}</strong></span>
               </div>
             )}
           </div>
@@ -359,21 +367,26 @@ export default function NewSalePage() {
           {cart.length > 0 && (
             <div 
               style={{
-                background: 'linear-gradient(135deg, #fff7ed 0%, #ffffff 100%)',
-                border: '1.5px solid #fed7aa',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 borderRadius: '20px',
-                padding: '1rem',
-                boxShadow: '0 4px 16px rgba(234, 88, 12, 0.08)'
+                padding: '1.1rem',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
-                <span style={{ fontSize: '0.72rem', fontWeight: '900', color: '#9a3412', textTransform: 'uppercase' }}>
-                  CURRENT CART ({cart.reduce((s, i) => s + i.qty, 0)} items)
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div style={{ width: '26px', height: '26px', borderRadius: '7px', background: '#ffedd5', color: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <ShoppingCart size={14} />
+                  </div>
+                  <span style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    CURRENT CART ({cart.reduce((s, i) => s + i.qty, 0)} items)
+                  </span>
+                </div>
                 <button
                   type="button"
                   onClick={() => setCart([])}
-                  style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: '0.7rem', fontWeight: '700', cursor: 'pointer' }}
+                  style={{ background: '#fef2f2', border: '1px solid #fecdd3', color: '#dc2626', fontSize: '0.7rem', fontWeight: '800', cursor: 'pointer', padding: '3px 8px', borderRadius: '6px' }}
                 >
                   Clear All
                 </button>
@@ -387,17 +400,17 @@ export default function NewSalePage() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      background: '#ffffff',
+                      background: '#f8fafc',
                       borderRadius: '12px',
-                      padding: '0.55rem 0.75rem',
-                      border: '1px solid #f1f5f9'
+                      padding: '0.65rem 0.85rem',
+                      border: '1px solid #e2e8f0'
                     }}
                   >
                     <div style={{ flex: 1, paddingRight: '0.5rem' }}>
-                      <div style={{ fontSize: '0.82rem', fontWeight: '800', color: '#0f172a' }}>
+                      <div style={{ fontSize: '0.84rem', fontWeight: '800', color: '#0f172a' }}>
                         {item.name}
                       </div>
-                      <div style={{ fontSize: '0.7rem', color: '#ea580c', fontWeight: '700' }}>
+                      <div style={{ fontSize: '0.72rem', color: '#ea580c', fontWeight: '800' }}>
                         £{Number(item.price).toFixed(2)} each
                       </div>
                     </div>
@@ -406,24 +419,24 @@ export default function NewSalePage() {
                       <button
                         type="button"
                         onClick={() => updateQty(item.id, -1)}
-                        style={{ width: '24px', height: '24px', borderRadius: '6px', border: '1px solid #cbd5e1', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                        style={{ width: '26px', height: '26px', borderRadius: '7px', border: '1px solid #cbd5e1', background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#0f172a' }}
                       >
                         <Minus size={12} />
                       </button>
-                      <span style={{ fontSize: '0.82rem', fontWeight: '900', minWidth: '16px', textAlign: 'center' }}>
+                      <span style={{ fontSize: '0.84rem', fontWeight: '900', minWidth: '18px', textAlign: 'center', color: '#0f172a' }}>
                         {item.qty}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateQty(item.id, 1)}
-                        style={{ width: '24px', height: '24px', borderRadius: '6px', border: '1px solid #cbd5e1', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                        style={{ width: '26px', height: '26px', borderRadius: '7px', border: '1px solid #cbd5e1', background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#0f172a' }}
                       >
                         <Plus size={12} />
                       </button>
                       <button
                         type="button"
                         onClick={() => removeFromCart(item.id)}
-                        style={{ width: '24px', height: '24px', borderRadius: '6px', border: 'none', background: '#fee2e2', color: '#b91c1c', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', marginLeft: '2px' }}
+                        style={{ width: '26px', height: '26px', borderRadius: '7px', border: '1px solid #fecdd3', background: '#fee2e2', color: '#b91c1c', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', marginLeft: '3px' }}
                       >
                         <Trash2 size={12} />
                       </button>
@@ -433,45 +446,46 @@ export default function NewSalePage() {
               </div>
 
               {/* Total Summary */}
-              <div style={{ borderTop: '1px dashed #fed7aa', paddingTop: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>
-                  <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Includes 20% VAT (£{vatAmount.toFixed(2)})</div>
+                  <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Includes 20% VAT (£{vatAmount.toFixed(2)})</div>
                   <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em' }}>
                     Total: £{cartTotal.toFixed(2)}
                   </div>
                 </div>
 
-                <span style={{ fontSize: '0.65rem', background: '#ea580c', color: '#fff', padding: '3px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+                <span style={{ fontSize: '0.65rem', background: '#0f172a', color: '#fff', padding: '4px 10px', borderRadius: '9999px', fontWeight: '800', letterSpacing: '0.04em' }}>
                   READY FOR PAYMENT
                 </span>
               </div>
 
               {/* Payment Mode Selector */}
               <div style={{ marginTop: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#475569', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   CHOOSE PAYMENT TERM
                 </span>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.45rem' }}>
                   <button
                     type="button"
                     onClick={() => setPaymentMode('card')}
                     style={{
-                      padding: '0.6rem 0.4rem',
+                      padding: '0.65rem 0.4rem',
                       borderRadius: '12px',
-                      border: paymentMode === 'card' ? '2px solid #059669' : '1px solid #cbd5e1',
-                      background: paymentMode === 'card' ? '#ecfdf5' : '#ffffff',
-                      color: paymentMode === 'card' ? '#047857' : '#0f172a',
+                      border: paymentMode === 'card' ? '2px solid #0f172a' : '1px solid #e2e8f0',
+                      background: paymentMode === 'card' ? '#0f172a' : '#ffffff',
+                      color: paymentMode === 'card' ? '#ffffff' : '#0f172a',
                       fontSize: '0.74rem',
                       fontWeight: '800',
                       cursor: 'pointer',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      gap: '3px'
+                      gap: '4px',
+                      boxShadow: paymentMode === 'card' ? '0 2px 8px rgba(15, 23, 42, 0.2)' : 'none'
                     }}
                   >
-                    <CreditCard size={15} />
+                    <CreditCard size={16} />
                     <span>Card POS</span>
                   </button>
 
@@ -479,21 +493,22 @@ export default function NewSalePage() {
                     type="button"
                     onClick={() => setPaymentMode('cash')}
                     style={{
-                      padding: '0.6rem 0.4rem',
+                      padding: '0.65rem 0.4rem',
                       borderRadius: '12px',
-                      border: paymentMode === 'cash' ? '2px solid #0284c7' : '1px solid #cbd5e1',
-                      background: paymentMode === 'cash' ? '#f0f9ff' : '#ffffff',
-                      color: paymentMode === 'cash' ? '#0369a1' : '#0f172a',
+                      border: paymentMode === 'cash' ? '2px solid #0f172a' : '1px solid #e2e8f0',
+                      background: paymentMode === 'cash' ? '#0f172a' : '#ffffff',
+                      color: paymentMode === 'cash' ? '#ffffff' : '#0f172a',
                       fontSize: '0.74rem',
                       fontWeight: '800',
                       cursor: 'pointer',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      gap: '3px'
+                      gap: '4px',
+                      boxShadow: paymentMode === 'cash' ? '0 2px 8px rgba(15, 23, 42, 0.2)' : 'none'
                     }}
                   >
-                    <Banknote size={15} />
+                    <Banknote size={16} />
                     <span>Cash Desk</span>
                   </button>
 
@@ -501,44 +516,45 @@ export default function NewSalePage() {
                     type="button"
                     onClick={() => setPaymentMode('rto')}
                     style={{
-                      padding: '0.6rem 0.4rem',
+                      padding: '0.65rem 0.4rem',
                       borderRadius: '12px',
-                      border: paymentMode === 'rto' ? '2px solid #ea580c' : '1px solid #cbd5e1',
+                      border: paymentMode === 'rto' ? '2px solid #ea580c' : '1px solid #e2e8f0',
                       background: paymentMode === 'rto' ? '#fff7ed' : '#ffffff',
-                      color: paymentMode === 'rto' ? '#c2410c' : '#0f172a',
+                      color: paymentMode === 'rto' ? '#ea580c' : '#0f172a',
                       fontSize: '0.74rem',
                       fontWeight: '800',
                       cursor: 'pointer',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      gap: '3px'
+                      gap: '4px',
+                      boxShadow: paymentMode === 'rto' ? '0 2px 8px rgba(234, 88, 12, 0.15)' : 'none'
                     }}
                   >
-                    <Percent size={15} />
+                    <Percent size={16} />
                     <span>RTO Finance</span>
                   </button>
                 </div>
 
                 {/* RTO Parameters if RTO mode is selected */}
                 {paymentMode === 'rto' && (
-                  <div style={{ background: '#fff7ed', borderRadius: '12px', padding: '0.75rem', border: '1px solid #fed7aa', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.3rem' }}>
+                  <div style={{ background: '#fff7ed', borderRadius: '14px', padding: '0.85rem', border: '1px solid #fed7aa', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '0.35rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#9a3412' }}>Downpayment Required:</span>
+                      <span style={{ fontSize: '0.74rem', fontWeight: '800', color: '#9a3412' }}>Downpayment Required:</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <span style={{ fontSize: '0.8rem', fontWeight: '900' }}>£</span>
+                        <span style={{ fontSize: '0.85rem', fontWeight: '900', color: '#9a3412' }}>£</span>
                         <input
                           type="number"
                           value={downPayment}
                           placeholder={Math.round(cartTotal * 0.2).toString()}
                           onChange={(e) => setDownPayment(e.target.value)}
-                          style={{ width: '75px', padding: '3px 6px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '0.8rem', fontWeight: '800' }}
+                          style={{ width: '80px', padding: '4px 8px', borderRadius: '8px', border: '1px solid #fed7aa', fontSize: '0.85rem', fontWeight: '800', background: '#ffffff', color: '#0f172a' }}
                         />
                       </div>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#9a3412' }}>Term Weeks:</span>
+                      <span style={{ fontSize: '0.74rem', fontWeight: '800', color: '#9a3412' }}>Term Weeks:</span>
                       <div style={{ display: 'flex', gap: '4px' }}>
                         {[12, 24, 36].map(w => (
                           <button
@@ -546,13 +562,13 @@ export default function NewSalePage() {
                             type="button"
                             onClick={() => setRtoTermWeeks(w)}
                             style={{
-                              padding: '2px 7px',
-                              borderRadius: '6px',
-                              border: 'none',
-                              fontSize: '0.7rem',
+                              padding: '4px 9px',
+                              borderRadius: '8px',
+                              border: rtoTermWeeks === w ? 'none' : '1px solid #fed7aa',
+                              fontSize: '0.74rem',
                               fontWeight: '800',
                               background: rtoTermWeeks === w ? '#ea580c' : '#ffffff',
-                              color: rtoTermWeeks === w ? '#ffffff' : '#64748b',
+                              color: rtoTermWeeks === w ? '#ffffff' : '#9a3412',
                               cursor: 'pointer'
                             }}
                           >
@@ -562,9 +578,9 @@ export default function NewSalePage() {
                       </div>
                     </div>
 
-                    <div style={{ borderTop: '1px solid #fed7aa', paddingTop: '4px', display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', color: '#9a3412' }}>
+                    <div style={{ borderTop: '1px solid #fed7aa', paddingTop: '6px', display: 'flex', justifyContent: 'space-between', fontSize: '0.76rem', color: '#9a3412' }}>
                       <span>Weekly Installment:</span>
-                      <strong style={{ fontSize: '0.88rem', color: '#ea580c' }}>£{weeklyInstallment.toFixed(2)}/week</strong>
+                      <strong style={{ fontSize: '0.92rem', color: '#ea580c' }}>£{weeklyInstallment.toFixed(2)}/week</strong>
                     </div>
                   </div>
                 )}
@@ -575,7 +591,7 @@ export default function NewSalePage() {
                   onClick={handleFinalizeSale}
                   disabled={isProcessing}
                   style={{
-                    marginTop: '0.4rem',
+                    marginTop: '0.5rem',
                     background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
                     color: '#ffffff',
                     border: 'none',
@@ -616,14 +632,15 @@ export default function NewSalePage() {
                 type="button"
                 onClick={() => setShowCustomItem(!showCustomItem)}
                 style={{
-                  background: '#f8fafc',
-                  border: '1px solid #cbd5e1',
+                  background: '#ffffff',
+                  border: '1px solid #e2e8f0',
                   borderRadius: '8px',
-                  padding: '4px 8px',
-                  fontSize: '0.68rem',
+                  padding: '4px 10px',
+                  fontSize: '0.7rem',
                   fontWeight: '800',
-                  color: '#475569',
-                  cursor: 'pointer'
+                  color: '#0f172a',
+                  cursor: 'pointer',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
                 }}
               >
                 + Custom Line Item
@@ -635,12 +652,13 @@ export default function NewSalePage() {
               <form 
                 onSubmit={handleAddCustomItem}
                 style={{
-                  background: '#f8fafc',
-                  borderRadius: '14px',
-                  padding: '0.75rem',
-                  border: '1px solid #cbd5e1',
+                  background: '#ffffff',
+                  borderRadius: '16px',
+                  padding: '0.85rem',
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
                   display: 'flex',
-                  gap: '0.4rem',
+                  gap: '0.5rem',
                   alignItems: 'center'
                 }}
               >
@@ -650,7 +668,7 @@ export default function NewSalePage() {
                   placeholder="e.g. Screen Replacement Labor"
                   value={customName}
                   onChange={(e) => setCustomName(e.target.value)}
-                  style={{ flex: 2, padding: '0.5rem 0.65rem', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.78rem' }}
+                  style={{ flex: 2, padding: '0.6rem 0.8rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.8rem', outline: 'none' }}
                 />
                 <input
                   type="number"
@@ -659,7 +677,7 @@ export default function NewSalePage() {
                   placeholder="£"
                   value={customPrice}
                   onChange={(e) => setCustomPrice(e.target.value)}
-                  style={{ width: '65px', padding: '0.5rem 0.65rem', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.78rem' }}
+                  style={{ width: '70px', padding: '0.6rem 0.8rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.8rem', outline: 'none' }}
                 />
                 <button
                   type="submit"
@@ -667,9 +685,9 @@ export default function NewSalePage() {
                     background: '#0f172a',
                     color: '#ffffff',
                     border: 'none',
-                    borderRadius: '8px',
-                    padding: '0.5rem 0.75rem',
-                    fontSize: '0.75rem',
+                    borderRadius: '10px',
+                    padding: '0.6rem 0.9rem',
+                    fontSize: '0.78rem',
                     fontWeight: '800',
                     cursor: 'pointer'
                   }}
@@ -679,34 +697,37 @@ export default function NewSalePage() {
               </form>
             )}
 
-            {/* Category Pills */}
-            <div style={{ display: 'flex', gap: '0.35rem', overflowX: 'auto', paddingBottom: '2px' }}>
-              {SHOP_CATEGORY_OPTIONS.map(cat => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => setSelectedCategory(cat.id)}
-                  style={{
-                    padding: '5px 10px',
-                    borderRadius: '9999px',
-                    fontSize: '0.7rem',
-                    fontWeight: '800',
-                    border: 'none',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    background: selectedCategory === cat.id ? '#0f172a' : '#ffffff',
-                    color: selectedCategory === cat.id ? '#ffffff' : '#64748b',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
-                  }}
-                >
-                  {cat.label}
-                </button>
-              ))}
+            {/* Category Pills - Apple Segmented Style */}
+            <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '4px' }}>
+              {SHOP_CATEGORY_OPTIONS.map(cat => {
+                const isActive = selectedCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => setSelectedCategory(cat.id)}
+                    style={{
+                      padding: '6px 12px',
+                      borderRadius: '9999px',
+                      fontSize: '0.72rem',
+                      fontWeight: '800',
+                      border: isActive ? 'none' : '1px solid #e2e8f0',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      background: isActive ? '#0f172a' : '#ffffff',
+                      color: isActive ? '#ffffff' : '#64748b',
+                      boxShadow: isActive ? '0 2px 6px rgba(15, 23, 42, 0.15)' : '0 1px 2px rgba(0,0,0,0.02)'
+                    }}
+                  >
+                    {cat.label}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Search Input */}
             <div style={{ position: 'relative' }}>
-              <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
               <input
                 type="text"
                 placeholder="Search catalog devices, accessories..."
@@ -714,27 +735,29 @@ export default function NewSalePage() {
                 onChange={(e) => setSearch(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '0.65rem 1rem 0.65rem 2.3rem',
+                  padding: '0.75rem 1rem 0.75rem 2.4rem',
                   borderRadius: '14px',
-                  border: '1px solid #cbd5e1',
+                  border: '1px solid #e2e8f0',
                   backgroundColor: '#ffffff',
-                  fontSize: '0.82rem',
-                  color: '#0f172a'
+                  fontSize: '0.84rem',
+                  color: '#0f172a',
+                  outline: 'none',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
                 }}
               />
             </div>
 
             {/* Product Cards Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.65rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
               {filteredProducts.map((prod) => (
                 <div
                   key={prod.id}
                   style={{
                     background: '#ffffff',
                     border: '1px solid #e2e8f0',
-                    borderRadius: '16px',
-                    padding: '0.75rem',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+                    borderRadius: '18px',
+                    padding: '0.85rem',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -747,24 +770,24 @@ export default function NewSalePage() {
                       alt={prod.name}
                       style={{
                         width: '100%',
-                        height: '90px',
+                        height: '95px',
                         objectFit: 'cover',
-                        borderRadius: '10px'
+                        borderRadius: '12px'
                       }}
                     />
                   )}
 
                   <div>
-                    <span style={{ fontSize: '0.6rem', color: '#ea580c', fontWeight: '800', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '0.62rem', color: '#ea580c', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                       {prod.category}
                     </span>
-                    <h4 style={{ fontSize: '0.8rem', fontWeight: '800', color: '#0f172a', margin: '2px 0 0 0', lineHeight: 1.25 }}>
+                    <h4 style={{ fontSize: '0.82rem', fontWeight: '800', color: '#0f172a', margin: '2px 0 0 0', lineHeight: 1.3 }}>
                       {prod.name}
                     </h4>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-                    <span style={{ fontSize: '0.95rem', fontWeight: '900', color: '#0f172a' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: '4px' }}>
+                    <span style={{ fontSize: '0.98rem', fontWeight: '900', color: '#0f172a' }}>
                       £{Number(prod.price).toFixed(2)}
                     </span>
 
@@ -775,9 +798,9 @@ export default function NewSalePage() {
                         background: '#0f172a',
                         color: '#ffffff',
                         border: 'none',
-                        borderRadius: '8px',
-                        padding: '5px 9px',
-                        fontSize: '0.72rem',
+                        borderRadius: '10px',
+                        padding: '6px 11px',
+                        fontSize: '0.74rem',
                         fontWeight: '800',
                         cursor: 'pointer',
                         display: 'flex',
@@ -785,7 +808,7 @@ export default function NewSalePage() {
                         gap: '3px'
                       }}
                     >
-                      <Plus size={12} />
+                      <Plus size={13} />
                       Add
                     </button>
                   </div>
@@ -806,13 +829,13 @@ export default function NewSalePage() {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: 'rgba(15, 23, 42, 0.65)',
+              backgroundColor: 'rgba(11, 19, 43, 0.65)',
               zIndex: 100,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               padding: '1rem',
-              backdropFilter: 'blur(4px)'
+              backdropFilter: 'blur(6px)'
             }}
           >
             <div 
@@ -820,25 +843,31 @@ export default function NewSalePage() {
                 width: '100%',
                 maxWidth: '400px',
                 backgroundColor: '#ffffff',
-                borderRadius: '20px',
+                borderRadius: '22px',
                 padding: '1.5rem',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+                boxShadow: '0 20px 45px rgba(0,0,0,0.18)',
+                border: '1px solid #e2e8f0'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
-                  Quick Customer Intake
-                </h3>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#ffedd5', color: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <UserPlus size={16} />
+                  </div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
+                    Quick Customer Intake
+                  </h3>
+                </div>
                 <button
                   type="button"
                   onClick={() => setIsNewCustModalOpen(false)}
-                  style={{ background: '#f1f5f9', border: 'none', borderRadius: '50%', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                  style={{ background: '#f1f5f9', border: 'none', borderRadius: '50%', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}
                 >
                   <X size={15} />
                 </button>
               </div>
 
-              <form onSubmit={handleCreateCustomer} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <form onSubmit={handleCreateCustomer} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                 <div>
                   <label style={{ fontSize: '0.72rem', fontWeight: '800', color: '#475569', display: 'block', marginBottom: '4px' }}>
                     FULL NAME *
@@ -849,7 +878,7 @@ export default function NewSalePage() {
                     placeholder="e.g. Sarah Jenkins"
                     value={newCustName}
                     onChange={(e) => setNewCustName(e.target.value)}
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '0.7rem 0.85rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.85rem', outline: 'none' }}
                   />
                 </div>
 
@@ -862,7 +891,7 @@ export default function NewSalePage() {
                     placeholder="+44 7922 112233"
                     value={newCustPhone}
                     onChange={(e) => setNewCustPhone(e.target.value)}
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '0.7rem 0.85rem', borderRadius: '10px', border: '1px solid #cbd5e1', fontSize: '0.85rem', outline: 'none' }}
                   />
                 </div>
 
@@ -870,14 +899,15 @@ export default function NewSalePage() {
                   type="submit"
                   style={{
                     marginTop: '0.5rem',
-                    background: '#2563eb',
+                    background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',
-                    padding: '0.8rem',
+                    padding: '0.85rem',
                     fontSize: '0.88rem',
                     fontWeight: '900',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)'
                   }}
                 >
                   Attach &amp; Proceed
@@ -896,13 +926,13 @@ export default function NewSalePage() {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: 'rgba(15, 23, 42, 0.75)',
+              backgroundColor: 'rgba(11, 19, 43, 0.75)',
               zIndex: 100,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               padding: '1rem',
-              backdropFilter: 'blur(5px)'
+              backdropFilter: 'blur(6px)'
             }}
           >
             <div 
@@ -911,8 +941,9 @@ export default function NewSalePage() {
                 maxWidth: '380px',
                 backgroundColor: '#ffffff',
                 borderRadius: '24px',
-                padding: '1.5rem',
+                padding: '1.6rem',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                border: '1px solid #e2e8f0',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '1rem'
@@ -920,10 +951,10 @@ export default function NewSalePage() {
             >
               {/* Success Badge */}
               <div style={{ textAlign: 'center' }}>
-                <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: '#dcfce7', color: '#15803d', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.5rem auto' }}>
-                  <CheckCircle2 size={32} strokeWidth={2.5} />
+                <div style={{ width: '54px', height: '54px', borderRadius: '14px', background: '#ecfdf5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.6rem auto' }}>
+                  <CheckCircle2 size={30} strokeWidth={2.5} />
                 </div>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
                   Sale Complete!
                 </h3>
                 <span style={{ fontSize: '0.75rem', color: '#64748b' }}>
@@ -932,7 +963,7 @@ export default function NewSalePage() {
               </div>
 
               {/* Receipt Summary Box */}
-              <div style={{ background: '#f8fafc', borderRadius: '14px', padding: '0.85rem', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.78rem' }}>
+              <div style={{ background: '#f8fafc', borderRadius: '14px', padding: '0.9rem', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.8rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: '#64748b' }}>Customer:</span>
                   <strong style={{ color: '#0f172a' }}>{completedSale.customerName}</strong>
@@ -941,7 +972,7 @@ export default function NewSalePage() {
                   <span style={{ color: '#64748b' }}>Method:</span>
                   <strong style={{ color: '#0f172a' }}>{completedSale.paymentMethod}</strong>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #e2e8f0', paddingTop: '4px', marginTop: '2px', fontSize: '1.05rem', fontWeight: '900', color: '#0f172a' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #e2e8f0', paddingTop: '6px', marginTop: '3px', fontSize: '1.1rem', fontWeight: '900', color: '#0f172a' }}>
                   <span>Total Paid:</span>
                   <span>£{Number(completedSale.total).toFixed(2)}</span>
                 </div>
@@ -953,18 +984,19 @@ export default function NewSalePage() {
                   type="button"
                   onClick={() => handleSendWhatsAppReceipt(completedSale)}
                   style={{
-                    background: '#22c55e',
+                    background: '#16a34a',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',
-                    padding: '0.8rem',
-                    fontSize: '0.85rem',
+                    padding: '0.85rem',
+                    fontSize: '0.86rem',
                     fontWeight: '800',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '6px'
+                    gap: '6px',
+                    boxShadow: '0 4px 12px rgba(22, 163, 74, 0.25)'
                   }}
                 >
                   <MessageSquare size={16} />
@@ -979,8 +1011,8 @@ export default function NewSalePage() {
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',
-                    padding: '0.8rem',
-                    fontSize: '0.85rem',
+                    padding: '0.85rem',
+                    fontSize: '0.86rem',
                     fontWeight: '800',
                     cursor: 'pointer',
                     display: 'flex',
@@ -996,12 +1028,12 @@ export default function NewSalePage() {
                   type="button"
                   onClick={() => setCompletedSale(null)}
                   style={{
-                    background: '#f1f5f9',
+                    background: '#ffffff',
                     color: '#475569',
-                    border: 'none',
+                    border: '1px solid #e2e8f0',
                     borderRadius: '12px',
-                    padding: '0.65rem',
-                    fontSize: '0.78rem',
+                    padding: '0.7rem',
+                    fontSize: '0.8rem',
                     fontWeight: '700',
                     cursor: 'pointer'
                   }}

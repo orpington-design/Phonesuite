@@ -47,7 +47,7 @@ export default function NewCustomerModal({ isOpen, onClose, onSubmit }) {
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.65)',
+      backgroundColor: 'rgba(11, 19, 43, 0.65)',
       backdropFilter: 'blur(6px)',
       WebkitBackdropFilter: 'blur(6px)',
       display: 'flex',
@@ -67,6 +67,7 @@ export default function NewCustomerModal({ isOpen, onClose, onSubmit }) {
           padding: '1.25rem 1.25rem 2rem 1.25rem',
           overflowY: 'auto',
           boxShadow: '0 -10px 40px rgba(0,0,0,0.2)',
+          border: '1px solid #e2e8f0',
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -78,8 +79,8 @@ export default function NewCustomerModal({ isOpen, onClose, onSubmit }) {
               width: '38px',
               height: '38px',
               borderRadius: '10px',
-              backgroundColor: '#f5f3ff',
-              color: '#7c3aed',
+              backgroundColor: '#ffedd5',
+              color: '#ea580c',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -229,7 +230,7 @@ export default function NewCustomerModal({ isOpen, onClose, onSubmit }) {
                   border: '1px solid #cbd5e1',
                   fontSize: '0.85rem',
                   fontWeight: '700',
-                  color: '#7c3aed'
+                  color: '#0f172a'
                 }}
               />
             </div>
@@ -242,13 +243,13 @@ export default function NewCustomerModal({ isOpen, onClose, onSubmit }) {
               width: '100%',
               padding: '0.9rem',
               borderRadius: '12px',
-              backgroundColor: '#7c3aed',
+              background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
               color: '#ffffff',
               border: 'none',
               fontSize: '0.92rem',
               fontWeight: '700',
               cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(124, 58, 237, 0.35)',
+              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

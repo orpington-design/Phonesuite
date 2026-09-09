@@ -75,10 +75,10 @@ export default function StaffInvoicesTab({
       {/* Top Banner & Create Action */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h2 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
             {invT.title}
           </h2>
-          <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '2px 0 0 0' }}>
+          <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '3px 0 0 0', fontWeight: '500' }}>
             {invT.subtitle}
           </p>
         </div>
@@ -86,51 +86,52 @@ export default function StaffInvoicesTab({
           type="button"
           onClick={onOpenNewInvoice}
           style={{
-            backgroundColor: '#059669',
+            background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
             color: '#ffffff',
             border: 'none',
             borderRadius: '12px',
-            padding: '0.6rem 0.9rem',
+            padding: '0.62rem 0.95rem',
             fontSize: '0.8rem',
-            fontWeight: '700',
+            fontWeight: '800',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             gap: '0.4rem',
-            boxShadow: '0 4px 12px rgba(5, 150, 105, 0.25)'
+            boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)',
+            letterSpacing: '0.01em'
           }}
         >
-          <Plus size={16} />
+          <Plus size={16} strokeWidth={2.5} />
           {invT.btnNewInvoice}
         </button>
       </div>
 
       {/* KPI Financial Overview Tiles */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.6rem' }}>
         
-        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '0.75rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '0.85rem 0.65rem', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             {invT.totalCollected}
           </div>
-          <div style={{ fontSize: '1rem', fontWeight: '900', color: '#059669', marginTop: '2px' }}>
+          <div style={{ fontSize: '1.05rem', fontWeight: '900', color: '#10b981', marginTop: '4px', letterSpacing: '-0.02em' }}>
             £{totalCollected.toFixed(2)}
           </div>
         </div>
 
-        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '0.75rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '0.85rem 0.65rem', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+          <div style={{ fontSize: '0.62rem', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             {invT.totalPending}
           </div>
-          <div style={{ fontSize: '1rem', fontWeight: '900', color: '#d97706', marginTop: '2px' }}>
+          <div style={{ fontSize: '1.05rem', fontWeight: '900', color: '#d97706', marginTop: '4px', letterSpacing: '-0.02em' }}>
             £{totalPending.toFixed(2)}
           </div>
         </div>
 
-        <div style={{ backgroundColor: overdueCount > 0 ? '#fff1f2' : '#ffffff', border: overdueCount > 0 ? '1px solid #fecdd3' : '1px solid #e2e8f0', borderRadius: '14px', padding: '0.75rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '0.65rem', color: overdueCount > 0 ? '#e11d48' : '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>
+        <div style={{ backgroundColor: overdueCount > 0 ? '#fff1f2' : '#ffffff', border: overdueCount > 0 ? '1.5px solid #fecdd3' : '1px solid #e2e8f0', borderRadius: '16px', padding: '0.85rem 0.65rem', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+          <div style={{ fontSize: '0.62rem', color: overdueCount > 0 ? '#e11d48' : '#64748b', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             {invT.totalOverdue}
           </div>
-          <div style={{ fontSize: '1rem', fontWeight: '900', color: overdueCount > 0 ? '#e11d48' : '#64748b', marginTop: '2px' }}>
+          <div style={{ fontSize: '1.05rem', fontWeight: '900', color: overdueCount > 0 ? '#e11d48' : '#64748b', marginTop: '4px', letterSpacing: '-0.02em' }}>
             £{totalOverdue.toFixed(2)}
           </div>
         </div>
@@ -139,7 +140,7 @@ export default function StaffInvoicesTab({
 
       {/* Search Input */}
       <div style={{ position: 'relative' }}>
-        <Search size={17} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+        <Search size={17} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
         <input
           type="text"
           placeholder={invT.searchPlaceholder}
@@ -147,18 +148,20 @@ export default function StaffInvoicesTab({
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{
             width: '100%',
-            padding: '0.65rem 1rem 0.65rem 2.3rem',
-            borderRadius: '12px',
-            border: '1px solid #cbd5e1',
+            padding: '0.72rem 1rem 0.72rem 2.5rem',
+            borderRadius: '14px',
+            border: '1px solid #e2e8f0',
             backgroundColor: '#ffffff',
             fontSize: '0.82rem',
-            color: '#0f172a'
+            color: '#0f172a',
+            outline: 'none',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
           }}
         />
       </div>
 
-      {/* Filter Tabs Pills */}
-      <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '0.25rem' }}>
+      {/* Filter Tabs Pills (Apple Segmented Control Style) */}
+      <div style={{ display: 'flex', gap: '0.45rem', overflowX: 'auto', paddingBottom: '0.25rem', scrollbarWidth: 'none' }}>
         {[
           { key: 'all', label: invT.tabAll, count: invoices.length },
           { key: 'overdue', label: invT.tabOverdue, count: overdueCount, highlight: true },
@@ -173,27 +176,30 @@ export default function StaffInvoicesTab({
               type="button"
               onClick={() => setActiveFilter(tab.key)}
               style={{
-                padding: '0.45rem 0.8rem',
-                borderRadius: '9999px',
-                border: isActive ? '1.5px solid #2563eb' : '1px solid #e2e8f0',
-                backgroundColor: isActive ? '#2563eb' : '#ffffff',
-                color: isActive ? '#ffffff' : (tab.highlight && tab.count > 0 ? '#e11d48' : '#475569'),
+                padding: '0.5rem 0.85rem',
+                borderRadius: '12px',
+                border: isActive ? '1px solid #0f172a' : '1px solid #e2e8f0',
+                backgroundColor: isActive ? '#0f172a' : '#ffffff',
+                color: isActive ? '#ffffff' : (tab.highlight && tab.count > 0 ? '#e11d48' : '#64748b'),
                 fontWeight: isActive ? '800' : '600',
-                fontSize: '0.75rem',
+                fontSize: '0.76rem',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.35rem'
+                gap: '0.4rem',
+                boxShadow: isActive ? '0 4px 12px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               <span>{tab.label}</span>
               <span style={{
                 fontSize: '0.65rem',
-                padding: '1px 5px',
-                borderRadius: '9999px',
-                backgroundColor: isActive ? 'rgba(255, 255, 255, 0.25)' : '#f1f5f9',
-                color: isActive ? '#ffffff' : '#64748b'
+                padding: '1.5px 6px',
+                borderRadius: '6px',
+                backgroundColor: isActive ? 'rgba(255, 255, 255, 0.2)' : (tab.highlight && tab.count > 0 ? '#fee2e2' : '#f1f5f9'),
+                color: isActive ? '#ffffff' : (tab.highlight && tab.count > 0 ? '#e11d48' : '#64748b'),
+                fontWeight: '800'
               }}>
                 {tab.count}
               </span>
@@ -269,31 +275,32 @@ export default function StaffInvoicesTab({
                 </p>
 
                 {/* Actions bottom strip */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.6rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', marginTop: '0.2rem' }}>
                   
                   {/* Print / View Receipt */}
                   <button
                     type="button"
                     onClick={() => onViewReceipt(inv)}
                     style={{
-                      background: '#f8fafc',
+                      background: '#ffffff',
                       border: '1px solid #e2e8f0',
-                      borderRadius: '8px',
-                      padding: '4px 10px',
-                      fontSize: '0.72rem',
+                      borderRadius: '10px',
+                      padding: '6px 11px',
+                      fontSize: '0.74rem',
                       fontWeight: '700',
-                      color: '#334155',
+                      color: '#0f172a',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '4px'
+                      gap: '5px',
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
                     }}
                   >
-                    <Printer size={13} />
+                    <Printer size={13} strokeWidth={2.2} />
                     {invT.printReceipt}
                   </button>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                     
                     {/* WhatsApp Reminder (for unpaid/overdue) */}
                     {!isPaid && (
@@ -301,20 +308,20 @@ export default function StaffInvoicesTab({
                         type="button"
                         onClick={() => handleWhatsAppReminder(inv)}
                         style={{
-                          background: '#f0fdf4',
-                          border: '1px solid #bbf7d0',
-                          borderRadius: '8px',
-                          padding: '4px 9px',
-                          fontSize: '0.72rem',
+                          background: 'rgba(16, 185, 129, 0.08)',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          borderRadius: '10px',
+                          padding: '6px 10px',
+                          fontSize: '0.74rem',
                           fontWeight: '700',
-                          color: '#15803d',
+                          color: '#059669',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '3px'
+                          gap: '4px'
                         }}
                       >
-                        <MessageSquare size={13} />
+                        <MessageSquare size={13} strokeWidth={2.2} />
                         {invT.remindWhatsApp}
                       </button>
                     )}
@@ -325,28 +332,28 @@ export default function StaffInvoicesTab({
                         type="button"
                         onClick={() => onSettleInvoice(inv.id)}
                         style={{
-                          background: '#059669',
+                          background: '#0f172a',
                           border: 'none',
-                          borderRadius: '8px',
-                          padding: '5px 11px',
-                          fontSize: '0.72rem',
+                          borderRadius: '10px',
+                          padding: '6px 12px',
+                          fontSize: '0.74rem',
                           fontWeight: '800',
                           color: '#ffffff',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '3px',
-                          boxShadow: '0 2px 6px rgba(5, 150, 105, 0.25)'
+                          gap: '4px',
+                          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.18)'
                         }}
                       >
-                        <CheckCircle2 size={13} />
+                        <CheckCircle2 size={13} strokeWidth={2.4} />
                         {invT.markAsPaid}
                       </button>
                     )}
 
                     {isPaid && (
-                      <span style={{ fontSize: '0.72rem', color: '#059669', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                        <CheckCircle2 size={14} />
+                      <span style={{ fontSize: '0.74rem', color: '#10b981', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 8px', borderRadius: '8px', background: '#ecfdf5' }}>
+                        <CheckCircle2 size={14} strokeWidth={2.4} />
                         Settled
                       </span>
                     )}

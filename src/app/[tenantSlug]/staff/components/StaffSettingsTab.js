@@ -48,33 +48,35 @@ export default function StaffSettingsTab({
       
       {/* Header */}
       <div>
-        <h2 style={{ fontSize: '1.15rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
+        <h2 style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>
           {st.title}
         </h2>
-        <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '2px 0 0 0' }}>
+        <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '3px 0 0 0', fontWeight: '500' }}>
           {st.subtitle}
         </p>
       </div>
 
       {/* 1. Staff Profile Card */}
-      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.82rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.75rem' }}>
-          <User size={16} color="#2563eb" />
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.1rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.85rem' }}>
+          <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+            <User size={15} strokeWidth={2.4} />
+          </div>
           <span>{st.staffProfile}</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-          <div style={{ width: '46px', height: '46px', borderRadius: '50%', backgroundColor: '#2563eb', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '1.1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '0.85rem' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.15rem', boxShadow: '0 4px 12px rgba(234, 88, 12, 0.3)' }}>
             {activeStaff.name.charAt(0)}
           </div>
           <div>
-            <div style={{ fontWeight: '800', fontSize: '0.92rem', color: '#0f172a' }}>
+            <div style={{ fontWeight: '800', fontSize: '0.94rem', color: '#0f172a', letterSpacing: '-0.01em' }}>
               {activeStaff.name}
             </div>
-            <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
+            <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '1px' }}>
               {activeStaff.role}
             </div>
-            <div style={{ fontSize: '0.7rem', color: '#2563eb', fontWeight: '600' }}>
+            <div style={{ fontSize: '0.72rem', color: '#ea580c', fontWeight: '700', marginTop: '1px' }}>
               {activeStaff.email}
             </div>
           </div>
@@ -82,7 +84,7 @@ export default function StaffSettingsTab({
 
         {/* Staff switcher dropdown */}
         <div>
-          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#475569', marginBottom: '0.25rem' }}>
+          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#475569', marginBottom: '0.3rem' }}>
             Switch Staff Profile (Session Context)
           </label>
           <select
@@ -93,12 +95,13 @@ export default function StaffSettingsTab({
             }}
             style={{
               width: '100%',
-              padding: '0.55rem 0.75rem',
-              borderRadius: '10px',
-              border: '1px solid #cbd5e1',
-              backgroundColor: '#f8fafc',
-              fontSize: '0.8rem',
-              color: '#0f172a'
+              padding: '0.68rem 0.85rem',
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              backgroundColor: '#ffffff',
+              fontSize: '0.82rem',
+              color: '#0f172a',
+              outline: 'none'
             }}
           >
             {STAFF_MEMBERS.map(m => (
@@ -109,17 +112,19 @@ export default function StaffSettingsTab({
       </div>
 
       {/* 2. Store Branch Switcher */}
-      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.82rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.5rem' }}>
-          <Building2 size={16} color="#2563eb" />
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.1rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.5rem' }}>
+          <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+            <Building2 size={15} strokeWidth={2.4} />
+          </div>
           <span>{st.currentBranch}</span>
         </div>
 
-        <p style={{ fontSize: '0.72rem', color: '#64748b', margin: '0 0 0.65rem 0' }}>
+        <p style={{ fontSize: '0.74rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
           {st.switchBranchNotice}
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
           {branches.map(b => {
             const isSelected = (branch?.id || 'branch-lon') === b.id;
             return (
@@ -128,26 +133,28 @@ export default function StaffSettingsTab({
                 type="button"
                 onClick={() => setBranch(b)}
                 style={{
-                  padding: '0.65rem 0.85rem',
+                  padding: '0.75rem 0.95rem',
                   borderRadius: '12px',
-                  border: isSelected ? '1.5px solid #2563eb' : '1px solid #e2e8f0',
-                  backgroundColor: isSelected ? '#eff6ff' : '#ffffff',
+                  border: isSelected ? '1.5px solid #0f172a' : '1px solid #e2e8f0',
+                  backgroundColor: isSelected ? '#f8fafc' : '#ffffff',
                   textAlign: 'left',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between'
+                  justifyContent: 'space-between',
+                  boxShadow: isSelected ? '0 2px 8px rgba(15, 23, 42, 0.08)' : 'none',
+                  transition: 'all 0.15s ease'
                 }}
               >
                 <div>
-                  <div style={{ fontWeight: '800', fontSize: '0.82rem', color: isSelected ? '#1d4ed8' : '#0f172a' }}>
+                  <div style={{ fontWeight: '800', fontSize: '0.84rem', color: isSelected ? '#0f172a' : '#334155' }}>
                     {b.name}
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: '#64748b' }}>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '2px' }}>
                     {b.address}
                   </div>
                 </div>
-                {isSelected && <Check size={16} color="#2563eb" strokeWidth={2.5} />}
+                {isSelected && <Check size={16} color="#0f172a" strokeWidth={2.5} />}
               </button>
             );
           })}
@@ -155,13 +162,15 @@ export default function StaffSettingsTab({
       </div>
 
       {/* 3. Quick Switchers (Customer Portal & Desktop Admin) */}
-      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.82rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.75rem' }}>
-          <ExternalLink size={16} color="#2563eb" />
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.1rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.85rem' }}>
+          <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+            <ExternalLink size={15} strokeWidth={2.4} />
+          </div>
           <span>{st.quickSwitchers}</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
           
           <a
             href={`/${tenantSlug || 'premiumphonex'}/portal`}
@@ -171,25 +180,26 @@ export default function StaffSettingsTab({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '0.75rem',
+              padding: '0.8rem',
               borderRadius: '12px',
-              backgroundColor: '#f8fafc',
+              backgroundColor: '#ffffff',
               border: '1px solid #e2e8f0',
               textDecoration: 'none',
               color: '#0f172a',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
               transition: 'all 0.15s ease'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <div style={{ width: '34px', height: '34px', borderRadius: '9px', backgroundColor: '#e0e7ff', color: '#4318ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Smartphone size={18} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
+              <div style={{ width: '38px', height: '38px', borderRadius: '11px', backgroundColor: '#eff6ff', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Smartphone size={18} strokeWidth={2.2} />
               </div>
               <div>
-                <div style={{ fontWeight: '800', fontSize: '0.82rem' }}>{st.openCustomerPortal}</div>
-                <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{st.customerPortalDesc}</div>
+                <div style={{ fontWeight: '800', fontSize: '0.84rem' }}>{st.openCustomerPortal}</div>
+                <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '1px' }}>{st.customerPortalDesc}</div>
               </div>
             </div>
-            <ExternalLink size={14} color="#64748b" />
+            <ExternalLink size={14} color="#94a3b8" />
           </a>
 
           <a
@@ -200,34 +210,37 @@ export default function StaffSettingsTab({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '0.75rem',
+              padding: '0.8rem',
               borderRadius: '12px',
-              backgroundColor: '#f8fafc',
+              backgroundColor: '#ffffff',
               border: '1px solid #e2e8f0',
               textDecoration: 'none',
               color: '#0f172a',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
               transition: 'all 0.15s ease'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <div style={{ width: '34px', height: '34px', borderRadius: '9px', backgroundColor: '#fef3c7', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Monitor size={18} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
+              <div style={{ width: '38px', height: '38px', borderRadius: '11px', backgroundColor: '#fef3c7', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Monitor size={18} strokeWidth={2.2} />
               </div>
               <div>
-                <div style={{ fontWeight: '800', fontSize: '0.82rem' }}>{st.openDesktopAdmin}</div>
-                <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{st.desktopAdminDesc}</div>
+                <div style={{ fontWeight: '800', fontSize: '0.84rem' }}>{st.openDesktopAdmin}</div>
+                <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '1px' }}>{st.desktopAdminDesc}</div>
               </div>
             </div>
-            <ExternalLink size={14} color="#64748b" />
+            <ExternalLink size={14} color="#94a3b8" />
           </a>
 
         </div>
       </div>
 
       {/* 4. Language & Viewport Preferences */}
-      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.82rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.75rem' }}>
-          <Globe size={16} color="#2563eb" />
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.1rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.85rem' }}>
+          <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+            <Globe size={15} strokeWidth={2.4} />
+          </div>
           <span>{st.languagePreferences}</span>
         </div>
 
@@ -236,18 +249,20 @@ export default function StaffSettingsTab({
             type="button"
             onClick={() => setLanguage('en')}
             style={{
-              padding: '0.65rem',
+              padding: '0.7rem',
               borderRadius: '12px',
-              border: language === 'en' ? '2px solid #2563eb' : '1px solid #e2e8f0',
-              backgroundColor: language === 'en' ? '#eff6ff' : '#ffffff',
-              color: language === 'en' ? '#1d4ed8' : '#475569',
-              fontWeight: '700',
+              border: language === 'en' ? '1.5px solid #0f172a' : '1px solid #e2e8f0',
+              backgroundColor: language === 'en' ? '#0f172a' : '#ffffff',
+              color: language === 'en' ? '#ffffff' : '#64748b',
+              fontWeight: '800',
               fontSize: '0.8rem',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px'
+              gap: '6px',
+              boxShadow: language === 'en' ? '0 4px 12px rgba(15, 23, 42, 0.2)' : 'none',
+              transition: 'all 0.15s ease'
             }}
           >
             <span style={{ fontSize: '1.2rem' }}>🇬🇧</span>
@@ -258,18 +273,20 @@ export default function StaffSettingsTab({
             type="button"
             onClick={() => setLanguage('pt')}
             style={{
-              padding: '0.65rem',
+              padding: '0.7rem',
               borderRadius: '12px',
-              border: language === 'pt' ? '2px solid #2563eb' : '1px solid #e2e8f0',
-              backgroundColor: language === 'pt' ? '#eff6ff' : '#ffffff',
-              color: language === 'pt' ? '#1d4ed8' : '#475569',
-              fontWeight: '700',
+              border: language === 'pt' ? '1.5px solid #0f172a' : '1px solid #e2e8f0',
+              backgroundColor: language === 'pt' ? '#0f172a' : '#ffffff',
+              color: language === 'pt' ? '#ffffff' : '#64748b',
+              fontWeight: '800',
               fontSize: '0.8rem',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px'
+              gap: '6px',
+              boxShadow: language === 'pt' ? '0 4px 12px rgba(15, 23, 42, 0.2)' : 'none',
+              transition: 'all 0.15s ease'
             }}
           >
             <span style={{ fontSize: '1.2rem' }}>🇧🇷</span>
@@ -283,68 +300,71 @@ export default function StaffSettingsTab({
           onClick={() => setIsFullscreen(!isFullscreen)}
           style={{
             width: '100%',
-            padding: '0.65rem',
-            borderRadius: '10px',
-            border: '1px solid #cbd5e1',
-            backgroundColor: '#f8fafc',
-            color: '#334155',
+            padding: '0.72rem',
+            borderRadius: '12px',
+            border: '1px solid #e2e8f0',
+            backgroundColor: '#ffffff',
+            color: '#0f172a',
             fontWeight: '700',
             fontSize: '0.78rem',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '6px'
+            gap: '6px',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
           }}
         >
-          {isFullscreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+          {isFullscreen ? <Minimize2 size={15} strokeWidth={2.2} /> : <Maximize2 size={15} strokeWidth={2.2} />}
           <span>{isFullscreen ? 'Switch to Phone Frame Shell (480px)' : 'Switch to Full Screen View'}</span>
         </button>
 
       </div>
 
       {/* 5. Store Operational Parameters */}
-      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '18px', padding: '1rem', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.82rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.75rem' }}>
-          <Shield size={16} color="#2563eb" />
+      <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '1.1rem', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.85rem' }}>
+          <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+            <Shield size={15} strokeWidth={2.4} />
+          </div>
           <span>{st.storeSettings}</span>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#475569', marginBottom: '0.2rem' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#475569', marginBottom: '0.25rem' }}>
                 {st.currency}
               </label>
               <input
                 type="text"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                style={{ width: '100%', padding: '0.55rem 0.75rem', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.8rem' }}
+                style={{ width: '100%', padding: '0.62rem 0.8rem', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.82rem', outline: 'none', backgroundColor: '#ffffff' }}
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#475569', marginBottom: '0.2rem' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#475569', marginBottom: '0.25rem' }}>
                 {st.vatRate}
               </label>
               <input
                 type="text"
                 value={vatRate}
                 onChange={(e) => setVatRate(e.target.value)}
-                style={{ width: '100%', padding: '0.55rem 0.75rem', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.8rem' }}
+                style={{ width: '100%', padding: '0.62rem 0.8rem', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.82rem', outline: 'none', backgroundColor: '#ffffff' }}
               />
             </div>
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#475569', marginBottom: '0.2rem' }}>
+            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: '700', color: '#475569', marginBottom: '0.25rem' }}>
               {st.businessPhone}
             </label>
             <input
               type="text"
               value={businessWhatsapp}
               onChange={(e) => setBusinessWhatsapp(e.target.value)}
-              style={{ width: '100%', padding: '0.55rem 0.75rem', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.8rem' }}
+              style={{ width: '100%', padding: '0.62rem 0.8rem', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.82rem', outline: 'none', backgroundColor: '#ffffff' }}
             />
           </div>
 
@@ -352,15 +372,18 @@ export default function StaffSettingsTab({
             type="button"
             onClick={handleSaveSettings}
             style={{
-              marginTop: '0.35rem',
-              padding: '0.75rem',
-              borderRadius: '10px',
-              backgroundColor: '#0f172a',
+              marginTop: '0.5rem',
+              padding: '0.82rem',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
               color: '#ffffff',
               border: 'none',
-              fontWeight: '700',
-              fontSize: '0.82rem',
-              cursor: 'pointer'
+              fontWeight: '800',
+              fontSize: '0.85rem',
+              cursor: 'pointer',
+              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)',
+              letterSpacing: '0.01em',
+              transition: 'all 0.15s ease'
             }}
           >
             {savedNotice ? '✓ Settings Saved!' : 'Save Store Preferences'}

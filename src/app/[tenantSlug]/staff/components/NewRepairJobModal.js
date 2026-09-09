@@ -74,7 +74,7 @@ export default function NewRepairJobModal({
     <div style={{
       position: 'fixed',
       inset: 0,
-      backgroundColor: 'rgba(15, 23, 42, 0.65)',
+      backgroundColor: 'rgba(11, 19, 43, 0.65)',
       backdropFilter: 'blur(6px)',
       WebkitBackdropFilter: 'blur(6px)',
       display: 'flex',
@@ -94,6 +94,7 @@ export default function NewRepairJobModal({
           padding: '1.25rem 1.25rem 2rem 1.25rem',
           overflowY: 'auto',
           boxShadow: '0 -10px 40px rgba(0,0,0,0.2)',
+          border: '1px solid #e2e8f0',
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -105,8 +106,8 @@ export default function NewRepairJobModal({
               width: '38px',
               height: '38px',
               borderRadius: '10px',
-              backgroundColor: '#eff6ff',
-              color: '#2563eb',
+              backgroundColor: '#ffedd5',
+              color: '#ea580c',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -220,17 +221,18 @@ export default function NewRepairJobModal({
                     type="button"
                     onClick={() => setDeviceType(item.id)}
                     style={{
-                      padding: '0.45rem 0.75rem',
-                      borderRadius: '8px',
-                      border: isSelected ? '1.5px solid #2563eb' : '1px solid #e2e8f0',
-                      backgroundColor: isSelected ? '#eff6ff' : '#ffffff',
-                      color: isSelected ? '#2563eb' : '#475569',
-                      fontWeight: isSelected ? '700' : '500',
+                      padding: '0.5rem 0.8rem',
+                      borderRadius: '10px',
+                      border: isSelected ? 'none' : '1px solid #e2e8f0',
+                      backgroundColor: isSelected ? '#0f172a' : '#ffffff',
+                      color: isSelected ? '#ffffff' : '#64748b',
+                      fontWeight: isSelected ? '800' : '600',
                       fontSize: '0.78rem',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.35rem',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      boxShadow: isSelected ? '0 2px 6px rgba(15, 23, 42, 0.15)' : 'none'
                     }}
                   >
                     <Icon size={14} />
@@ -402,13 +404,13 @@ export default function NewRepairJobModal({
               width: '100%',
               padding: '0.9rem',
               borderRadius: '12px',
-              backgroundColor: '#2563eb',
+              background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
               color: '#ffffff',
               border: 'none',
               fontSize: '0.92rem',
               fontWeight: '700',
               cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
+              boxShadow: '0 4px 14px rgba(234, 88, 12, 0.35)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

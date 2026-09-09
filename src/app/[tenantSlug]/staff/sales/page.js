@@ -81,33 +81,33 @@ export default function StaffSalesPage() {
       <div className="mobile-app-shell">
 
         {/* Header */}
-        <header className="mobile-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <header className="mobile-header mobile-header-dark" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#0b132b', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
           <button
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff`)}
             style={{
-              background: '#f1f5f9',
-              border: 'none',
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.14)',
               borderRadius: '10px',
-              padding: '6px 10px',
+              padding: '6px 12px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              color: '#0f172a',
+              gap: '6px',
+              color: '#ffffff',
               fontSize: '0.8rem',
               fontWeight: '700',
               cursor: 'pointer'
             }}
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} strokeWidth={2.4} />
             <span>Dashboard</span>
           </button>
 
           <div style={{ textAlign: 'center' }}>
-            <h1 style={{ fontSize: '0.95rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
+            <h1 style={{ fontSize: '0.96rem', fontWeight: '900', color: '#ffffff', margin: 0, letterSpacing: '-0.02em' }}>
               Sales &amp; Orders
             </h1>
-            <span style={{ fontSize: '0.65rem', color: '#059669', fontWeight: '800', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.64rem', color: '#34d399', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Store POS Volume
             </span>
           </div>
@@ -120,14 +120,14 @@ export default function StaffSalesPage() {
               color: '#ffffff',
               border: 'none',
               borderRadius: '10px',
-              padding: '6px 10px',
+              padding: '6px 12px',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
+              gap: '5px',
               fontSize: '0.74rem',
               fontWeight: '800',
               cursor: 'pointer',
-              boxShadow: '0 2px 8px rgba(234, 88, 12, 0.3)'
+              boxShadow: '0 2px 8px rgba(234, 88, 12, 0.35)'
             }}
           >
             <Plus size={15} strokeWidth={2.6} />
@@ -141,56 +141,56 @@ export default function StaffSalesPage() {
           {/* Sales Hero Metrics */}
           <div 
             style={{
-              background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
-              border: '1.5px solid #a7f3d0',
-              borderRadius: '22px',
-              padding: '1.25rem',
-              boxShadow: '0 8px 24px -4px rgba(5, 150, 105, 0.12)'
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '1.2rem',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
-              <span style={{ fontSize: '0.7rem', fontWeight: '800', color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+              <span style={{ fontSize: '0.68rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 GROSS SALES VOLUME
               </span>
-              <span style={{ fontSize: '0.62rem', background: '#059669', color: '#fff', padding: '2px 8px', borderRadius: '9999px', fontWeight: '800' }}>
+              <span style={{ fontSize: '0.62rem', background: '#ecfdf5', color: '#059669', border: '1px solid #a7f3d0', padding: '2px 8px', borderRadius: '6px', fontWeight: '800' }}>
                 {sales.length} ORDERS
               </span>
             </div>
 
-            <div style={{ fontSize: '2.1rem', fontWeight: '900', color: '#064e3b', letterSpacing: '-0.03em', lineHeight: 1 }}>
+            <div style={{ fontSize: '2.1rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.03em', lineHeight: 1 }}>
               £{totalSalesAmount.toLocaleString('en-GB', { minimumFractionDigits: 2 })}
             </div>
             
-            <div style={{ fontSize: '0.72rem', color: '#047857', marginTop: '6px', fontWeight: '600' }}>
+            <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '6px', fontWeight: '500' }}>
               Total electronic retail sales &amp; service revenue across branches
             </div>
 
             {/* Payment Method Breakdown Bar */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', marginTop: '1rem' }}>
               
-              <div style={{ background: 'rgba(255, 255, 255, 0.75)', borderRadius: '12px', padding: '0.55rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '0.6rem 0.5rem', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                 <span style={{ fontSize: '0.6rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase', display: 'block' }}>
                   Card / Apple Pay
                 </span>
-                <span style={{ fontSize: '0.92rem', fontWeight: '900', color: '#0f172a' }}>
+                <span style={{ fontSize: '0.96rem', fontWeight: '900', color: '#0f172a', marginTop: '2px', display: 'block' }}>
                   £{cardSalesTotal.toFixed(0)}
                 </span>
               </div>
 
-              <div style={{ background: 'rgba(255, 255, 255, 0.75)', borderRadius: '12px', padding: '0.55rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '0.6rem 0.5rem', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                 <span style={{ fontSize: '0.6rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase', display: 'block' }}>
                   Cash Register
                 </span>
-                <span style={{ fontSize: '0.92rem', fontWeight: '900', color: '#0f172a' }}>
+                <span style={{ fontSize: '0.96rem', fontWeight: '900', color: '#0f172a', marginTop: '2px', display: 'block' }}>
                   £{cashSalesTotal.toFixed(0)}
                 </span>
               </div>
 
-              <div style={{ background: 'rgba(255, 255, 255, 0.75)', borderRadius: '12px', padding: '0.55rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '0.6rem 0.5rem', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                 <span style={{ fontSize: '0.6rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase', display: 'block' }}>
                   RTO Financed
                 </span>
-                <span style={{ fontSize: '0.92rem', fontWeight: '900', color: '#ea580c' }}>
+                <span style={{ fontSize: '0.96rem', fontWeight: '900', color: '#ea580c', marginTop: '2px', display: 'block' }}>
                   £{rtoSalesTotal.toFixed(0)}
                 </span>
               </div>
@@ -206,47 +206,49 @@ export default function StaffSalesPage() {
               background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
               color: '#ffffff',
               border: 'none',
-              borderRadius: '16px',
-              padding: '0.85rem 1rem',
+              borderRadius: '14px',
+              padding: '0.9rem 1.1rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               cursor: 'pointer',
-              boxShadow: '0 4px 15px rgba(234, 88, 12, 0.3)'
+              boxShadow: '0 4px 15px rgba(234, 88, 12, 0.35)',
+              transition: 'all 0.15s ease'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
+              <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ShoppingCart size={17} color="#ffffff" strokeWidth={2.4} />
               </div>
               <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: '0.88rem', fontWeight: '900', color: '#ffffff' }}>
+                <div style={{ fontSize: '0.9rem', fontWeight: '900', color: '#ffffff', letterSpacing: '-0.01em' }}>
                   Start New Checkout / POS Sale
                 </div>
-                <div style={{ fontSize: '0.68rem', color: 'rgba(255, 255, 255, 0.85)' }}>
+                <div style={{ fontSize: '0.7rem', color: 'rgba(255, 255, 255, 0.88)', marginTop: '1px' }}>
                   Card, Cash or Rent-to-Own Financing
                 </div>
               </div>
             </div>
-            <ChevronRight size={18} color="#ffffff" />
+            <ChevronRight size={18} color="#ffffff" strokeWidth={2.4} />
           </button>
 
-          {/* Filter Pills */}
-          <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '2px' }}>
+          {/* Filter Pills (Apple Segmented Style) */}
+          <div style={{ display: 'flex', gap: '0.45rem', overflowX: 'auto', paddingBottom: '2px', scrollbarWidth: 'none' }}>
             <button
               type="button"
               onClick={() => setFilterMethod('all')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: filterMethod === 'all' ? '800' : '600',
+                border: filterMethod === 'all' ? '1px solid #0f172a' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: filterMethod === 'all' ? '#0f172a' : '#ffffff',
                 color: filterMethod === 'all' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: filterMethod === 'all' ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               All Sales ({sales.length})
@@ -256,16 +258,17 @@ export default function StaffSalesPage() {
               type="button"
               onClick={() => setFilterMethod('card')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: filterMethod === 'card' ? '800' : '600',
+                border: filterMethod === 'card' ? '1px solid #0f172a' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                background: filterMethod === 'card' ? '#059669' : '#ffffff',
+                background: filterMethod === 'card' ? '#0f172a' : '#ffffff',
                 color: filterMethod === 'card' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: filterMethod === 'card' ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
               Card &amp; Contactless
@@ -275,60 +278,65 @@ export default function StaffSalesPage() {
               type="button"
               onClick={() => setFilterMethod('cash')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: filterMethod === 'cash' ? '800' : '600',
+                border: filterMethod === 'cash' ? '1px solid #0f172a' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
-                background: filterMethod === 'cash' ? '#0284c7' : '#ffffff',
+                background: filterMethod === 'cash' ? '#0f172a' : '#ffffff',
                 color: filterMethod === 'cash' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: filterMethod === 'cash' ? '0 2px 6px rgba(15, 23, 42, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
-              Cash Desk
+              Cash Register
             </button>
 
             <button
               type="button"
               onClick={() => setFilterMethod('rto')}
               style={{
-                padding: '6px 12px',
-                borderRadius: '9999px',
-                fontSize: '0.72rem',
-                fontWeight: '800',
-                border: 'none',
+                padding: '0.48rem 0.85rem',
+                borderRadius: '11px',
+                fontSize: '0.74rem',
+                fontWeight: filterMethod === 'rto' ? '800' : '600',
+                border: filterMethod === 'rto' ? '1px solid #ea580c' : '1px solid #e2e8f0',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 background: filterMethod === 'rto' ? '#ea580c' : '#ffffff',
                 color: filterMethod === 'rto' ? '#ffffff' : '#64748b',
-                boxShadow: '0 1px 4px rgba(0,0,0,0.05)'
+                boxShadow: filterMethod === 'rto' ? '0 2px 6px rgba(234, 88, 12, 0.2)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
-              RTO Financed
+              0% RTO Plan
             </button>
           </div>
 
-          {/* Search */}
+          {/* Search Bar */}
           <div style={{ position: 'relative' }}>
-            <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+            <Search size={17} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
             <input
               type="text"
-              placeholder="Search by customer, item, or receipt #..."
+              placeholder="Search sales by customer, item, or receipt #..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.65rem 1rem 0.65rem 2.3rem',
+                padding: '0.72rem 1rem 0.72rem 2.5rem',
                 borderRadius: '14px',
-                border: '1px solid #cbd5e1',
+                border: '1px solid #e2e8f0',
                 backgroundColor: '#ffffff',
                 fontSize: '0.82rem',
-                color: '#0f172a'
+                color: '#0f172a',
+                outline: 'none',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
               }}
             />
           </div>
+
 
           {/* Sales List */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
@@ -412,25 +420,25 @@ export default function StaffSalesPage() {
                       Staff: <strong style={{ color: '#0f172a' }}>{sale.staffMember || 'Alex Rivera'}</strong>
                     </span>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                       <button
                         type="button"
                         onClick={() => handleSendReceiptWhatsApp(sale)}
                         style={{
-                          background: '#22c55e',
-                          color: '#ffffff',
-                          border: 'none',
-                          borderRadius: '8px',
-                          padding: '6px 10px',
-                          fontSize: '0.72rem',
-                          fontWeight: '800',
+                          background: 'rgba(16, 185, 129, 0.08)',
+                          color: '#059669',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          borderRadius: '10px',
+                          padding: '6px 11px',
+                          fontSize: '0.74rem',
+                          fontWeight: '700',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '4px'
                         }}
                       >
-                        <MessageSquare size={13} />
+                        <MessageSquare size={13} strokeWidth={2.2} />
                         WhatsApp
                       </button>
 
@@ -438,20 +446,21 @@ export default function StaffSalesPage() {
                         type="button"
                         onClick={() => setActiveReceipt(sale)}
                         style={{
-                          background: '#0f172a',
-                          color: '#ffffff',
-                          border: 'none',
-                          borderRadius: '8px',
-                          padding: '6px 10px',
-                          fontSize: '0.72rem',
-                          fontWeight: '800',
+                          background: '#ffffff',
+                          color: '#0f172a',
+                          border: '1px solid #e2e8f0',
+                          borderRadius: '10px',
+                          padding: '6px 12px',
+                          fontSize: '0.74rem',
+                          fontWeight: '700',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '4px'
+                          gap: '4px',
+                          boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
                         }}
                       >
-                        <Receipt size={13} />
+                        <Printer size={13} strokeWidth={2.2} />
                         Receipt
                       </button>
                     </div>
