@@ -12,6 +12,7 @@ import {
   RotateCcw,
   Sparkles
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ProductDetailModal({ 
   product, 
@@ -19,6 +20,7 @@ export default function ProductDetailModal({
   onAddToCart,
   onFinanceWithRTO
 }) {
+  const { t } = useLanguage();
   if (!product) return null;
 
   const [selectedStorage, setSelectedStorage] = useState(product.storage?.[0] || '');
@@ -179,7 +181,7 @@ export default function ProductDetailModal({
         {product.colors && product.colors.length > 0 && (
           <div style={{ margin: '0.75rem 0' }}>
             <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '6px', fontWeight: '600' }}>
-              Choose Color: <strong style={{ color: '#0f172a' }}>{selectedColor}</strong>
+              {t.productDetail.color} <strong style={{ color: '#0f172a' }}>{selectedColor}</strong>
             </label>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
               {product.colors.map((c) => (
@@ -208,7 +210,7 @@ export default function ProductDetailModal({
         {product.storage && product.storage.length > 1 && (
           <div style={{ margin: '0.75rem 0' }}>
             <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '6px', fontWeight: '600' }}>
-              Storage / Configuration:
+              {t.productDetail.storage}
             </label>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
               {product.storage.map((s) => (
@@ -246,9 +248,9 @@ export default function ProductDetailModal({
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#4318ff' }}>
               <Sparkles size={15} />
-              <span style={{ fontSize: '0.75rem', fontWeight: '800' }}>0% Rent-to-Own Financing</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: '800' }}>{t.productDetail.rtoTitle}</span>
             </div>
-            <span style={{ fontSize: '0.68rem', color: '#059669', fontWeight: '700' }}>Pre-approved</span>
+            <span style={{ fontSize: '0.68rem', color: '#059669', fontWeight: '700' }}>0%</span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
@@ -256,7 +258,7 @@ export default function ProductDetailModal({
               <span style={{ fontSize: '1.4rem', fontWeight: '800', color: '#0f172a' }}>
                 £{monthlyEstimate.toFixed(2)}
               </span>
-              <span style={{ fontSize: '0.72rem', color: '#64748b' }}> / month</span>
+              <span style={{ fontSize: '0.72rem', color: '#64748b' }}> {t.bills.perMonth}</span>
             </div>
 
             <div style={{ display: 'flex', gap: '4px' }}>
@@ -275,14 +277,14 @@ export default function ProductDetailModal({
                     cursor: 'pointer'
                   }}
                 >
-                  {months} Mo
+                  {months} {t.productDetail.months.slice(0, 2)}
                 </button>
               ))}
             </div>
           </div>
 
           <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '0.35rem' }}>
-            No upfront interest &bull; Weekly pay option: £{(monthlyEstimate / 4).toFixed(2)}/wk
+            {t.productDetail.rtoSub}
           </div>
         </div>
 
@@ -294,7 +296,7 @@ export default function ProductDetailModal({
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
             <Truck size={14} style={{ color: '#4318ff' }} />
-            <span>Free Next-Day Collection</span>
+            <span>{t.cart.inStorePickup} / {t.cart.expressCourier}</span>
           </div>
         </div>
 
@@ -319,7 +321,7 @@ export default function ProductDetailModal({
             }}
           >
             {addedNotice ? <Check size={16} /> : <ShoppingBag size={16} />}
-            {addedNotice ? 'Added to Bag!' : `Add (£${product.price.toFixed(2)})`}
+            {addedNotice ? '✓' : `${t.shop.addToBag} (£${product.price.toFixed(2)})`}
           </button>
 
           <button
@@ -341,7 +343,7 @@ export default function ProductDetailModal({
               boxShadow: '0 4px 15px rgba(67, 24, 255, 0.35)'
             }}
           >
-            <Zap size={16} /> Finance with 0% RTO
+            <Zap size={16} /> {t.shop.financeRto}
           </button>
         </div>
 

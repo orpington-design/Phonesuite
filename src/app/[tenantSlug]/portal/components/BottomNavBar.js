@@ -8,6 +8,7 @@ import {
   Settings, 
   Sparkles 
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function BottomNavBar({ 
   activeTab, 
@@ -16,6 +17,7 @@ export default function BottomNavBar({
   cartCount = 0,
   creditScore = 785
 }) {
+  const { t } = useLanguage();
   return (
     <nav className="mobile-bottom-nav" aria-label="Customer Navigation">
       {/* 1. Dashboard */}
@@ -28,7 +30,7 @@ export default function BottomNavBar({
         <div className="nav-icon-wrapper">
           <LayoutDashboard size={21} strokeWidth={activeTab === 'dashboard' ? 2.4 : 1.8} />
         </div>
-        <span className="nav-label">Home</span>
+        <span className="nav-label">{t.nav.home}</span>
       </button>
 
       {/* 2. Bills */}
@@ -36,17 +38,17 @@ export default function BottomNavBar({
         type="button"
         className={`mobile-nav-item ${activeTab === 'bills' ? 'active' : ''}`}
         onClick={() => setActiveTab('bills')}
-        aria-label="Bills & Invoices"
+        aria-label={t.nav.bills}
       >
         <div className="nav-icon-wrapper">
           <Receipt size={21} strokeWidth={activeTab === 'bills' ? 2.4 : 1.8} />
           {unpaidBillsCount > 0 && (
-            <span className="nav-badge" title={`${unpaidBillsCount} unpaid bills`}>
+            <span className="nav-badge" title={`${unpaidBillsCount} ${t.dashboard.pendingBills}`}>
               {unpaidBillsCount}
             </span>
           )}
         </div>
-        <span className="nav-label">Bills</span>
+        <span className="nav-label">{t.nav.bills}</span>
       </button>
 
       {/* 3. CENTER & MAIN: SHOP (Elevated Floating Beauty Button) */}
@@ -55,8 +57,8 @@ export default function BottomNavBar({
           type="button"
           className={`mobile-shop-center-btn ${activeTab === 'shop' ? 'active' : ''}`}
           onClick={() => setActiveTab('shop')}
-          aria-label="Shop Products"
-          title="Explore Tech & Devices"
+          aria-label={t.nav.shop}
+          title={t.shop.catalogTitle}
         >
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ShoppingBag size={25} strokeWidth={2.4} />
@@ -77,7 +79,7 @@ export default function BottomNavBar({
             </span>
           )}
         </button>
-        <span className="shop-center-label">SHOP</span>
+        <span className="shop-center-label">{t.nav.shop}</span>
       </div>
 
       {/* 4. Score */}
@@ -85,7 +87,7 @@ export default function BottomNavBar({
         type="button"
         className={`mobile-nav-item ${activeTab === 'score' ? 'active' : ''}`}
         onClick={() => setActiveTab('score')}
-        aria-label="Credit & Loyalty Score"
+        aria-label={t.nav.score}
       >
         <div className="nav-icon-wrapper">
           <Award size={21} strokeWidth={activeTab === 'score' ? 2.4 : 1.8} />
@@ -105,7 +107,7 @@ export default function BottomNavBar({
             {creditScore}
           </span>
         </div>
-        <span className="nav-label">Score</span>
+        <span className="nav-label">{t.nav.score}</span>
       </button>
 
       {/* 5. Settings */}
@@ -113,12 +115,12 @@ export default function BottomNavBar({
         type="button"
         className={`mobile-nav-item ${activeTab === 'settings' ? 'active' : ''}`}
         onClick={() => setActiveTab('settings')}
-        aria-label="Settings"
+        aria-label={t.nav.settings}
       >
         <div className="nav-icon-wrapper">
           <Settings size={21} strokeWidth={activeTab === 'settings' ? 2.4 : 1.8} />
         </div>
-        <span className="nav-label">Settings</span>
+        <span className="nav-label">{t.nav.settings}</span>
       </button>
     </nav>
   );

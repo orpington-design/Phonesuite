@@ -15,6 +15,7 @@ import {
   Store,
   Zap
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function CartDrawer({ 
   cart, 
@@ -25,6 +26,7 @@ export default function CartDrawer({
   onCheckoutRTO,
   tenant 
 }) {
+  const { t } = useLanguage();
   const [fulfillment, setFulfillment] = useState('collection'); // 'collection', 'delivery'
   const [isSuccess, setIsSuccess] = useState(false);
   const [successMode, setSuccessMode] = useState('');
@@ -130,12 +132,12 @@ export default function CartDrawer({
               <CheckCircle2 size={38} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: '0 0 0.5rem 0', color: '#0f172a' }}>
-              {successMode === 'rto' ? 'Rent-to-Own Agreement Created!' : 'Order Placed Successfully!'}
+              {successMode === 'rto' ? t.cart.rtoSuccessTitle : t.cart.orderSuccessTitle}
             </h3>
             <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
               {successMode === 'rto' 
-                ? `Hardware agreement signed for £${totalMonthlyRTO.toFixed(2)}/mo. Ready for ${fulfillment === 'collection' ? 'collection at store' : 'courier delivery'}!`
-                : `£${grandTotal.toFixed(2)} charged to payment card. Confirmation dispatched.`}
+                ? `${t.cart.rtoSuccessDesc} £${totalMonthlyRTO.toFixed(2)}${t.bills.perMonth}. ${t.cart.rtoSuccessDescEnd}`
+                : `£${grandTotal.toFixed(2)} ${t.cart.orderSuccessDesc}`}
             </p>
           </div>
         ) : (
@@ -147,10 +149,10 @@ export default function CartDrawer({
               </div>
               <div>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: '800', margin: 0, color: '#0f172a' }}>
-                  My Tech Bag
+                  {t.cart.bagTitle}
                 </h3>
                 <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
-                  {cart.length} {cart.length === 1 ? 'item' : 'items'} &bull; {tenant?.name || 'PhoneSuite'}
+                  {cart.length} {cart.length === 1 ? t.cart.item : t.cart.items} &bull; {tenant?.name || 'PhoneSuite'}
                 </span>
               </div>
             </div>
@@ -159,8 +161,8 @@ export default function CartDrawer({
             {cart.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#64748b' }}>
                 <ShoppingBag size={42} style={{ margin: '0 auto 0.75rem auto', color: '#cbd5e1' }} />
-                <h4 style={{ color: '#0f172a', margin: '0 0 0.25rem 0', fontWeight: '700' }}>Your bag is empty</h4>
-                <p style={{ fontSize: '0.82rem', margin: 0 }}>Browse phones, iPads, laptops and tech from the Shop tab!</p>
+                <h4 style={{ color: '#0f172a', margin: '0 0 0.25rem 0', fontWeight: '700' }}>{t.cart.bagEmpty}</h4>
+                <p style={{ fontSize: '0.82rem', margin: 0 }}>{t.cart.bagEmptyDesc}</p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
@@ -193,7 +195,7 @@ export default function CartDrawer({
                         </span>
                         {item.rtoMonthly && (
                           <span style={{ fontSize: '0.72rem', color: '#4318ff', fontWeight: '600' }}>
-                            or £{item.rtoMonthly.toFixed(2)}/mo
+                            or £{item.rtoMonthly.toFixed(2)}{t.bills.perMonth}
                           </span>
                         )}
                       </div>
@@ -233,7 +235,7 @@ export default function CartDrawer({
                 {/* Fulfillment Selection */}
                 <div style={{ margin: '0.5rem 0' }}>
                   <label style={{ fontSize: '0.74rem', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>
-                    Choose Fulfillment Method:
+                    {t.cart.chooseFulfillment}
                   </label>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                     <button
@@ -254,8 +256,8 @@ export default function CartDrawer({
                     >
                       <Store size={16} style={{ color: '#4318ff' }} />
                       <div>
-                        <div style={{ fontSize: '0.76rem', fontWeight: '700', color: '#0f172a' }}>In-Store Pickup</div>
-                        <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Free &bull; Ready in 1hr</div>
+                        <div style={{ fontSize: '0.76rem', fontWeight: '700', color: '#0f172a' }}>{t.cart.inStorePickup}</div>
+                        <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.cart.inStoreSub}</div>
                       </div>
                     </button>
 
@@ -277,8 +279,8 @@ export default function CartDrawer({
                     >
                       <Truck size={16} style={{ color: '#10b981' }} />
                       <div>
-                        <div style={{ fontSize: '0.76rem', fontWeight: '700', color: '#0f172a' }}>Express Courier</div>
-                        <div style={{ fontSize: '0.68rem', color: '#64748b' }}>+£4.99 &bull; Next Day</div>
+                        <div style={{ fontSize: '0.76rem', fontWeight: '700', color: '#0f172a' }}>{t.cart.expressCourier}</div>
+                        <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.cart.courierSub}</div>
                       </div>
                     </button>
                   </div>
@@ -287,17 +289,17 @@ export default function CartDrawer({
                 {/* Subtotal Calculation */}
                 <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '0.9rem', borderRadius: '14px', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b' }}>
-                    <span>Subtotal:</span>
+                    <span>{t.cart.subtotal}</span>
                     <span style={{ color: '#0f172a', fontWeight: '600' }}>£{subtotal.toFixed(2)}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b' }}>
-                    <span>Fulfillment:</span>
+                    <span>{t.cart.fulfillment}</span>
                     <span style={{ color: deliveryFee > 0 ? '#0f172a' : '#059669', fontWeight: '600' }}>
-                      {deliveryFee > 0 ? `£${deliveryFee.toFixed(2)}` : 'FREE Collection'}
+                      {deliveryFee > 0 ? `£${deliveryFee.toFixed(2)}` : t.cart.freeCollection}
                     </span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #e2e8f0', paddingTop: '0.5rem', marginTop: '0.25rem' }}>
-                    <span style={{ fontWeight: '700', color: '#0f172a' }}>Total Amount:</span>
+                    <span style={{ fontWeight: '700', color: '#0f172a' }}>{t.cart.totalAmount}</span>
                     <span style={{ fontSize: '1.15rem', fontWeight: '800', color: '#4318ff' }}>
                       £{grandTotal.toFixed(2)}
                     </span>
@@ -326,7 +328,7 @@ export default function CartDrawer({
                       boxShadow: '0 4px 15px rgba(67, 24, 255, 0.25)'
                     }}
                   >
-                    <Zap size={16} /> Finance for £{totalMonthlyRTO.toFixed(2)}/mo (0% RTO)
+                    <Zap size={16} /> {t.cart.financeRtoBtn} £{totalMonthlyRTO.toFixed(2)}{t.cart.financeRtoSuffix}
                   </button>
 
                   {/* Option B: Outright Purchase */}
@@ -348,7 +350,7 @@ export default function CartDrawer({
                       cursor: 'pointer'
                     }}
                   >
-                    <CreditCard size={15} /> Buy Outright (£{grandTotal.toFixed(2)})
+                    <CreditCard size={15} /> {t.cart.buyOutrightBtn} (£{grandTotal.toFixed(2)})
                   </button>
                 </div>
               </div>

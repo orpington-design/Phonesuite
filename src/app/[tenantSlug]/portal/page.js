@@ -31,10 +31,24 @@ import {
   Bell, 
   Maximize2, 
   Minimize2,
-  ChevronLeft
+  ChevronLeft,
+  Languages,
+  Check
 } from 'lucide-react';
 
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
+
 export default function MobileCustomerPortal() {
+  return (
+    <LanguageProvider>
+      <PortalContent />
+    </LanguageProvider>
+  );
+}
+
+function PortalContent() {
+  const { language, setLanguage, toggleLanguage, t } = useLanguage();
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const params = useParams();
   const router = useRouter();
   const tenantSlug = params.tenantSlug;
@@ -288,7 +302,7 @@ export default function MobileCustomerPortal() {
       <div className="mobile-portal-wrapper" style={{ alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ width: '40px', height: '40px', border: '3px solid #4318ff', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem auto' }} />
-          <p style={{ color: '#64748b', fontWeight: '600' }}>Loading PhoneSuite Customer Portal...</p>
+          <p style={{ color: '#64748b', fontWeight: '600' }}>{t.header?.loadingPortal || 'Loading PhoneSuite Customer Portal...'}</p>
         </div>
       </div>
     );
@@ -328,15 +342,124 @@ export default function MobileCustomerPortal() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
                   <span style={{ fontSize: '0.65rem', color: '#64748b', fontWeight: '600' }}>
-                    Customer Portal
+                    {t.header?.customerPortal || 'Customer Portal'}
                   </span>
                 </div>
               </div>
             </div>
 
             {/* Right Action Icons */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
               
+              {/* Language Switcher Button with Flag & Dropdown */}
+              <div style={{ position: 'relative' }}>
+                <button
+                  type="button"
+                  onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                  style={{
+                    background: '#f1f5f9',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '10px',
+                    height: '36px',
+                    padding: '0 8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    color: '#0f172a',
+                    cursor: 'pointer',
+                    fontSize: '0.78rem',
+                    fontWeight: '700',
+                    transition: 'all 0.15s ease'
+                  }}
+                  aria-label={t.header?.switchLang || 'Change Language'}
+                  title={language === 'en' ? 'Mudar para Português (Brasil)' : 'Switch to English (UK)'}
+                >
+                  <span style={{ fontSize: '1.05rem', lineHeight: 1 }}>{language === 'en' ? '🇬🇧' : '🇧🇷'}</span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: '800', color: '#334155' }}>
+                    {language === 'en' ? 'EN' : 'PT'}
+                  </span>
+                </button>
+
+                {/* Dropdown Popover */}
+                {isLangMenuOpen && (
+                  <>
+                    <div 
+                      style={{ position: 'fixed', inset: 0, zIndex: 90 }} 
+                      onClick={() => setIsLangMenuOpen(false)} 
+                    />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 6px)',
+                        right: 0,
+                        background: '#ffffff',
+                        borderRadius: '12px',
+                        boxShadow: '0 10px 25px -5px rgba(0,0,0,0.18), 0 4px 6px -2px rgba(0,0,0,0.08)',
+                        border: '1px solid #e2e8f0',
+                        padding: '6px',
+                        minWidth: '165px',
+                        zIndex: 99,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '4px'
+                      }}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => { setLanguage('en'); setIsLangMenuOpen(false); }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '8px 10px',
+                          borderRadius: '8px',
+                          border: 'none',
+                          background: language === 'en' ? '#eef2ff' : 'transparent',
+                          color: language === 'en' ? '#4318ff' : '#334155',
+                          fontWeight: language === 'en' ? '700' : '500',
+                          fontSize: '0.8rem',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          width: '100%'
+                        }}
+                      >
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontSize: '1.15rem' }}>🇬🇧</span>
+                          <span>English (UK)</span>
+                        </span>
+                        {language === 'en' && <Check size={14} color="#4318ff" strokeWidth={2.5} />}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => { setLanguage('pt'); setIsLangMenuOpen(false); }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '8px 10px',
+                          borderRadius: '8px',
+                          border: 'none',
+                          background: language === 'pt' ? '#eef2ff' : 'transparent',
+                          color: language === 'pt' ? '#4318ff' : '#334155',
+                          fontWeight: language === 'pt' ? '700' : '500',
+                          fontSize: '0.8rem',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          width: '100%'
+                        }}
+                      >
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontSize: '1.15rem' }}>🇧🇷</span>
+                          <span>Português (BR)</span>
+                        </span>
+                        {language === 'pt' && <Check size={14} color="#4318ff" strokeWidth={2.5} />}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+
               {/* Bag Button with Badge */}
               <button
                 type="button"
@@ -354,7 +477,8 @@ export default function MobileCustomerPortal() {
                   color: '#0f172a',
                   cursor: 'pointer'
                 }}
-                aria-label="View Shopping Bag"
+                aria-label={t.header?.viewBag || 'View Shopping Bag'}
+                title={t.header?.viewBag || 'View Shopping Bag'}
               >
                 <ShoppingBag size={17} />
                 {cartCount > 0 && (
@@ -397,7 +521,7 @@ export default function MobileCustomerPortal() {
                   color: '#64748b',
                   cursor: 'pointer'
                 }}
-                title={isFullscreen ? 'Switch to Mobile Phone Shell' : 'Switch to Full Width'}
+                title={isFullscreen ? (t.header?.phoneShell || 'Switch to Mobile Phone Shell') : (t.header?.fullWidth || 'Switch to Full Width')}
               >
                 {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
               </button>

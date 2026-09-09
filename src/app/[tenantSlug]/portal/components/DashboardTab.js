@@ -15,6 +15,7 @@ import {
   Smartphone,
   ArrowUpRight
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function DashboardTab({ 
   customer, 
@@ -25,6 +26,7 @@ export default function DashboardTab({
   setActiveTab, 
   onTriggerPayment 
 }) {
+  const { t } = useLanguage();
   const unpaidBills = bills.filter(b => b.status !== 'paid');
   const totalOutstanding = unpaidBills.reduce((acc, curr) => acc + Number(curr.amount || 0), 0);
   const activeRepair = repairs.find(r => r.status !== 'picked_up' && r.status !== 'cancelled') || repairs[0];
@@ -74,7 +76,7 @@ export default function DashboardTab({
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <h2 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
-                  {customer?.name || 'Valued Customer'}
+                  {customer?.name || t.dashboard.welcome}
                 </h2>
                 <span 
                   style={{ 
@@ -91,7 +93,7 @@ export default function DashboardTab({
                 </span>
               </div>
               <p style={{ fontSize: '0.78rem', color: '#64748b', margin: '2px 0 0 0' }}>
-                {tenant?.name || 'PhoneSuite'} &bull; Customer #{customer?.id?.slice(0, 8) || '001'}
+                {tenant?.name || 'PhoneSuite'} &bull; {t.dashboard.customer} #{customer?.id?.slice(0, 8) || '001'}
               </p>
             </div>
           </div>
@@ -112,7 +114,7 @@ export default function DashboardTab({
           {/* Outstanding Balance */}
           <div>
             <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: '600' }}>
-              Total Due
+              {t.dashboard.totalDue}
             </span>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem', marginTop: '2px' }}>
               <span style={{ fontSize: '1.35rem', fontWeight: '800', color: totalOutstanding > 0 ? '#ef4444' : '#10b981' }}>
@@ -120,7 +122,7 @@ export default function DashboardTab({
               </span>
             </div>
             <span style={{ fontSize: '0.7rem', color: '#64748b' }}>
-              {unpaidBills.length} pending {unpaidBills.length === 1 ? 'bill' : 'bills'}
+              {unpaidBills.length} {unpaidBills.length === 1 ? t.dashboard.pendingBill : t.dashboard.pendingBills}
             </span>
           </div>
 
@@ -131,7 +133,7 @@ export default function DashboardTab({
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: '600' }}>
-                Credit Score
+                {t.dashboard.creditScore}
               </span>
               <ChevronRight size={14} style={{ color: '#94a3b8' }} />
             </div>
@@ -144,7 +146,7 @@ export default function DashboardTab({
               </span>
             </div>
             <span style={{ fontSize: '0.7rem', color: '#64748b' }}>
-              £{Number(customer?.credit_limit || 2500).toLocaleString()} limit
+              £{Number(customer?.credit_limit || 2500).toLocaleString()} {t.dashboard.limit}
             </span>
           </div>
         </div>
@@ -171,7 +173,7 @@ export default function DashboardTab({
                 boxShadow: '0 4px 14px rgba(16, 185, 129, 0.3)'
               }}
             >
-              <CreditCard size={16} /> Pay Due Balance Now (£{totalOutstanding.toFixed(2)})
+              <CreditCard size={16} /> {t.dashboard.payDueNow} (£{totalOutstanding.toFixed(2)})
             </button>
           </div>
         )}
@@ -194,7 +196,7 @@ export default function DashboardTab({
               </div>
               <div>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
-                  Device Repair Tracker
+                  {t.dashboard.repairTracker}
                 </h3>
                 <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
                   {activeRepair.device_model}
@@ -214,14 +216,20 @@ export default function DashboardTab({
                 border: `1px solid ${activeRepair.status === 'ready' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`
               }}
             >
-              {activeRepair.status === 'ready' ? 'Ready for Pickup' : activeRepair.status}
+              {activeRepair.status === 'ready' ? t.dashboard.readyForPickup : activeRepair.status}
             </span>
           </div>
 
           {/* Visual Step Pipeline */}
           {(() => {
             const currentStep = getStatusStepIndex(activeRepair.status);
-            const stepLabels = ['Received', 'Diagnosing', 'Repairing', 'Ready', 'Picked Up'];
+            const stepLabels = [
+              t.dashboard.stepReceived, 
+              t.dashboard.stepDiagnosing, 
+              t.dashboard.stepRepairing, 
+              t.dashboard.stepReady, 
+              t.dashboard.stepPickedUp
+            ];
 
             return (
               <div style={{ margin: '1.25rem 0 0.75rem 0' }}>
@@ -254,7 +262,7 @@ export default function DashboardTab({
 
                     return (
                       <div 
-                        key={label} 
+                        key={idx} 
                         style={{ 
                           display: 'flex', 
                           flexDirection: 'column', 
@@ -313,7 +321,7 @@ export default function DashboardTab({
                 lineHeight: 1.4
               }}
             >
-              <strong style={{ color: '#4318ff' }}>Technician update: </strong>
+              <strong style={{ color: '#4318ff' }}>{t.dashboard.techNotes}: </strong>
               <span style={{ color: '#334155' }}>{activeRepair.diagnostic_notes}</span>
             </div>
           )}
@@ -341,19 +349,20 @@ export default function DashboardTab({
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#fef08a', marginBottom: '0.35rem' }}>
           <Sparkles size={14} />
           <span style={{ fontSize: '0.72rem', fontWeight: '800', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-            Shop New Arrivals
+            {t.shop.catalogTitle}
           </span>
         </div>
 
         <h3 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#fff', margin: '0 0 0.35rem 0', maxWidth: '80%' }}>
           Phones, iPads, Watches, Laptops & Gaming
         </h3>
+
         <p style={{ fontSize: '0.76rem', color: '#e0f2fe', margin: '0 0 0.75rem 0', maxWidth: '85%' }}>
-          Instant 0% Rent-to-Own financing pre-approved with your score.
+          {t.shop.catalogSubtitle}
         </p>
 
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', fontWeight: '700', color: '#ffffff', background: 'rgba(255, 255, 255, 0.2)', padding: '4px 10px', borderRadius: '8px' }}>
-          Explore Products &bull; Pay Weekly/Monthly <ArrowUpRight size={14} />
+          {t.bills.openShop} <ArrowUpRight size={14} />
         </div>
       </div>
 
@@ -367,7 +376,7 @@ export default function DashboardTab({
               </div>
               <div>
                 <h4 style={{ fontSize: '0.9rem', fontWeight: '800', margin: 0, color: '#0f172a' }}>
-                  Hire-Purchase Contract
+                  {t.dashboard.rtoActive}
                 </h4>
                 <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
                   {contracts[0].item_name}
@@ -380,8 +389,8 @@ export default function DashboardTab({
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#64748b', margin: '0.5rem 0' }}>
-            <span>Progress: {contracts[0].paid_installments} of {contracts[0].total_installments} paid</span>
-            <span style={{ color: '#0f172a', fontWeight: '700' }}>£{contracts[0].installment_amount}/mo</span>
+            <span>{contracts[0].paid_installments} / {contracts[0].total_installments} {t.dashboard.installmentsPaid}</span>
+            <span style={{ color: '#0f172a', fontWeight: '700' }}>£{contracts[0].installment_amount}{t.bills.perMonth}</span>
           </div>
 
           <div style={{ height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
@@ -415,8 +424,8 @@ export default function DashboardTab({
           }}
         >
           <div style={{ color: '#4318ff' }}><ShoppingBag size={20} /></div>
-          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>Tech Store</span>
-          <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Browse all devices</span>
+          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>{t.dashboard.shopTech}</span>
+          <span style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.shop.all}</span>
         </button>
 
         <button
@@ -436,7 +445,7 @@ export default function DashboardTab({
           }}
         >
           <div style={{ color: '#10b981' }}><CreditCard size={20} /></div>
-          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>Pay Invoices</span>
+          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>{t.dashboard.myBills}</span>
           <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Stripe & Cards</span>
         </button>
 
@@ -457,7 +466,7 @@ export default function DashboardTab({
           }}
         >
           <div style={{ color: '#d97706' }}><Award size={20} /></div>
-          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>Credit Power</span>
+          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>{t.dashboard.creditPower}</span>
           <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Tier perks & limits</span>
         </button>
 
@@ -478,7 +487,7 @@ export default function DashboardTab({
           }}
         >
           <div style={{ color: '#7c3aed' }}><ShieldCheck size={20} /></div>
-          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>My Account</span>
+          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>{t.dashboard.storeHelp}</span>
           <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Security & store info</span>
         </button>
       </div>

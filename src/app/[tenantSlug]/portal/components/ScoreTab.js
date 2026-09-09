@@ -15,8 +15,10 @@ import {
   ArrowRight,
   Info
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ScoreTab({ customer, tenant, onGoToShop }) {
+  const { t } = useLanguage();
   const [simulatorPaid, setSimulatorPaid] = useState(false);
   const baseScore = customer?.credit_score || 785;
   const currentScore = simulatorPaid ? baseScore + 20 : baseScore;
@@ -50,7 +52,7 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', color: '#4318ff', marginBottom: '0.5rem' }}>
           <ShieldCheck size={18} />
           <span style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            PhoneSuite Credit Ledger
+            {t.score.scoreTitle}
           </span>
         </div>
 
@@ -108,7 +110,7 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
               {currentScore}
             </span>
             <span style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: '600' }}>
-              out of 1000
+              {t.score.outOf}
             </span>
             <span 
               style={{ 
@@ -122,7 +124,7 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
                 border: '1px solid rgba(16, 185, 129, 0.3)'
               }}
             >
-              EXCELLENT TIER
+              {t.score.tierExcellent}
             </span>
           </div>
         </div>
@@ -142,7 +144,7 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
         >
           <div style={{ textAlign: 'left' }}>
             <span style={{ fontSize: '0.68rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '600' }}>
-              Pre-Approved Financing Power
+              {t.score.preapprovedHardwareLimit}
             </span>
             <div style={{ fontSize: '1.25rem', fontWeight: '800', color: '#4318ff' }}>
               £{Number(creditLimit).toLocaleString()}
@@ -166,7 +168,7 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
               boxShadow: '0 2px 8px rgba(67, 24, 255, 0.25)'
             }}
           >
-            Shop with Credit <ArrowRight size={13} />
+            {t.score.shopWithCredit} <ArrowRight size={13} />
           </button>
         </div>
       </div>
@@ -174,38 +176,38 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
       {/* Score Factors Breakdown */}
       <div className="mobile-card">
         <h4 style={{ fontSize: '0.92rem', fontWeight: '800', color: '#0f172a', margin: '0 0 0.85rem 0', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <TrendingUp size={16} style={{ color: '#4318ff' }} /> Score Breakdown Factors
+          <TrendingUp size={16} style={{ color: '#4318ff' }} /> {t.score.scoreFactors}
         </h4>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid #f1f5f9' }}>
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>100% On-Time Payment History</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Zero missed installments or late bill fees</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>{t.score.factorPayment}</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.score.factorPaymentDesc}</div>
             </div>
             <span style={{ fontSize: '0.78rem', fontWeight: '800', color: '#059669' }}>+280 pts</span>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid #f1f5f9' }}>
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>Verified E-Signature & DOB</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Legal identity compliance on record</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>{t.score.factorDob}</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.score.factorDobDesc}</div>
             </div>
             <span style={{ fontSize: '0.78rem', fontWeight: '800', color: '#4318ff' }}>+180 pts</span>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid #f1f5f9' }}>
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>Device Repair Loyalty</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>3 registered hardware repairs completed</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>{t.score.factorRepairs}</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.score.factorRepairsDesc}</div>
             </div>
             <span style={{ fontSize: '0.78rem', fontWeight: '800', color: '#7c3aed' }}>+165 pts</span>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0' }}>
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>Account Longevity</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Registered since March 2024</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>{t.score.factorLoyalty}</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.score.factorLoyaltyDesc}</div>
             </div>
             <span style={{ fontSize: '0.78rem', fontWeight: '800', color: '#d97706' }}>+160 pts</span>
           </div>
@@ -215,32 +217,32 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
       {/* VIP Perks Unlocked */}
       <div className="mobile-card">
         <h4 style={{ fontSize: '0.92rem', fontWeight: '800', color: '#0f172a', margin: '0 0 0.85rem 0', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <Gift size={16} style={{ color: '#d97706' }} /> Unlocked Platinum Perks
+          <Gift size={16} style={{ color: '#d97706' }} /> {t.score.tierPerks}
         </h4>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.65rem' }}>
           <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
             <div style={{ color: '#4318ff', marginBottom: '4px' }}><Zap size={16} /></div>
             <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#0f172a' }}>0% APR RTO</div>
-            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>Zero interest finance on any shop device</div>
+            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>{t.score.perk1}</div>
           </div>
 
           <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
             <div style={{ color: '#059669', marginBottom: '4px' }}><ShieldCheck size={16} /></div>
-            <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#0f172a' }}>Free Screen Guard</div>
-            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>With every screen repair job</div>
+            <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#0f172a' }}>Screen Guard</div>
+            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>{t.score.perk2}</div>
           </div>
 
           <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
             <div style={{ color: '#ec4899', marginBottom: '4px' }}><Clock size={16} /></div>
-            <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#0f172a' }}>VIP Express Queue</div>
-            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>Under 2hr technician dispatch</div>
+            <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#0f172a' }}>Express Queue</div>
+            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>{t.score.perk3}</div>
           </div>
 
           <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
             <div style={{ color: '#d97706', marginBottom: '4px' }}><Sparkles size={16} /></div>
-            <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#0f172a' }}>15% Accessory Off</div>
-            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>Chargers, cases & audio</div>
+            <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#0f172a' }}>15% Off</div>
+            <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>{t.score.perk4}</div>
           </div>
         </div>
       </div>
@@ -253,13 +255,13 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <Sparkles size={16} style={{ color: '#4318ff' }} />
-            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>Score Booster Simulator</h4>
+            <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>{t.score.scoreSimulator}</h4>
           </div>
-          <span style={{ fontSize: '0.68rem', color: '#4318ff', fontWeight: '700' }}>Try it live</span>
+          <span style={{ fontSize: '0.68rem', color: '#4318ff', fontWeight: '700' }}>Live</span>
         </div>
 
         <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
-          See how settling pending repair invoices directly impacts your score and credit limit.
+          {t.score.simulatorPrompt}
         </p>
 
         <button
@@ -282,11 +284,11 @@ export default function ScoreTab({ customer, tenant, onGoToShop }) {
         >
           {simulatorPaid ? (
             <>
-              <CheckCircle2 size={15} /> Simulated Payment Active (+20 pts applied!) Click to reset
+              <CheckCircle2 size={15} /> {t.score.boostMessage}
             </>
           ) : (
             <>
-              Simulate Settling £149 Invoice (+20 Points & £250 Limit Bump)
+              {t.score.simulatorPrompt} (+20 pts)
             </>
           )}
         </button>

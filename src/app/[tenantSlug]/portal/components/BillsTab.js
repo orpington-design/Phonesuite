@@ -14,6 +14,7 @@ import {
   Eye,
   X
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function BillsTab({ 
   bills, 
@@ -22,6 +23,7 @@ export default function BillsTab({
   tenant, 
   customer 
 }) {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState('unpaid'); // 'unpaid', 'all', 'contracts'
   const [selectedReceipt, setSelectedReceipt] = useState(null);
 
@@ -46,15 +48,15 @@ export default function BillsTab({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <span style={{ fontSize: '0.72rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: '700' }}>
-              Total Outstanding Balance
+              {t.bills.outstandingBalance}
             </span>
             <div style={{ fontSize: '2rem', fontWeight: '800', color: totalOutstanding > 0 ? '#ef4444' : '#10b981', margin: '2px 0' }}>
               £{totalOutstanding.toFixed(2)}
             </div>
             <p style={{ fontSize: '0.76rem', color: '#64748b', margin: 0 }}>
               {unpaidBills.length === 0 
-                ? 'All accounts settled. No pending invoices!' 
-                : `${unpaidBills.length} outstanding invoices due for payment`}
+                ? t.bills.noUnpaidSub 
+                : `${unpaidBills.length} ${t.dashboard.pendingBills}`}
             </p>
           </div>
 
@@ -64,11 +66,11 @@ export default function BillsTab({
               height: '44px', 
               borderRadius: '50%', 
               background: 'rgba(16, 185, 129, 0.1)', 
-              color: '#059669',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid rgba(16, 185, 129, 0.2)'
+              color: '#059669', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              border: '1px solid rgba(16, 185, 129, 0.2)' 
             }}
           >
             <Receipt size={22} />
@@ -96,7 +98,7 @@ export default function BillsTab({
                 boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)'
               }}
             >
-              <CreditCard size={18} /> Quick Pay Next Bill (£{unpaidBills[0].amount.toFixed(2)})
+              <CreditCard size={18} /> {t.bills.payTotalDue} (£{unpaidBills[0].amount.toFixed(2)})
             </button>
           </div>
         )}
@@ -120,7 +122,7 @@ export default function BillsTab({
             transition: 'all 0.2s ease'
           }}
         >
-          Due & Unpaid ({unpaidBills.length})
+          {t.bills.tabDue} ({unpaidBills.length})
         </button>
 
         <button
@@ -139,7 +141,7 @@ export default function BillsTab({
             transition: 'all 0.2s ease'
           }}
         >
-          Paid Archive ({paidBills.length})
+          {t.bills.tabPaid} ({paidBills.length})
         </button>
 
         <button
@@ -158,7 +160,7 @@ export default function BillsTab({
             transition: 'all 0.2s ease'
           }}
         >
-          RTO Schedules
+          {t.bills.tabRto}
         </button>
       </div>
 
@@ -185,8 +187,8 @@ export default function BillsTab({
               >
                 <CheckCircle2 size={32} />
               </div>
-              <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: '800', margin: '0 0 0.35rem 0' }}>All Caught Up!</h4>
-              <p style={{ fontSize: '0.8rem', margin: 0 }}>You have no pending or overdue invoices.</p>
+              <h4 style={{ fontSize: '1rem', color: '#0f172a', fontWeight: '800', margin: '0 0 0.35rem 0' }}>{t.bills.noUnpaid}</h4>
+              <p style={{ fontSize: '0.8rem', margin: 0 }}>{t.bills.noUnpaidSub}</p>
             </div>
           ) : (
             unpaidBills.map((bill) => (
@@ -205,7 +207,7 @@ export default function BillsTab({
                     </h4>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#dc2626', fontSize: '0.75rem', marginTop: '4px', fontWeight: '600' }}>
                       <Clock size={13} />
-                      <span>Due date: {bill.due_date || 'Within 7 days'}</span>
+                      <span>{bill.due_date || 'Within 7 days'}</span>
                     </div>
                   </div>
 
@@ -224,7 +226,7 @@ export default function BillsTab({
                         textTransform: 'uppercase'
                       }}
                     >
-                      Unpaid
+                      {t.bills.tabDue}
                     </span>
                   </div>
                 </div>
@@ -249,7 +251,7 @@ export default function BillsTab({
                       boxShadow: '0 2px 8px rgba(16, 185, 129, 0.2)'
                     }}
                   >
-                    <CreditCard size={15} /> Pay with Stripe / Card
+                    <CreditCard size={15} /> {t.bills.payCard}
                   </button>
 
                   <button
@@ -300,7 +302,7 @@ export default function BillsTab({
                     </h4>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#059669', fontSize: '0.73rem', fontWeight: '600' }}>
                       <CheckCircle2 size={13} />
-                      <span>Settled on {bill.paid_at ? new Date(bill.paid_at).toLocaleDateString() : bill.due_date}</span>
+                      <span>{t.bills.paidOn} {bill.paid_at ? new Date(bill.paid_at).toLocaleDateString() : bill.due_date}</span>
                     </div>
                   </div>
 
@@ -323,7 +325,7 @@ export default function BillsTab({
                         gap: '2px'
                       }}
                     >
-                      View Receipt <ArrowRight size={12} />
+                      {t.bills.receipt} <ArrowRight size={12} />
                     </button>
                   </div>
                 </div>

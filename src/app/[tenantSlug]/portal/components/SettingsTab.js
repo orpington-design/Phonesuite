@@ -18,9 +18,12 @@ import {
   Lock,
   Calendar,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Globe,
+  Check
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function SettingsTab({ 
   customer, 
@@ -31,6 +34,7 @@ export default function SettingsTab({
   setIsFullscreen 
 }) {
   const router = useRouter();
+  const { t, language, setLanguage } = useLanguage();
 
   // Notification toggles
   const [smsRepair, setSmsRepair] = useState(true);
@@ -74,12 +78,12 @@ export default function SettingsTab({
 
         <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '0.85rem', fontSize: '0.78rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', border: '1px solid #e2e8f0' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ color: '#64748b' }}>Phone:</span>
+            <span style={{ color: '#64748b' }}>{t.settings.phone}</span>
             <span style={{ color: '#0f172a', fontWeight: '700' }}>{customer?.phone || '+44 7911 123456'}</span>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ color: '#64748b' }}>Date of Birth (E-Sign):</span>
+            <span style={{ color: '#64748b' }}>DOB:</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
               <span style={{ color: '#0f172a', fontWeight: '700' }}>{customer?.dob || '14 June 1992'}</span>
               <CheckCircle2 size={14} style={{ color: '#059669' }} />
@@ -87,7 +91,7 @@ export default function SettingsTab({
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ color: '#64748b' }}>Address:</span>
+            <span style={{ color: '#64748b' }}>{t.settings.address}</span>
             <span style={{ color: '#334155', textAlign: 'right', maxWidth: '60%', fontWeight: '500' }}>
               {customer?.address || '42 Baker Street, London NW1 6XE'}
             </span>
@@ -95,17 +99,75 @@ export default function SettingsTab({
         </div>
       </div>
 
+      {/* Language / Idioma Card (Brazil & England) */}
+      <div className="mobile-card">
+        <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a', margin: '0 0 0.35rem 0', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <Globe size={16} style={{ color: '#4318ff' }} /> {t.settings.languageSetting}
+        </h4>
+        <p style={{ fontSize: '0.74rem', color: '#64748b', margin: '0 0 0.75rem 0' }}>
+          {t.settings.languageDesc}
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+          {/* England / UK */}
+          <button
+            type="button"
+            onClick={() => setLanguage('en')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem',
+              borderRadius: '12px',
+              border: language === 'en' ? '2px solid #4318ff' : '1px solid #e2e8f0',
+              background: language === 'en' ? '#f5f3ff' : '#f8fafc',
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
+            <span style={{ fontSize: '1.4rem' }}>🇬🇧</span>
+            <div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '800', color: language === 'en' ? '#4318ff' : '#0f172a' }}>English</div>
+              <div style={{ fontSize: '0.65rem', color: '#64748b' }}>England / UK</div>
+            </div>
+          </button>
+
+          {/* Brazil */}
+          <button
+            type="button"
+            onClick={() => setLanguage('pt')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem',
+              borderRadius: '12px',
+              border: language === 'pt' ? '2px solid #4318ff' : '1px solid #e2e8f0',
+              background: language === 'pt' ? '#f5f3ff' : '#f8fafc',
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
+            <span style={{ fontSize: '1.4rem' }}>🇧🇷</span>
+            <div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '800', color: language === 'pt' ? '#4318ff' : '#0f172a' }}>Português</div>
+              <div style={{ fontSize: '0.65rem', color: '#64748b' }}>Brasil</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
       {/* Security & Regulatory Compliance */}
       <div className="mobile-card">
         <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <ShieldCheck size={16} style={{ color: '#059669' }} /> Security & Regulatory Verification
+          <ShieldCheck size={16} style={{ color: '#059669' }} /> {t.settings.securityTitle}
         </h4>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.4rem 0' }}>
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>DOB Identity Verification</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Verified for UK Consumer Credit Agreements</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>{t.settings.verifiedDob}</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.settings.dobPassed}</div>
             </div>
             <span style={{ fontSize: '0.68rem', padding: '3px 8px', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.12)', color: '#059669', fontWeight: '700' }}>
               VERIFIED
@@ -114,8 +176,8 @@ export default function SettingsTab({
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.4rem 0' }}>
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>Biometrics / Face ID Prompt</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Quick sign-in with phone biometrics</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>{t.settings.biometrics}</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Face ID & PIN</div>
             </div>
             <input 
               type="checkbox" 
@@ -130,14 +192,14 @@ export default function SettingsTab({
       {/* Notifications */}
       <div className="mobile-card">
         <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <Bell size={16} style={{ color: '#4318ff' }} /> Notifications & Alerts
+          <Bell size={16} style={{ color: '#4318ff' }} /> {t.settings.smsAlerts}
         </h4>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>Repair Status SMS</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Real-time updates as device is fixed</div>
+              <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>SMS Updates</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Real-time repairs & payments</div>
             </div>
             <input 
               type="checkbox" 
@@ -150,7 +212,7 @@ export default function SettingsTab({
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>Bill & RTO Reminders</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>3 days before installment due date</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Installment due alerts</div>
             </div>
             <input 
               type="checkbox" 
@@ -163,7 +225,7 @@ export default function SettingsTab({
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0f172a' }}>Shop Product Drops</div>
-              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Alerts on new phones, iPads & consoles</div>
+              <div style={{ fontSize: '0.68rem', color: '#64748b' }}>Alerts on new tech</div>
             </div>
             <input 
               type="checkbox" 
@@ -178,7 +240,7 @@ export default function SettingsTab({
       {/* Store & Branch Information */}
       <div className="mobile-card">
         <h4 style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a', margin: '0 0 0.75rem 0', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <Store size={16} style={{ color: '#d97706' }} /> {tenant?.name || 'PhoneSuite'} Store Location
+          <Store size={16} style={{ color: '#d97706' }} /> {tenant?.name || 'PhoneSuite'} {t.settings.branchTitle}
         </h4>
 
         <div style={{ fontSize: '0.78rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
@@ -189,7 +251,7 @@ export default function SettingsTab({
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Clock size={15} style={{ color: '#4318ff', flexShrink: 0 }} />
-            <span>Mon - Sat: 9:00 AM - 7:00 PM &bull; Sun: 10:30 AM - 5:00 PM</span>
+            <span>{t.settings.branchHours}</span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -218,7 +280,7 @@ export default function SettingsTab({
               gap: '0.35rem'
             }}
           >
-            <Phone size={14} /> Call Store
+            <Phone size={14} /> {t.settings.callBranch}
           </a>
 
           <a
@@ -242,7 +304,7 @@ export default function SettingsTab({
               gap: '0.35rem'
             }}
           >
-            <MessageSquare size={14} /> WhatsApp Tech
+            <MessageSquare size={14} /> {t.settings.whatsappTechnician}
           </a>
         </div>
       </div>

@@ -10,6 +10,7 @@ import {
   Sparkles,
   Zap
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function PaymentModal({ 
   bill, 
@@ -17,6 +18,7 @@ export default function PaymentModal({
   onClose, 
   onPaymentSuccess 
 }) {
+  const { t } = useLanguage();
   const [method, setMethod] = useState('card');
   const [cardNumber, setCardNumber] = useState('4242 4242 4242 4242');
   const [cardExpiry, setCardExpiry] = useState('12/28');
@@ -115,10 +117,10 @@ export default function PaymentModal({
               <CheckCircle2 size={38} />
             </div>
             <h3 style={{ fontSize: '1.3rem', fontWeight: '800', margin: '0 0 0.5rem 0', color: '#0f172a' }}>
-              Payment Successful!
+              {t.paymentModal.paymentSuccessTitle}
             </h3>
             <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
-              £{amount.toFixed(2)} settled via Stripe platform Connect. Invoice status updated.
+              {t.paymentModal.paymentSuccessDesc}
             </p>
           </div>
         ) : (
@@ -128,14 +130,14 @@ export default function PaymentModal({
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#4318ff', marginBottom: '0.25rem' }}>
                 <Lock size={15} />
                 <span style={{ fontSize: '0.72rem', fontWeight: '800', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                  Stripe / Square Secure Checkout
+                  {t.paymentModal.securePayment}
                 </span>
               </div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: '#0f172a' }}>
-                Pay Invoice
+                {t.paymentModal.payTitle}
               </h3>
               <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '2px 0 0 0' }}>
-                Merchant: {tenant?.name || 'PhoneSuite UK'}
+                {tenant?.name || 'PhoneSuite UK'}
               </p>
             </div>
 
@@ -159,7 +161,7 @@ export default function PaymentModal({
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Amount</span>
+                  <span style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.paymentModal.amountToPay}</span>
                   <div style={{ fontSize: '1.25rem', fontWeight: '800', color: '#059669' }}>
                     £{amount.toFixed(2)}
                   </div>
@@ -190,12 +192,12 @@ export default function PaymentModal({
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
               }}
             >
-              <Zap size={16} /> Pay with Apple Pay / Google Pay
+              <Zap size={16} /> Apple Pay / Google Pay
             </button>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0.75rem 0', color: '#94a3b8', fontSize: '0.72rem' }}>
               <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }} />
-              <span>OR PAY WITH CARD</span>
+              <span>{t.paymentModal.cardDetails.toUpperCase()}</span>
               <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }} />
             </div>
 
@@ -203,7 +205,7 @@ export default function PaymentModal({
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <div>
                 <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '4px', fontWeight: '600' }}>
-                  Cardholder Name
+                  {t.paymentModal.nameOnCard}
                 </label>
                 <input
                   type="text"
@@ -226,7 +228,7 @@ export default function PaymentModal({
 
               <div>
                 <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '4px', fontWeight: '600' }}>
-                  Card Number
+                  {t.paymentModal.cardNumber}
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
@@ -256,7 +258,7 @@ export default function PaymentModal({
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                 <div>
                   <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '4px', fontWeight: '600' }}>
-                    Expiry Date
+                    {t.paymentModal.expiry}
                   </label>
                   <input
                     type="text"
@@ -280,7 +282,7 @@ export default function PaymentModal({
 
                 <div>
                   <label style={{ fontSize: '0.72rem', color: '#64748b', display: 'block', marginBottom: '4px', fontWeight: '600' }}>
-                    CVC
+                    {t.paymentModal.cvc}
                   </label>
                   <input
                     type="password"
@@ -325,7 +327,7 @@ export default function PaymentModal({
                   boxShadow: '0 4px 15px rgba(16, 185, 129, 0.35)'
                 }}
               >
-                {isProcessing ? 'Processing Secure Card...' : `Confirm & Pay £${amount.toFixed(2)}`}
+                {isProcessing ? 'Processing...' : `${t.paymentModal.payNow} (£${amount.toFixed(2)})`}
               </button>
             </form>
           </>

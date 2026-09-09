@@ -22,6 +22,7 @@ import {
   Info
 } from 'lucide-react';
 import { SHOP_CATEGORIES } from '../data/portalData';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ShopTab({ 
   products, 
@@ -31,6 +32,7 @@ export default function ShopTab({
   onOpenCart,
   customerCreditLimit = 2500
 }) {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('featured');
@@ -47,6 +49,20 @@ export default function ShopTab({
       case 'videogames': return <Gamepad2 size={15} />;
       case 'accessories': return <Cable size={15} />;
       default: return <Sparkles size={15} />;
+    }
+  };
+
+  // Map category label
+  const getCategoryLabel = (id) => {
+    switch (id) {
+      case 'phones': return t.shop.phones;
+      case 'ipads': return t.shop.ipads;
+      case 'watches': return t.shop.watches;
+      case 'airphones': return t.shop.audio;
+      case 'laptops': return t.shop.laptops;
+      case 'videogames': return t.shop.games;
+      case 'accessories': return t.shop.accessories;
+      default: return t.shop.all;
     }
   };
 
@@ -106,16 +122,16 @@ export default function ShopTab({
         </div>
 
         <h3 style={{ fontSize: '1.2rem', fontWeight: '800', margin: '0 0 0.25rem 0', maxWidth: '85%' }}>
-          Premium Tech & Devices
+          {t.shop.catalogTitle}
         </h3>
         <p style={{ fontSize: '0.76rem', color: '#e0f2fe', margin: '0 0 0.75rem 0', maxWidth: '85%', lineHeight: 1.4 }}>
-          Phones, iPads, Watches, Airphones, Laptops & Videogames with instant 0% Rent-to-Own financing.
+          {t.shop.catalogSubtitle}
         </p>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: 'rgba(0, 0, 0, 0.2)', padding: '4px 10px', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: '700' }}>
             <Zap size={13} style={{ color: '#fef08a' }} />
-            <span>Pre-approved Limit: £{Number(customerCreditLimit).toLocaleString()}</span>
+            <span>{t.shop.preapprovedCredit}: £{Number(customerCreditLimit).toLocaleString()}</span>
           </div>
 
           {cartItemsCount > 0 && (
@@ -136,7 +152,7 @@ export default function ShopTab({
                 boxShadow: '0 4px 10px rgba(0,0,0,0.15)'
               }}
             >
-              <ShoppingBag size={13} /> View Bag ({cartItemsCount})
+              <ShoppingBag size={13} /> {t.header.viewBag} ({cartItemsCount})
             </button>
           )}
         </div>
@@ -160,7 +176,7 @@ export default function ShopTab({
           <Search size={16} style={{ color: '#64748b' }} />
           <input
             type="text"
-            placeholder="Search phones, iPads, laptops, games..."
+            placeholder={t.shop.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -191,10 +207,10 @@ export default function ShopTab({
             boxShadow: '0 2px 5px rgba(0,0,0,0.02)'
           }}
         >
-          <option value="featured">Featured</option>
-          <option value="price-low">Price: Low to High</option>
-          <option value="price-high">Price: High to Low</option>
-          <option value="rto-low">Lowest Monthly RTO</option>
+          <option value="featured">{t.shop.sortFeatured}</option>
+          <option value="price-low">{t.shop.sortPriceAsc}</option>
+          <option value="price-high">{t.shop.sortPriceDesc}</option>
+          <option value="rto-low">{t.shop.sortRtoAsc}</option>
         </select>
       </div>
 
@@ -209,7 +225,7 @@ export default function ShopTab({
               onClick={() => setSelectedCategory(cat.id)}
             >
               {getCategoryIcon(cat.id)}
-              <span>{cat.label}</span>
+              <span>{getCategoryLabel(cat.id)}</span>
             </button>
           );
         })}
@@ -219,8 +235,8 @@ export default function ShopTab({
       {filteredProducts.length === 0 ? (
         <div className="mobile-card" style={{ textAlign: 'center', padding: '3rem 1rem', color: '#64748b' }}>
           <Search size={36} style={{ margin: '0 auto 0.75rem auto', opacity: 0.4 }} />
-          <h4 style={{ color: '#0f172a', fontWeight: '800', margin: '0 0 0.35rem 0' }}>No products found</h4>
-          <p style={{ fontSize: '0.8rem', margin: 0 }}>Try clearing your search or choosing another category.</p>
+          <h4 style={{ color: '#0f172a', fontWeight: '800', margin: '0 0 0.35rem 0' }}>{t.shop.noProducts}</h4>
+          <p style={{ fontSize: '0.8rem', margin: 0 }}>{t.shop.clearFilter}</p>
         </div>
       ) : (
         <div className="mobile-products-grid">
@@ -332,13 +348,13 @@ export default function ShopTab({
                       £{product.price.toFixed(2)}
                     </span>
                     <span style={{ fontSize: '0.65rem', color: '#059669', fontWeight: '700' }}>
-                      In Stock ({product.stock})
+                      {t.shop.inStock} ({product.stock})
                     </span>
                   </div>
 
                   {product.rtoMonthly && (
                     <div style={{ fontSize: '0.68rem', color: '#4318ff', fontWeight: '700', marginTop: '1px' }}>
-                      or £{product.rtoMonthly.toFixed(2)}/mo (0% RTO)
+                      or £{product.rtoMonthly.toFixed(2)}{t.bills.perMonth} (0% RTO)
                     </div>
                   )}
 
@@ -365,11 +381,11 @@ export default function ShopTab({
                   >
                     {isAdded ? (
                       <>
-                        <Check size={13} /> Added to Bag
+                        <Check size={13} /> ✓
                       </>
                     ) : (
                       <>
-                        <Plus size={13} /> Add to Bag
+                        <Plus size={13} /> {t.shop.addToBag}
                       </>
                     )}
                   </button>
