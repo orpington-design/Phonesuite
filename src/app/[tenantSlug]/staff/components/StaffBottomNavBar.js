@@ -68,6 +68,24 @@ export default function StaffBottomNavBar({
 
       {/* 3. CENTER & MAIN: SALE (Elevated Floating Action Button) */}
       <div className="mobile-shop-center-container">
+        <span 
+          style={{
+            position: 'absolute',
+            top: '-32px',
+            background: '#0c1328',
+            border: '1px solid #ff7a00',
+            color: '#ffedd5',
+            fontSize: '0.54rem',
+            fontWeight: '900',
+            padding: '1px 6px',
+            borderRadius: '9999px',
+            letterSpacing: '0.05em',
+            zIndex: 65,
+            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)'
+          }}
+        >
+          MAIN
+        </span>
         <button
           type="button"
           className={`mobile-shop-center-btn staff-sale-center-btn ${activeTab === 'sale' ? 'active' : ''}`}
@@ -76,12 +94,12 @@ export default function StaffBottomNavBar({
           title="Point of Sale & RTO Financing"
         >
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ShoppingCart size={24} strokeWidth={2.4} />
+            <ShoppingCart size={23} strokeWidth={2.4} />
             <Sparkles 
-              size={12} 
+              size={11} 
               style={{ 
                 position: 'absolute', 
-                top: -4, 
+                top: -3, 
                 right: -4, 
                 color: '#fef08a', 
                 filter: 'drop-shadow(0 0 4px rgba(253, 224, 71, 0.9))' 

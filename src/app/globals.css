@@ -809,23 +809,24 @@ h1, h2, h3, h4, h5, h6 {
    =================================================== */
 
 .staff-sale-center-btn {
-  background: linear-gradient(135deg, #0A1128 0%, #2563eb 100%) !important;
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4), 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  background: linear-gradient(135deg, #ff7a00 0%, #ea580c 100%) !important;
+  box-shadow: 0 10px 25px rgba(234, 88, 12, 0.45), 0 2px 8px rgba(0, 0, 0, 0.15) !important;
 }
 
 .staff-sale-center-btn:hover {
   transform: scale(1.06);
-  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.55) !important;
+  box-shadow: 0 14px 30px rgba(234, 88, 12, 0.6) !important;
 }
 
 .staff-sale-center-btn.active {
-  background: linear-gradient(135deg, #2563eb 0%, #38bdf8 50%, #10b981 100%) !important;
-  box-shadow: 0 0 26px rgba(37, 99, 235, 0.6) !important;
+  background: linear-gradient(135deg, #ff7a00 0%, #f59e0b 50%, #10b981 100%) !important;
+  box-shadow: 0 0 26px rgba(234, 88, 12, 0.65) !important;
   animation: pulse-ring-staff 2.5s infinite;
 }
 
 .staff-sale-label {
-  color: #2563eb !important;
+  color: #ea580c !important;
+  font-weight: 900 !important;
 }
 
 .staff-mini-badge {
