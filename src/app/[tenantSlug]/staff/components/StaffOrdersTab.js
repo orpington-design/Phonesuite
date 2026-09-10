@@ -24,7 +24,8 @@ import {
 import { 
   INITIAL_ONLINE_ORDERS, 
   getSavedOnlineOrders, 
-  persistOnlineOrders 
+  persistOnlineOrders,
+  formatMoney
 } from '../data/staffData';
 import { useStaffLanguage } from '../context/StaffLanguageContext';
 
@@ -482,12 +483,12 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                             {item.name}
                           </div>
                           <div style={{ fontSize: '0.64rem', color: '#64748b' }}>
-                            Qty: {item.qty || 1} × £{Number(item.price).toFixed(2)}
+                            Qty: {item.qty || 1} × {formatMoney(item.price)}
                           </div>
                         </div>
                       </div>
                       <div style={{ fontSize: '0.8rem', fontWeight: '800', color: '#0f172a' }}>
-                        £{(Number(item.price) * (item.qty || 1)).toFixed(2)}
+                        {formatMoney(Number(item.price) * (item.qty || 1))}
                       </div>
                     </div>
                   ))}
@@ -504,7 +505,7 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                   }}
                 >
                   <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
-                    Total: <strong style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: '900' }}>£{Number(order.total).toFixed(2)}</strong>
+                    Total: <strong style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: '900' }}>{formatMoney(order.total)}</strong>
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ea580c', fontSize: '0.74rem', fontWeight: '800' }}>

@@ -26,7 +26,8 @@ import {
 import { 
   INITIAL_ONLINE_ORDERS, 
   getSavedOnlineOrders, 
-  persistOnlineOrders 
+  persistOnlineOrders,
+  formatMoney
 } from '../../data/staffData';
 import { StaffLanguageProvider, useStaffLanguage } from '../../context/StaffLanguageContext';
 
@@ -80,7 +81,7 @@ function StaffOrderDetailContent() {
       : 'has been successfully delivered / collected!';
 
     const text = encodeURIComponent(
-      `Hello ${order.customerName},\nThis is PhoneSuite UK regarding your online order #${order.orderNumber}.\n\nYour order ${statusMsg}\n\nFulfillment: ${isPickup ? 'Store Click & Collect' : 'Courier Delivery'}\nTotal Paid: £${Number(order.total).toFixed(2)}\n\nThank you for choosing PhoneSuite UK!`
+      `Hello ${order.customerName},\nThis is PhoneSuite UK regarding your online order #${order.orderNumber}.\n\nYour order ${statusMsg}\n\nFulfillment: ${isPickup ? 'Store Click & Collect' : 'Courier Delivery'}\nTotal Paid: ${formatMoney(order.total)}\n\nThank you for choosing PhoneSuite UK!`
     );
     window.open(`https://wa.me/${order.customerPhone?.replace(/[^0-9]/g, '')}?text=${text}`, '_blank');
   };
@@ -443,12 +444,12 @@ function StaffOrderDetailContent() {
                         {item.name}
                       </div>
                       <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>
-                        Qty: {item.qty || 1} &times; £{Number(item.price).toFixed(2)}
+                        Qty: {item.qty || 1} &times; {formatMoney(item.price)}
                       </div>
                     </div>
                   </div>
                   <div style={{ fontSize: '0.92rem', fontWeight: '900', color: '#0f172a' }}>
-                    £{(Number(item.price) * (item.qty || 1)).toFixed(2)}
+                    {formatMoney(Number(item.price) * (item.qty || 1))}
                   </div>
                 </div>
               ))}
@@ -458,15 +459,15 @@ function StaffOrderDetailContent() {
             <div style={{ marginTop: '1rem', paddingTop: '0.85rem', borderTop: '1px solid #f1f5f9', display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.78rem', color: '#64748b' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Subtotal (Net):</span>
-                <span>£{Number(order.subtotal || order.total * 0.8).toFixed(2)}</span>
+                <span>{formatMoney(order.subtotal || order.total * 0.8)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>VAT (20%):</span>
-                <span>£{Number(order.vat || order.total * 0.2).toFixed(2)}</span>
+                <span>{formatMoney(order.vat || order.total * 0.2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.05rem', fontWeight: '900', color: '#0f172a', paddingTop: '6px', borderTop: '1px solid #f1f5f9', marginTop: '4px' }}>
                 <span>Total Paid in Full:</span>
-                <span style={{ color: '#ea580c' }}>£{Number(order.total).toFixed(2)}</span>
+                <span style={{ color: '#ea580c' }}>{formatMoney(order.total)}</span>
               </div>
               <div style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: '700', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <CheckCircle2 size={13} />

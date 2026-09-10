@@ -13,60 +13,205 @@ export const STORE_BRANCHES = [
   { id: 'branch-bri', name: 'Bristol Harbourside', address: '18 Anchor Road, Bristol BS1 5TT', phone: '+44 117 929 4400' }
 ];
 
+export const formatMoney = (val) => {
+  const num = Number(val || 0);
+  return '£' + num.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
 export const INITIAL_STAFF_CUSTOMERS = [
   {
     id: 'cust-001',
     name: 'Daniel Harris',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
     phone: '+44 7911 123456',
     email: 'd.harris@example.com',
     credit_score: 785,
     credit_limit: 2500.00,
     tier: 'Platinum VIP',
+    status: 'Regular Customer',
     address: '42 Baker Street, Marylebone, London NW1 6XE',
     total_spent: 3450.00,
     active_repairs_count: 1,
-    overdue_count: 0
+    overdue_count: 0,
+    kyc_status: 'Verified (Passport & Open Banking)',
+    member_since: 'March 2024',
+    orders_history: [
+      { orderNumber: 'ORD-2026-9770', date: '2026-09-08', item: 'Apple Watch Ultra 2 GPS + Cellular', amount: 799.00, status: 'Delivered' },
+      { orderNumber: 'ORD-2025-4412', date: '2025-11-20', item: 'iPad Air 11" M2 128GB (Starlight)', amount: 599.00, status: 'Delivered' },
+      { orderNumber: 'ORD-2025-1029', date: '2025-04-15', item: 'AirPods Pro 2 USB-C MagSafe', amount: 229.00, status: 'Delivered' }
+    ],
+    finance_agreements_history: [
+      { agreementNumber: 'RTO-2024-081', device: 'Apple iPhone 14 Pro 128GB', totalFinanced: 949.00, installmentsPaid: 12, totalInstallments: 12, status: 'Completed (Paid in Full)', onTimeRate: '100%' }
+    ],
+    repairs_history: [
+      { repairId: 'REP-101', device: 'Apple iPhone 15 Pro', issue: 'Front OLED screen cracked after drop', cost: 149.00, status: 'Ready for Collection', date: '2026-09-07' }
+    ]
   },
   {
     id: 'cust-002',
     name: 'Eleanor Wright',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
     phone: '+44 7822 456789',
     email: 'eleanor.w@cloudmail.co.uk',
     credit_score: 610,
     credit_limit: 1200.00,
     tier: 'Gold Member',
+    status: 'Regular Customer',
     address: '15 Gloucester Rd, Kensington, London SW7 4PP',
     total_spent: 1890.00,
     active_repairs_count: 1,
-    overdue_count: 1
+    overdue_count: 1,
+    kyc_status: 'Verified (UK Driving Licence)',
+    member_since: 'January 2025',
+    orders_history: [
+      { orderNumber: 'ORD-2025-8819', date: '2025-12-10', item: 'Samsung Galaxy Watch 6 44mm', amount: 289.00, status: 'Delivered' }
+    ],
+    finance_agreements_history: [
+      { agreementNumber: 'RTO-2025-119', device: 'Apple iPad Pro 12.9" M2', totalFinanced: 899.00, installmentsPaid: 9, totalInstallments: 12, status: 'Active (1 Overdue Payment)', onTimeRate: '88%' }
+    ],
+    repairs_history: [
+      { repairId: 'REP-102', device: 'Apple iPad Pro 12.9" M2', issue: 'USB-C charging port loose', cost: 115.00, status: 'In Repair', date: '2026-09-08' }
+    ]
   },
   {
     id: 'cust-003',
     name: 'James Rodriguez',
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=80',
     phone: '+44 7755 890123',
     email: 'j.rodriguez@techhub.io',
     credit_score: 820,
     credit_limit: 4000.00,
     tier: 'Platinum VIP',
+    status: 'Regular Customer',
     address: '88 Camden High St, London NW1 0LT',
     total_spent: 5600.00,
     active_repairs_count: 0,
-    overdue_count: 1
+    overdue_count: 1,
+    kyc_status: 'Verified (Biometric ID Check)',
+    member_since: 'October 2023',
+    orders_history: [
+      { orderNumber: 'ORD-2026-0120', date: '2026-02-14', item: 'MacBook Pro 14" M3 Max 1TB', amount: 3199.00, status: 'Delivered' },
+      { orderNumber: 'ORD-2025-7741', date: '2025-09-05', item: 'iPhone 15 Pro 256GB Black', amount: 1099.00, status: 'Delivered' }
+    ],
+    finance_agreements_history: [
+      { agreementNumber: 'RTO-2024-012', device: 'MacBook Pro 16" M2', totalFinanced: 2499.00, installmentsPaid: 24, totalInstallments: 24, status: 'Completed (Paid in Full)', onTimeRate: '100%' }
+    ],
+    repairs_history: []
   },
   {
     id: 'cust-004',
     name: 'Chloe Bennett',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
     phone: '+44 7933 671234',
     email: 'chloe.bennett@designcraft.com',
-    credit_score: 740,
-    credit_limit: 2000.00,
+    credit_score: 685,
+    credit_limit: 1800.00,
     tier: 'Silver Member',
+    status: 'New Customer',
     address: '34 Shoreditch High St, London E1 6PG',
     total_spent: 850.00,
     active_repairs_count: 1,
-    overdue_count: 0
+    overdue_count: 0,
+    kyc_status: 'Verified (UK Driving Licence & Open Banking)',
+    member_since: 'August 2026',
+    orders_history: [
+      { orderNumber: 'ORD-2026-5501', date: '2026-08-25', item: 'Sony WH-1000XM5 Headphones', amount: 279.00, status: 'Delivered' }
+    ],
+    finance_agreements_history: [],
+    repairs_history: [
+      { repairId: 'REP-103', device: 'MacBook Air 13" M1', issue: 'Liquid spill on spacebar and left keys', cost: 175.00, status: 'Diagnostic Testing', date: '2026-09-09' }
+    ]
+  },
+  {
+    id: 'cust-005',
+    name: 'Liam O\'Connor',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    phone: '+44 7899 112233',
+    email: 'liam.oc@devstudio.co.uk',
+    credit_score: 745,
+    credit_limit: 2500.00,
+    tier: 'Gold Member',
+    status: 'Regular Customer',
+    address: '22 Brick Lane, Tower Hamlets, London E1 6RF',
+    total_spent: 2450.00,
+    active_repairs_count: 0,
+    overdue_count: 0,
+    kyc_status: 'Verified (Passport & Open Banking Payroll)',
+    member_since: 'April 2024',
+    orders_history: [
+      { orderNumber: 'ORD-2025-7822', date: '2025-10-18', item: 'Apple AirPods Max (Space Grey)', amount: 499.00, status: 'Delivered' },
+      { orderNumber: 'ORD-2024-3310', date: '2024-05-12', item: 'Apple Studio Display 27" 5K', amount: 1499.00, status: 'Delivered' }
+    ],
+    finance_agreements_history: [
+      { agreementNumber: 'RTO-2024-052', device: 'Apple iPhone 14 Pro Max 256GB', totalFinanced: 1199.00, installmentsPaid: 24, totalInstallments: 24, status: 'Completed (Paid in Full)', onTimeRate: '100%' }
+    ],
+    repairs_history: [
+      { repairId: 'REP-088', device: 'iPhone 14 Pro Max', issue: 'Battery degradation diagnostic & replacement', cost: 89.00, status: 'Completed & Collected', date: '2025-06-11' }
+    ]
+  },
+  {
+    id: 'cust-006',
+    name: 'Marcus Vance',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    phone: '+44 7700 900789',
+    email: 'm.vance@techmedia.co.uk',
+    credit_score: 810,
+    credit_limit: 3500.00,
+    tier: 'Platinum VIP',
+    status: 'Regular Customer',
+    address: '88 Deansgate, Manchester M3 2FW',
+    total_spent: 4200.00,
+    active_repairs_count: 0,
+    overdue_count: 0,
+    kyc_status: 'Verified (UK Passport & Open Banking)',
+    member_since: 'November 2023',
+    orders_history: [
+      { orderNumber: 'ORD-2025-4100', date: '2025-07-22', item: 'Apple iPad Pro 11" M4 256GB', amount: 999.00, status: 'Delivered' }
+    ],
+    finance_agreements_history: [
+      { agreementNumber: 'RTO-2023-110', device: 'MacBook Pro 14" M2 Pro', totalFinanced: 1999.00, installmentsPaid: 24, totalInstallments: 24, status: 'Completed (Paid in Full)', onTimeRate: '100%' }
+    ],
+    repairs_history: []
+  },
+  {
+    id: 'cust-007',
+    name: 'Jordan Reed',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    phone: '+44 7766 554433',
+    email: 'jordan.reed@freemail.co.uk',
+    credit_score: 540,
+    credit_limit: 600.00,
+    tier: 'Bronze',
+    status: 'New Customer',
+    address: '5 Stratford Broadway, London E15 4BQ',
+    total_spent: 120.00,
+    active_repairs_count: 0,
+    overdue_count: 0,
+    kyc_status: 'Conditional (National Insurance verified, manual address check)',
+    member_since: 'September 2026',
+    orders_history: [
+      { orderNumber: 'ORD-2026-9011', date: '2026-09-02', item: 'Anker 65W GaN Fast Charger + 2m Cable', amount: 45.00, status: 'Delivered' }
+    ],
+    finance_agreements_history: [],
+    repairs_history: []
   }
 ];
+
+export function getSavedStaffCustomers() {
+  if (typeof window === 'undefined') return INITIAL_STAFF_CUSTOMERS;
+  try {
+    const saved = localStorage.getItem('phonesuite_staff_customers');
+    if (saved) return JSON.parse(saved);
+  } catch (e) {}
+  return INITIAL_STAFF_CUSTOMERS;
+}
+
+export function persistStaffCustomers(list) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem('phonesuite_staff_customers', JSON.stringify(list));
+  } catch (e) {}
+}
 
 export const INITIAL_STAFF_REPAIRS = [
   {
@@ -564,6 +709,7 @@ export function persistOnlineOrders(list) {
 export const INITIAL_FINANCE_REQUESTS = [
   {
     id: 'fin-201',
+    customerId: 'cust-005',
     applicationNumber: 'FIN-2026-0412',
     customerName: 'Liam O\'Connor',
     customerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
@@ -607,6 +753,7 @@ export const INITIAL_FINANCE_REQUESTS = [
   },
   {
     id: 'fin-202',
+    customerId: 'cust-004',
     applicationNumber: 'FIN-2026-0413',
     customerName: 'Chloe Bennett',
     customerAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
@@ -659,6 +806,7 @@ export const INITIAL_FINANCE_REQUESTS = [
   },
   {
     id: 'fin-203',
+    customerId: 'cust-006',
     applicationNumber: 'FIN-2026-0409',
     customerName: 'Marcus Vance',
     customerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
@@ -667,7 +815,7 @@ export const INITIAL_FINANCE_REQUESTS = [
     customerEmail: 'm.vance@techmedia.co.uk',
     customerAddress: '88 Deansgate, Manchester M3 2FW',
     creditScore: 810,
-    creditTier: 'Prime Tier',
+    creditTier: 'Excellent',
     creditLimit: 3500.00,
     employmentStatus: 'Senior Studio Producer (£4,200/mo net)',
     employerName: 'MediaWorks UK Broadcasting',
@@ -702,6 +850,7 @@ export const INITIAL_FINANCE_REQUESTS = [
   },
   {
     id: 'fin-204',
+    customerId: 'cust-007',
     applicationNumber: 'FIN-2026-0401',
     customerName: 'Jordan Reed',
     customerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',

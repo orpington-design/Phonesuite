@@ -16,7 +16,7 @@ import {
   ExternalLink,
   Smartphone
 } from 'lucide-react';
-import { INITIAL_STAFF_INVOICES } from '../data/staffData';
+import { INITIAL_STAFF_INVOICES, formatMoney } from '../data/staffData';
 
 export default function OverdueInvoicesPage() {
   const router = useRouter();
@@ -125,7 +125,7 @@ export default function OverdueInvoicesPage() {
             </div>
 
             <div style={{ fontSize: '2rem', fontWeight: '900', color: '#e11d48', letterSpacing: '-0.03em', lineHeight: 1 }}>
-              £{totalOverdue.toFixed(2)}
+              {formatMoney(totalOverdue)}
             </div>
             
             <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '8px', fontWeight: '500' }}>
@@ -195,7 +195,7 @@ export default function OverdueInvoicesPage() {
 
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#e11d48' }}>
-                        £{Number(inv.amount).toFixed(2)}
+                        {formatMoney(inv.amount)}
                       </div>
                       <div style={{ fontSize: '0.68rem', color: '#be123c', fontWeight: '700' }}>
                         Due: {inv.due_date}

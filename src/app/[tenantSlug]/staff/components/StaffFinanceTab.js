@@ -29,7 +29,8 @@ import {
 import { 
   INITIAL_FINANCE_REQUESTS, 
   getSavedFinanceRequests, 
-  persistFinanceRequests 
+  persistFinanceRequests,
+  formatMoney
 } from '../data/staffData';
 import { useStaffLanguage } from '../context/StaffLanguageContext';
 
@@ -458,7 +459,7 @@ export default function StaffFinanceTab({ tenant, branch, tenantSlug }) {
                         {req.requestedItem}
                       </div>
                       <div style={{ fontSize: '0.68rem', color: '#64748b' }}>
-                        Retail Cash Price: £{Number(req.itemPrice).toFixed(2)}
+                        Retail Cash Price: {formatMoney(req.itemPrice)}
                       </div>
                     </div>
                   </div>
@@ -467,11 +468,11 @@ export default function StaffFinanceTab({ tenant, branch, tenantSlug }) {
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px', marginTop: '4px' }}>
                     <div style={{ background: '#ffffff', borderRadius: '8px', padding: '6px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                       <div style={{ fontSize: '0.58rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Deposit</div>
-                      <div style={{ fontSize: '0.84rem', fontWeight: '900', color: '#0f172a' }}>£{Number(req.downPayment).toFixed(2)}</div>
+                      <div style={{ fontSize: '0.84rem', fontWeight: '900', color: '#0f172a' }}>{formatMoney(req.downPayment)}</div>
                     </div>
                     <div style={{ background: '#ffffff', borderRadius: '8px', padding: '6px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                       <div style={{ fontSize: '0.58rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Monthly Term</div>
-                      <div style={{ fontSize: '0.84rem', fontWeight: '900', color: '#ea580c' }}>£{Number(req.installmentAmount).toFixed(2)}/mo</div>
+                      <div style={{ fontSize: '0.84rem', fontWeight: '900', color: '#ea580c' }}>{formatMoney(req.installmentAmount)}/mo</div>
                     </div>
                     <div style={{ background: '#ffffff', borderRadius: '8px', padding: '6px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
                       <div style={{ fontSize: '0.58rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>Duration</div>
@@ -554,7 +555,7 @@ export default function StaffFinanceTab({ tenant, branch, tenantSlug }) {
                   }}
                 >
                   <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
-                    Financed: <strong style={{ color: '#0f172a' }}>£{Number(req.financedAmount).toFixed(2)}</strong> ({req.termMonths} mos)
+                    Financed: <strong style={{ color: '#0f172a' }}>{formatMoney(req.financedAmount)}</strong> ({req.termMonths} mos)
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ea580c', fontSize: '0.74rem', fontWeight: '800' }}>
                     <span>Decision &amp; Review</span>

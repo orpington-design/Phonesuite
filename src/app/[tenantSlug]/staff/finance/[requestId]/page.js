@@ -31,12 +31,15 @@ import {
   Banknote,
   Receipt,
   Layers,
-  ShoppingBag
+  ShoppingBag,
+  ChevronRight,
+  X
 } from 'lucide-react';
 import { 
   INITIAL_FINANCE_REQUESTS, 
   getSavedFinanceRequests, 
-  persistFinanceRequests 
+  persistFinanceRequests,
+  formatMoney
 } from '../../data/staffData';
 import { StaffLanguageProvider, useStaffLanguage } from '../../context/StaffLanguageContext';
 
@@ -59,6 +62,7 @@ function StaffFinanceDetailContent() {
   const [request, setRequest] = useState(null);
   const [notesInput, setNotesInput] = useState('');
   const [noteSaved, setNoteSaved] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const found = requests.find(r => r.id === requestId || r.applicationNumber === requestId);
@@ -107,7 +111,7 @@ function StaffFinanceDetailContent() {
     if (!request) return;
     let text = '';
     if (type === 'approved' || request.status === 'approved') {
-      text = `🎉 GREAT NEWS! Hello ${request.customerName}, your finance application #${request.applicationNumber} for the ${request.requestedItem} has been APPROVED by PhoneSuite UK!\n\nDown Payment: £${Number(request.downPayment).toFixed(2)}\nMonthly Installment: £${Number(request.installmentAmount).toFixed(2)}/mo (${request.termMonths} months)\n\nPlease visit our store at ${request.branch || 'our central branch'} with your photo ID to sign your agreement and collect your device!`;
+      text = `🎉 GREAT NEWS! Hello ${request.customerName}, your finance application #${request.applicationNumber} for the ${request.requestedItem} has been APPROVED by PhoneSuite UK!\n\nDown Payment: ${formatMoney(request.downPayment)}\nMonthly Installment: ${formatMoney(request.installmentAmount)}/mo (${request.termMonths} months)\n\nPlease visit our store at ${request.branch || 'our central branch'} with your photo ID to sign your agreement and collect your device!`;
     } else if (type === 'guarantor' || request.status === 'guarantor_required') {
       text = `Hello ${request.customerName}, this is PhoneSuite UK credit underwriting team regarding finance application #${request.applicationNumber} for the ${request.requestedItem}.\n\nYour preliminary application has been reviewed. To complete your financing approval, our risk department requires a UK guarantor or an increased upfront deposit. Please reply to this message so we can guide you through the next step!`;
     } else {
@@ -147,10 +151,10 @@ function StaffFinanceDetailContent() {
     }
   ];
 
-  // SVG Gauge calculations (semi-circle arc)
-  const minScore = 300;
-  const maxScore = 850;
-  const clampedScore = Math.max(minScore, Math.min(maxScore, request.creditScore || 650));
+  // SVG Gauge calculations (semi-circle arc) - 0 to 1,000 scale
+  const minScore = 0;
+  const maxScore = 1000;
+  const clampedScore = Math.max(minScore, Math.min(maxScore, request.creditScore || 700));
   const scorePct = (clampedScore - minScore) / (maxScore - minScore);
   const arcRadius = 70;
   const arcCircumference = Math.PI * arcRadius; // ~219.9
@@ -258,18 +262,27 @@ function StaffFinanceDetailContent() {
             </div>
           </div>
 
-          {/* 2. Customer details Card (Avatar before name, customer status, no employment) */}
+          {/* 2. Customer details Card (Clickable - goes to customer details page) */}
           <div 
+            onClick={() => router.push(`/${tenantSlug}/staff/customers/${request.customerId || request.id}`)}
             style={{ 
               background: '#ffffff', 
               borderRadius: '16px', 
               border: '1px solid #e2e8f0', 
               padding: '1.15rem',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' 
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+              cursor: 'pointer',
+              transition: 'transform 0.12s ease, box-shadow 0.12s ease'
             }}
           >
-            <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.85rem' }}>
-              CUSTOMER DETAILS
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+              <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                CUSTOMER DETAILS
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#ea580c', fontSize: '0.68rem', fontWeight: '800' }}>
+                <span>View Profile</span>
+                <ChevronRight size={13} strokeWidth={2.5} />
+              </div>
             </div>
 
             {/* Customer Avatar & Name & Status */}
@@ -398,7 +411,7 @@ function StaffFinanceDetailContent() {
               <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '10px', border: '1px solid #f1f5f9' }}>
                 <span style={{ color: '#94a3b8', fontSize: '0.66rem', textTransform: 'uppercase', fontWeight: '700' }}>Net Monthly Salary</span>
                 <div style={{ fontSize: '1.1rem', fontWeight: '900', color: '#059669', marginTop: '2px' }}>
-                  £{Number(request.monthlyIncome || 3200).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                  {formatMoney(request.monthlyIncome || 3200)}
                 </div>
                 <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>
                   {request.employmentType || 'Permanent Full-Time'}
@@ -428,7 +441,7 @@ function StaffFinanceDetailContent() {
             </div>
           </div>
 
-          {/* 4. Credit information Card (Beauty Centralized Score Chart, No Duration) */}
+          {/* 4. Credit information Card (Beauty Centralized Score Chart 0-1000, Clean Badge, Compliance Button) */}
           <div 
             style={{ 
               background: '#ffffff', 
@@ -442,7 +455,7 @@ function StaffFinanceDetailContent() {
               CREDIT INFORMATION
             </div>
 
-            {/* Centralized Beautiful Score Radial Gauge Chart */}
+            {/* Centralized Beautiful Score Radial Gauge Chart (0 - 1000) */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '0.5rem 0' }}>
               <div style={{ position: 'relative', width: '200px', height: '115px', display: 'flex', justifyContent: 'center' }}>
                 <svg width="200" height="115" viewBox="0 0 200 115" style={{ overflow: 'visible' }}>
@@ -489,12 +502,12 @@ function StaffFinanceDetailContent() {
                     {request.creditScore}
                   </div>
                   <div style={{ fontSize: '0.66rem', color: '#94a3b8', fontWeight: '700', marginTop: '2px' }}>
-                    out of 850 Max Score
+                    out of 1,000
                   </div>
                 </div>
               </div>
 
-              {/* Tier Pill */}
+              {/* Clean Tier Badge with left icon only */}
               <div 
                 style={{ 
                   marginTop: '6px', 
@@ -511,7 +524,7 @@ function StaffFinanceDetailContent() {
                 }}
               >
                 <CheckCircle2 size={13} strokeWidth={2.5} />
-                <span>{request.creditTier} Tier &bull; Credit Profile</span>
+                <span>{request.creditTier || 'Excellent'}</span>
               </div>
             </div>
 
@@ -523,7 +536,7 @@ function StaffFinanceDetailContent() {
                   Pre-Approved Limit
                 </span>
                 <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#0f172a', marginTop: '2px' }}>
-                  £{Number(request.creditLimit).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                  {formatMoney(request.creditLimit)}
                 </div>
                 <span style={{ fontSize: '0.64rem', color: '#10b981', fontWeight: '800' }}>
                   Direct Limit Granted
@@ -567,9 +580,37 @@ function StaffFinanceDetailContent() {
               </div>
 
             </div>
+
+            {/* View Full Credit Profile & Compliance Dossier Button */}
+            <button
+              type="button"
+              onClick={() => router.push(`/${tenantSlug}/staff/finance/${request.id}/credit`)}
+              style={{
+                marginTop: '1rem',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '11px 16px',
+                borderRadius: '12px',
+                background: '#0f172a',
+                color: '#ffffff',
+                fontSize: '0.78rem',
+                fontWeight: '800',
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(15, 23, 42, 0.15)',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <FileText size={16} color="#ffffff" />
+              <span>View Full Credit Profile &amp; Compliance Dossier</span>
+              <ChevronRight size={15} color="#94a3b8" />
+            </button>
           </div>
 
-          {/* 5. Products Card (List of products, avatars, specs, prices, VAT) */}
+          {/* 5. Products Card (Title only in list, clickable to open detailed modal) */}
           <div 
             style={{ 
               background: '#ffffff', 
@@ -584,20 +625,25 @@ function StaffFinanceDetailContent() {
                 PRODUCTS
               </span>
               <span style={{ fontSize: '0.66rem', fontWeight: '700', color: '#64748b' }}>
-                {productsList.length} {productsList.length === 1 ? 'Item' : 'Items'} Requested
+                {productsList.length} {productsList.length === 1 ? 'Item' : 'Items'} Requested &bull; Tap for specs
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
               {productsList.map((prod, idx) => (
                 <div 
                   key={prod.id || idx}
+                  onClick={() => setSelectedProduct(prod)}
                   style={{ 
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'space-between',
-                    paddingBottom: idx !== productsList.length - 1 ? '0.85rem' : '0',
-                    borderBottom: idx !== productsList.length - 1 ? '1px dashed #e2e8f0' : 'none'
+                    padding: '0.75rem',
+                    borderRadius: '12px',
+                    background: '#f8fafc',
+                    border: '1px solid #f1f5f9',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -605,10 +651,10 @@ function StaffFinanceDetailContent() {
                       <img 
                         src={prod.image} 
                         alt={prod.name} 
-                        style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', border: '1px solid #e2e8f0' }} 
+                        style={{ width: '44px', height: '44px', borderRadius: '10px', objectFit: 'cover', border: '1px solid #e2e8f0' }} 
                       />
                     ) : (
-                      <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+                      <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
                         <ShoppingBag size={20} />
                       </div>
                     )}
@@ -616,21 +662,19 @@ function StaffFinanceDetailContent() {
                       <div style={{ fontSize: '0.86rem', fontWeight: '800', color: '#0f172a' }}>
                         {prod.name}
                       </div>
-                      <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>
-                        {prod.specs}
-                      </div>
-                      <div style={{ fontSize: '0.68rem', color: '#94a3b8', marginTop: '1px' }}>
-                        Qty: {prod.qty || 1} &bull; Net: £{Number(prod.price * 0.8).toFixed(2)} &bull; VAT (20%): £{Number(prod.price * 0.2).toFixed(2)}
+                      <div style={{ fontSize: '0.66rem', color: '#ea580c', fontWeight: '700', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        <span>View specifications</span>
+                        <ChevronRight size={12} strokeWidth={2.5} />
                       </div>
                     </div>
                   </div>
 
-                  <div style={{ textAlign: 'right' }}>
+                  <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '8px' }}>
                     <div style={{ fontSize: '0.94rem', fontWeight: '900', color: '#0f172a' }}>
-                      £{(Number(prod.price) * (prod.qty || 1)).toFixed(2)}
+                      {formatMoney(Number(prod.price) * (prod.qty || 1))}
                     </div>
                     <span style={{ fontSize: '0.6rem', color: '#10b981', fontWeight: '800' }}>
-                      IN STOCK
+                      Qty: {prod.qty || 1} &bull; IN STOCK
                     </span>
                   </div>
                 </div>
@@ -643,12 +687,12 @@ function StaffFinanceDetailContent() {
                 Total Hardware Value (inc. VAT):
               </span>
               <span style={{ fontSize: '1.05rem', fontWeight: '900', color: '#0f172a' }}>
-                £{Number(request.itemPrice).toFixed(2)}
+                {formatMoney(request.itemPrice)}
               </span>
             </div>
           </div>
 
-          {/* 6. Financial details Card (New Card underneath Products) */}
+          {/* 6. Financial details Card (Formatted with thousand and pence separators) */}
           <div 
             style={{ 
               background: '#ffffff', 
@@ -665,17 +709,17 @@ function StaffFinanceDetailContent() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem', color: '#475569' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Total Cash Retail Price:</span>
-                <strong style={{ color: '#0f172a' }}>£{Number(request.itemPrice).toFixed(2)}</strong>
+                <strong style={{ color: '#0f172a' }}>{formatMoney(request.itemPrice)}</strong>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Upfront Deposit (Down Payment):</span>
-                <strong style={{ color: '#10b981' }}>£{Number(request.downPayment).toFixed(2)}</strong>
+                <strong style={{ color: '#10b981' }}>{formatMoney(request.downPayment)}</strong>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Financed Principal Balance:</span>
-                <strong style={{ color: '#0f172a' }}>£{Number(request.financedAmount).toFixed(2)}</strong>
+                <strong style={{ color: '#0f172a' }}>{formatMoney(request.financedAmount)}</strong>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -711,7 +755,7 @@ function StaffFinanceDetailContent() {
                     Monthly Installment Due
                   </span>
                   <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#ea580c' }}>
-                    £{Number(request.installmentAmount).toFixed(2)} <span style={{ fontSize: '0.75rem', fontWeight: '600' }}>/ month</span>
+                    {formatMoney(request.installmentAmount)} <span style={{ fontSize: '0.75rem', fontWeight: '600' }}>/ month</span>
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -719,7 +763,7 @@ function StaffFinanceDetailContent() {
                     Total Payable
                   </span>
                   <div style={{ fontSize: '0.94rem', fontWeight: '900', color: '#0f172a' }}>
-                    £{(Number(request.installmentAmount) * Number(request.termMonths) + Number(request.downPayment)).toFixed(2)}
+                    {formatMoney(Number(request.installmentAmount) * Number(request.termMonths) + Number(request.downPayment))}
                   </div>
                 </div>
               </div>
@@ -902,6 +946,171 @@ function StaffFinanceDetailContent() {
           </div>
 
         </main>
+
+        {/* Product Detail Modal */}
+        {selectedProduct && (
+          <div 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(15, 23, 42, 0.75)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              zIndex: 9999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1rem'
+            }}
+            onClick={() => setSelectedProduct(null)}
+          >
+            <div 
+              style={{
+                background: '#ffffff',
+                borderRadius: '24px',
+                maxWidth: '440px',
+                width: '100%',
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
+                border: '1px solid #e2e8f0',
+                padding: '1.25rem',
+                position: 'relative'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Close Button */}
+              <button
+                type="button"
+                onClick={() => setSelectedProduct(null)}
+                style={{
+                  position: 'absolute',
+                  top: '14px',
+                  right: '14px',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: '#f1f5f9',
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#64748b',
+                  cursor: 'pointer',
+                  zIndex: 10
+                }}
+              >
+                <X size={18} />
+              </button>
+
+              {/* Product Image */}
+              <div style={{ width: '100%', height: '180px', borderRadius: '16px', overflow: 'hidden', background: '#f8fafc', marginBottom: '1rem', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {selectedProduct.image ? (
+                  <img 
+                    src={selectedProduct.image} 
+                    alt={selectedProduct.name} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                  />
+                ) : (
+                  <Smartphone size={64} color="#94a3b8" />
+                )}
+              </div>
+
+              {/* Title & Badge */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                <span style={{ fontSize: '0.65rem', fontWeight: '800', color: '#ea580c', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  HARDWARE SPECIFICATION
+                </span>
+                <span style={{ fontSize: '0.65rem', fontWeight: '800', padding: '2px 8px', borderRadius: '9999px', background: '#ecfdf5', color: '#059669', border: '1px solid #a7f3d0' }}>
+                  IN STOCK &bull; ALLOCATED
+                </span>
+              </div>
+
+              <h3 style={{ fontSize: '1.15rem', fontWeight: '900', color: '#0f172a', margin: '0 0 0.85rem 0', lineHeight: 1.3 }}>
+                {selectedProduct.name}
+              </h3>
+
+              {/* Technical Specifications */}
+              <div style={{ background: '#f8fafc', borderRadius: '14px', padding: '0.9rem', border: '1px solid #e2e8f0', marginBottom: '0.9rem' }}>
+                <div style={{ fontSize: '0.68rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
+                  Full Description &amp; Features
+                </div>
+                <p style={{ fontSize: '0.8rem', color: '#334155', lineHeight: 1.5, margin: 0 }}>
+                  {selectedProduct.specs || 'Brand-new, factory-unlocked hardware device. Includes authentic OEM packaging, certified fast charger, and 12-month manufacturer guarantee.'}
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #e2e8f0', fontSize: '0.74rem' }}>
+                  <div>
+                    <span style={{ color: '#94a3b8', fontSize: '0.64rem', textTransform: 'uppercase', fontWeight: '700' }}>Condition</span>
+                    <div style={{ fontWeight: '800', color: '#0f172a' }}>Brand New Sealed</div>
+                  </div>
+                  <div>
+                    <span style={{ color: '#94a3b8', fontSize: '0.64rem', textTransform: 'uppercase', fontWeight: '700' }}>Warranty</span>
+                    <div style={{ fontWeight: '800', color: '#059669' }}>1-Year OEM Warranty</div>
+                  </div>
+                  <div>
+                    <span style={{ color: '#94a3b8', fontSize: '0.64rem', textTransform: 'uppercase', fontWeight: '700' }}>Device Serial / IMEI</span>
+                    <div style={{ fontWeight: '800', color: '#0f172a' }}>Assigned at Contract</div>
+                  </div>
+                  <div>
+                    <span style={{ color: '#94a3b8', fontSize: '0.64rem', textTransform: 'uppercase', fontWeight: '700' }}>Inventory Branch</span>
+                    <div style={{ fontWeight: '800', color: '#0f172a' }}>{request.branch || 'Central Branch'}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Price Breakdown with thousand & pence separators */}
+              <div style={{ background: '#ffffff', borderRadius: '14px', padding: '0.9rem', border: '1px solid #e2e8f0', marginBottom: '1rem' }}>
+                <div style={{ fontSize: '0.68rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+                  Financial Valuation &amp; VAT Breakdown
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.78rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', color: '#475569' }}>
+                    <span>Unit Retail Price:</span>
+                    <strong style={{ color: '#0f172a' }}>{formatMoney(selectedProduct.price)}</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', color: '#475569' }}>
+                    <span>Net Price (ex. VAT 20%):</span>
+                    <span style={{ color: '#0f172a', fontWeight: '700' }}>{formatMoney(selectedProduct.price * 0.8)}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', color: '#475569' }}>
+                    <span>VAT (20% UK Standard):</span>
+                    <span style={{ color: '#0f172a', fontWeight: '700' }}>{formatMoney(selectedProduct.price * 0.2)}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', color: '#475569' }}>
+                    <span>Quantity Requested:</span>
+                    <span style={{ color: '#0f172a', fontWeight: '700' }}>&times; {selectedProduct.qty || 1}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid #f1f5f9', fontSize: '0.88rem' }}>
+                    <span style={{ fontWeight: '800', color: '#0f172a' }}>Total Hardware Value:</span>
+                    <span style={{ fontWeight: '900', color: '#ea580c', fontSize: '1.05rem' }}>{formatMoney(Number(selectedProduct.price) * (selectedProduct.qty || 1))}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setSelectedProduct(null)}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  background: '#0f172a',
+                  color: '#ffffff',
+                  borderRadius: '12px',
+                  border: 'none',
+                  fontWeight: '800',
+                  fontSize: '0.82rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Close Product Details
+              </button>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>
