@@ -7,7 +7,9 @@ import {
   Store, 
   Settings, 
   Sparkles,
-  Wrench
+  Wrench,
+  FileCheck,
+  Package
 } from 'lucide-react';
 import { useStaffLanguage } from '../context/StaffLanguageContext';
 
@@ -16,7 +18,9 @@ export default function StaffBottomNavBar({
   setActiveTab, 
   overdueCount = 0,
   activeRepairsCount = 0,
-  cartItemsCount = 0
+  cartItemsCount = 0,
+  financeRequestsCount = 3,
+  onlineOrdersCount = 4
 }) {
   const { t } = useStaffLanguage();
 
@@ -45,25 +49,27 @@ export default function StaffBottomNavBar({
         <span className="nav-label">{t.nav.dashboard}</span>
       </button>
 
-      {/* 2. Invoices */}
+      {/* 2. Finance Applications Requests */}
       <button
         type="button"
-        className={`mobile-nav-item ${activeTab === 'invoices' ? 'active' : ''}`}
-        onClick={() => setActiveTab('invoices')}
-        aria-label={t.nav.invoices}
+        className={`mobile-nav-item ${activeTab === 'finance' ? 'active' : ''}`}
+        onClick={() => setActiveTab('finance')}
+        aria-label={t.nav.finance || 'Finance'}
+        title="Finance & Installment Applications"
       >
         <div className="nav-icon-wrapper">
-          <Receipt size={21} strokeWidth={activeTab === 'invoices' ? 2.4 : 1.8} />
-          {overdueCount > 0 && (
+          <FileCheck size={21} strokeWidth={activeTab === 'finance' ? 2.4 : 1.8} />
+          {financeRequestsCount > 0 && (
             <span 
               className="nav-badge" 
-              title={`${overdueCount} overdue invoices`}
+              style={{ backgroundColor: '#ea580c' }}
+              title={`${financeRequestsCount} pending finance applications`}
             >
-              {overdueCount}
+              {financeRequestsCount}
             </span>
           )}
         </div>
-        <span className="nav-label">{t.nav.invoices}</span>
+        <span className="nav-label">{t.nav.finance || 'Finance'}</span>
       </button>
 
       {/* 3. CENTER & MAIN: SALE (Elevated Floating Action Button) */}
@@ -115,17 +121,27 @@ export default function StaffBottomNavBar({
         <span className="shop-center-label staff-sale-label">{t.nav.sale}</span>
       </div>
 
-      {/* 4. Shop (Manage Customer Products) */}
+      {/* 4. Orders (Customer Portal Online Orders) */}
       <button
         type="button"
-        className={`mobile-nav-item ${activeTab === 'shop' ? 'active' : ''}`}
-        onClick={() => setActiveTab('shop')}
-        aria-label={t.nav.shop}
+        className={`mobile-nav-item ${activeTab === 'orders' ? 'active' : ''}`}
+        onClick={() => setActiveTab('orders')}
+        aria-label={t.nav.orders || 'Orders'}
+        title="Customer Portal Paid Orders"
       >
         <div className="nav-icon-wrapper">
-          <Store size={21} strokeWidth={activeTab === 'shop' ? 2.4 : 1.8} />
+          <Package size={21} strokeWidth={activeTab === 'orders' ? 2.4 : 1.8} />
+          {onlineOrdersCount > 0 && (
+            <span 
+              className="staff-mini-badge" 
+              style={{ backgroundColor: '#2563eb' }}
+              title={`${onlineOrdersCount} online orders`}
+            >
+              {onlineOrdersCount}
+            </span>
+          )}
         </div>
-        <span className="nav-label">{t.nav.shop}</span>
+        <span className="nav-label">{t.nav.orders || 'Orders'}</span>
       </button>
 
       {/* 5. Settings */}

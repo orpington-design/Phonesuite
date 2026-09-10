@@ -24,9 +24,12 @@ import {
   RotateCcw,
   ShieldAlert,
   PackageX,
-  Truck
+  Truck,
+  Package,
+  FileCheck
 } from 'lucide-react';
 import { useStaffLanguage } from '../context/StaffLanguageContext';
+import { getSavedOnlineOrders, getSavedFinanceRequests } from '../data/staffData';
 
 export default function StaffDashboardTab({
   tenant,
@@ -87,6 +90,13 @@ export default function StaffDashboardTab({
       status: 'recovery_dispatched'
     }
   ];
+
+  // Online Portal Orders & Finance Applications
+  const onlineOrders = getSavedOnlineOrders();
+  const financeRequests = getSavedFinanceRequests();
+  const pendingFinanceRequests = financeRequests.filter(r => r.status === 'pending_review');
+  const awaitingOrders = onlineOrders.filter(o => o.fulfillmentStatus === 'awaiting_dispatch');
+  const totalOrdersAmount = onlineOrders.reduce((sum, o) => sum + Number(o.total || 0), 0);
 
   const getStatusStepIndex = (status) => {
     const steps = ['received', 'diagnosing', 'repairing', 'ready', 'picked_up'];
@@ -524,6 +534,132 @@ export default function StaffDashboardTab({
               </div>
               <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '3px', fontWeight: '500' }}>
                 {readyRepairsCount > 0 ? `${readyRepairsCount} ready for collection` : '1 ready for pickup'}
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 5: ONLINE ORDERS (Customer Portal Paid Orders) */}
+          <div 
+            onClick={() => router.push(`/${tenantSlug}/staff/orders`)}
+            style={{
+              background: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e2e8f0',
+              padding: '1rem',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+              transition: 'transform 0.12s ease, border-color 0.12s ease',
+              minHeight: '132px'
+            }}
+          >
+            {/* Top Row: Icon + Badge */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div 
+                style={{ 
+                  width: '32px', 
+                  height: '32px', 
+                  borderRadius: '10px', 
+                  background: '#f3e8ff', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#7e22ce' 
+                }}
+              >
+                <Package size={17} strokeWidth={2.4} />
+              </div>
+
+              <span 
+                style={{ 
+                  fontSize: '0.6rem', 
+                  fontWeight: '800', 
+                  padding: '2px 8px', 
+                  borderRadius: '9999px', 
+                  background: '#f3e8ff', 
+                  color: '#6b21a8', 
+                  textTransform: 'uppercase' 
+                }}
+              >
+                PORTAL ORDERS
+              </span>
+            </div>
+
+            {/* Label, Large Value & Subtitle */}
+            <div style={{ marginTop: '0.65rem' }}>
+              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '2px' }}>
+                ONLINE ORDERS
+              </div>
+              <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+                {onlineOrders.length} Paid
+              </div>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '3px', fontWeight: '500' }}>
+                {awaitingOrders.length > 0 ? `${awaitingOrders.length} awaiting dispatch` : `£${totalOrdersAmount.toFixed(0)} total paid`}
+              </div>
+            </div>
+          </div>
+
+          {/* CARD 6: FINANCE REQUESTS (Installment Decisions) */}
+          <div 
+            onClick={() => router.push(`/${tenantSlug}/staff/finance`)}
+            style={{
+              background: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid #e2e8f0',
+              padding: '1rem',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+              transition: 'transform 0.12s ease, border-color 0.12s ease',
+              minHeight: '132px'
+            }}
+          >
+            {/* Top Row: Icon + Badge */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div 
+                style={{ 
+                  width: '32px', 
+                  height: '32px', 
+                  borderRadius: '10px', 
+                  background: '#fef3c7', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: '#b45309' 
+                }}
+              >
+                <FileCheck size={17} strokeWidth={2.4} />
+              </div>
+
+              <span 
+                style={{ 
+                  fontSize: '0.6rem', 
+                  fontWeight: '800', 
+                  padding: '2px 8px', 
+                  borderRadius: '9999px', 
+                  background: '#fef3c7', 
+                  color: '#92400e', 
+                  textTransform: 'uppercase' 
+                }}
+              >
+                APPLICATIONS
+              </span>
+            </div>
+
+            {/* Label, Large Value & Subtitle */}
+            <div style={{ marginTop: '0.65rem' }}>
+              <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '2px' }}>
+                FINANCE REQUESTS
+              </div>
+              <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+                {pendingFinanceRequests.length} Pending
+              </div>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '3px', fontWeight: '500' }}>
+                Installment decisioning
               </div>
             </div>
           </div>

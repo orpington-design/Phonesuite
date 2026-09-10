@@ -448,3 +448,234 @@ export function persistSales(list) {
     localStorage.setItem('phonesuite_staff_sales', JSON.stringify(list));
   } catch (e) {}
 }
+
+// -------------------------------------------------------------
+// ONLINE ORDERS FIXTURES & HELPERS (Customer Portal Orders)
+// -------------------------------------------------------------
+export const INITIAL_ONLINE_ORDERS = [
+  {
+    id: 'ord-101',
+    orderNumber: 'ORD-2026-9801',
+    customerName: 'Marcus Bell',
+    customerPhone: '+44 7711 334455',
+    customerEmail: 'm.bell99@gmail.com',
+    deliveryAddress: '19 Greenwich Church St, London SE10 9BJ',
+    fulfillmentType: 'delivery',
+    items: [
+      { name: 'Apple iPhone 15 Pro 128GB (Natural Titanium)', price: 899.00, qty: 1, image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80' },
+      { name: '30W USB-C Fast Charging Kit', price: 35.00, qty: 1, image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&auto=format&fit=crop&q=80' }
+    ],
+    total: 934.00,
+    subtotal: 778.33,
+    vat: 155.67,
+    paymentMethod: 'Card (Stripe Online Checkout)',
+    paymentStatus: 'paid',
+    fulfillmentStatus: 'awaiting_dispatch', // 'awaiting_dispatch' | 'dispatched' | 'delivered'
+    createdAt: '2026-09-10T08:15:00Z',
+    trackingCode: 'GB-PS-89128',
+    branch: 'London Central Branch'
+  },
+  {
+    id: 'ord-102',
+    orderNumber: 'ORD-2026-9794',
+    customerName: 'Eleanor Wright',
+    customerPhone: '+44 7822 456789',
+    customerEmail: 'eleanor.w@cloudmail.co.uk',
+    deliveryAddress: 'Store Pickup: London Central Branch (Baker St)',
+    fulfillmentType: 'pickup',
+    items: [
+      { name: 'Apple AirPods Max (Space Grey)', price: 499.00, qty: 1, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80' }
+    ],
+    total: 499.00,
+    subtotal: 415.83,
+    vat: 83.17,
+    paymentMethod: 'Apple Pay (Online Portal)',
+    paymentStatus: 'paid',
+    fulfillmentStatus: 'awaiting_dispatch',
+    createdAt: '2026-09-09T17:40:00Z',
+    trackingCode: 'PICKUP-LON-044',
+    branch: 'London Central Branch'
+  },
+  {
+    id: 'ord-103',
+    orderNumber: 'ORD-2026-9788',
+    customerName: 'Sarah Jenkins',
+    customerPhone: '+44 7922 112233',
+    customerEmail: 's.jenkins@outlook.com',
+    deliveryAddress: '72 Highbury New Park, London N5 2DJ',
+    fulfillmentType: 'delivery',
+    items: [
+      { name: 'Samsung Galaxy S24 Ultra 256GB', price: 1049.00, qty: 1, image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Belkin Wireless Duo Charging Pad', price: 45.00, qty: 1, image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&auto=format&fit=crop&q=80' }
+    ],
+    total: 1094.00,
+    subtotal: 911.67,
+    vat: 182.33,
+    paymentMethod: 'Google Pay (Online Checkout)',
+    paymentStatus: 'paid',
+    fulfillmentStatus: 'dispatched',
+    createdAt: '2026-09-09T14:20:00Z',
+    trackingCode: 'DPD-GB-9921448',
+    branch: 'London Central Branch'
+  },
+  {
+    id: 'ord-104',
+    orderNumber: 'ORD-2026-9772',
+    customerName: 'David Kim',
+    customerPhone: '+44 7788 990011',
+    customerEmail: 'david.kim@fintech.co.uk',
+    deliveryAddress: '14 Canary Wharf Pier, London E14 4SG',
+    fulfillmentType: 'delivery',
+    items: [
+      { name: 'MacBook Air 15" M3 512GB (Midnight)', price: 1399.00, qty: 1, image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80' }
+    ],
+    total: 1399.00,
+    subtotal: 1165.83,
+    vat: 233.17,
+    paymentMethod: 'Card (Stripe Online Checkout)',
+    paymentStatus: 'paid',
+    fulfillmentStatus: 'delivered',
+    createdAt: '2026-09-08T11:05:00Z',
+    trackingCode: 'ROYALMAIL-TRK-7718',
+    branch: 'London Central Branch'
+  }
+];
+
+export function getSavedOnlineOrders() {
+  if (typeof window === 'undefined') return INITIAL_ONLINE_ORDERS;
+  try {
+    const saved = localStorage.getItem('phonesuite_staff_online_orders');
+    if (saved) return JSON.parse(saved);
+  } catch (e) {}
+  return INITIAL_ONLINE_ORDERS;
+}
+
+export function persistOnlineOrders(list) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem('phonesuite_staff_online_orders', JSON.stringify(list));
+  } catch (e) {}
+}
+
+// -------------------------------------------------------------
+// FINANCE APPLICATIONS / REQUESTS FIXTURES & HELPERS
+// (Installment Credit Decisioning for Tenant Approval)
+// -------------------------------------------------------------
+export const INITIAL_FINANCE_REQUESTS = [
+  {
+    id: 'fin-201',
+    applicationNumber: 'FIN-2026-0412',
+    customerName: 'Liam O\'Connor',
+    customerPhone: '+44 7899 112233',
+    customerEmail: 'liam.oc@devstudio.co.uk',
+    customerAddress: '22 Brick Lane, Tower Hamlets, London E1 6RF',
+    creditScore: 745,
+    creditTier: 'Excellent',
+    creditLimit: 2500.00,
+    employmentStatus: 'Full-Time Software Engineer (£3,800/mo net)',
+    requestedItem: 'Apple iPhone 15 Pro Max 256GB (Natural Titanium)',
+    itemPrice: 1199.00,
+    downPayment: 150.00,
+    financedAmount: 1049.00,
+    installmentAmount: 48.50,
+    installmentFrequency: 'monthly',
+    termMonths: 24,
+    interestRate: '0% Promotional RTO',
+    affordabilityScore: '94% Affordability Index (Open Banking Verified)',
+    status: 'pending_review', // 'pending_review' | 'approved' | 'guarantor_required' | 'rejected'
+    decisionNotes: '',
+    createdAt: '2026-09-10T07:45:00Z',
+    branch: 'London Central Branch'
+  },
+  {
+    id: 'fin-202',
+    applicationNumber: 'FIN-2026-0413',
+    customerName: 'Chloe Bennett',
+    customerPhone: '+44 7933 671234',
+    customerEmail: 'chloe.bennett@designcraft.com',
+    customerAddress: '34 Shoreditch High St, London E1 6PG',
+    creditScore: 685,
+    creditTier: 'Good',
+    creditLimit: 1800.00,
+    employmentStatus: 'Self-Employed Graphic Designer (£2,400/mo)',
+    requestedItem: 'Apple iPad Pro 12.9" M2 256GB + Apple Pencil 2',
+    itemPrice: 989.00,
+    downPayment: 100.00,
+    financedAmount: 889.00,
+    installmentAmount: 39.80,
+    installmentFrequency: 'monthly',
+    termMonths: 24,
+    interestRate: '0% Promotional RTO',
+    affordabilityScore: '86% Affordability Index',
+    status: 'pending_review',
+    decisionNotes: '',
+    createdAt: '2026-09-09T18:20:00Z',
+    branch: 'London Central Branch'
+  },
+  {
+    id: 'fin-203',
+    applicationNumber: 'FIN-2026-0409',
+    customerName: 'Marcus Vance',
+    customerPhone: '+44 7700 900789',
+    customerEmail: 'm.vance@techmedia.co.uk',
+    customerAddress: '88 Deansgate, Manchester M3 2FW',
+    creditScore: 810,
+    creditTier: 'Prime Tier',
+    creditLimit: 3500.00,
+    employmentStatus: 'Senior Studio Producer (£4,200/mo net)',
+    requestedItem: 'MacBook Pro 16" M3 Max 1TB (Space Black)',
+    itemPrice: 2899.00,
+    downPayment: 350.00,
+    financedAmount: 2549.00,
+    installmentAmount: 112.50,
+    installmentFrequency: 'monthly',
+    termMonths: 24,
+    interestRate: '0% Promotional RTO',
+    affordabilityScore: '98% Affordability Index (Instant Pass)',
+    status: 'approved',
+    decisionNotes: 'Clean credit history, approved with £350 upfront downpayment.',
+    createdAt: '2026-09-08T14:10:00Z',
+    branch: 'London Central Branch'
+  },
+  {
+    id: 'fin-204',
+    applicationNumber: 'FIN-2026-0401',
+    customerName: 'Jordan Reed',
+    customerPhone: '+44 7766 554433',
+    customerEmail: 'jordan.reed@freemail.co.uk',
+    customerAddress: '5 Stratford Broadway, London E15 4BQ',
+    creditScore: 540,
+    creditTier: 'High Risk',
+    creditLimit: 600.00,
+    employmentStatus: 'Part-Time Courier (£1,100/mo)',
+    requestedItem: 'Sony PlayStation 5 Pro Console + 2 DualSense Controllers',
+    itemPrice: 799.00,
+    downPayment: 50.00,
+    financedAmount: 749.00,
+    installmentAmount: 68.00,
+    installmentFrequency: 'monthly',
+    termMonths: 12,
+    interestRate: '0% Promotional RTO',
+    affordabilityScore: '42% Affordability Index (High Debt-to-Income)',
+    status: 'guarantor_required',
+    decisionNotes: 'Requested UK homeowner guarantor or 35% cash downpayment.',
+    createdAt: '2026-09-07T16:30:00Z',
+    branch: 'London Central Branch'
+  }
+];
+
+export function getSavedFinanceRequests() {
+  if (typeof window === 'undefined') return INITIAL_FINANCE_REQUESTS;
+  try {
+    const saved = localStorage.getItem('phonesuite_staff_finance_requests');
+    if (saved) return JSON.parse(saved);
+  } catch (e) {}
+  return INITIAL_FINANCE_REQUESTS;
+}
+
+export function persistFinanceRequests(list) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem('phonesuite_staff_finance_requests', JSON.stringify(list));
+  } catch (e) {}
+}

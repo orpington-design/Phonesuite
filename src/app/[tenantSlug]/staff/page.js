@@ -7,7 +7,9 @@ import { createClient } from '../../../utils/supabase/client';
 import StaffBottomNavBar from './components/StaffBottomNavBar';
 import StaffDashboardTab from './components/StaffDashboardTab';
 import StaffInvoicesTab from './components/StaffInvoicesTab';
+import StaffFinanceTab from './components/StaffFinanceTab';
 import StaffSaleTab from './components/StaffSaleTab';
+import StaffOrdersTab from './components/StaffOrdersTab';
 import StaffShopTab from './components/StaffShopTab';
 import StaffSettingsTab from './components/StaffSettingsTab';
 
@@ -24,19 +26,19 @@ import {
   INITIAL_STAFF_REPAIRS, 
   INITIAL_STAFF_INVOICES,
   getSavedProducts,
-  persistProducts
+  persistProducts,
+  getSavedFinanceRequests,
+  getSavedOnlineOrders
 } from './data/staffData';
 
 import { 
   Smartphone, 
-  Maximize2, 
-  Minimize2, 
   Check, 
   Globe, 
   Bell, 
-  ShieldCheck,
-  Store,
-  Layers
+  ShieldCheck, 
+  Store, 
+  Layers 
 } from 'lucide-react';
 
 import { StaffLanguageProvider, useStaffLanguage } from './context/StaffLanguageContext';
@@ -78,7 +80,7 @@ function StaffContent() {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       const tabParam = urlParams.get('tab');
-      if (tabParam && ['dashboard', 'invoices', 'sale', 'shop', 'settings'].includes(tabParam)) {
+      if (tabParam && ['dashboard', 'invoices', 'finance', 'sale', 'orders', 'shop', 'settings'].includes(tabParam)) {
         setActiveTabState(tabParam);
       }
     }
@@ -89,6 +91,8 @@ function StaffContent() {
   const [repairs, setRepairs] = useState(INITIAL_STAFF_REPAIRS);
   const [invoices, setInvoices] = useState(INITIAL_STAFF_INVOICES);
   const [products, setProducts] = useState(() => getSavedProducts());
+  const [financeRequests, setFinanceRequests] = useState(() => getSavedFinanceRequests());
+  const [onlineOrders, setOnlineOrders] = useState(() => getSavedOnlineOrders());
 
   // Modals state
   const [isNewRepairOpen, setIsNewRepairOpen] = useState(false);
@@ -314,6 +318,8 @@ function StaffContent() {
 
   const overdueCount = invoices.filter(i => i.status === 'overdue').length;
   const activeRepairsCount = repairs.filter(r => r.status !== 'picked_up' && r.status !== 'cancelled').length;
+  const pendingFinanceCount = financeRequests.filter(r => r.status === 'pending_review').length;
+  const awaitingOrdersCount = onlineOrders.filter(o => o.fulfillmentStatus === 'awaiting_dispatch').length;
 
   if (loading) {
     return (
@@ -359,9 +365,6 @@ function StaffContent() {
                   <h1 style={{ fontSize: '0.94rem', fontWeight: '900', color: '#ffffff', margin: 0, letterSpacing: '-0.02em' }}>
                     {tenant?.name || 'PhoneSuite'}
                   </h1>
-                  <span style={{ fontSize: '0.6rem', padding: '1.5px 6px', borderRadius: '5px', backgroundColor: 'rgba(234, 88, 12, 0.18)', color: '#ff7a00', fontWeight: '800', border: '1px solid rgba(234, 88, 12, 0.4)', letterSpacing: '0.04em' }}>
-                    STAFF
-                  </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '1px' }}>
                   <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }} />
@@ -484,27 +487,6 @@ function StaffContent() {
                 )}
               </div>
 
-              {/* Viewport Frame Mode Switcher */}
-              <button
-                type="button"
-                onClick={() => setIsFullscreen(!isFullscreen)}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  border: '1px solid rgba(255, 255, 255, 0.14)',
-                  borderRadius: '10px',
-                  width: '36px',
-                  height: '36px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#cbd5e1',
-                  cursor: 'pointer'
-                }}
-                title={isFullscreen ? t.header.phoneShell : t.header.fullWidth}
-              >
-                {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-              </button>
-
             </div>
 
           </div>
@@ -534,7 +516,16 @@ function StaffContent() {
             />
           )}
 
-          {/* TAB 2: INVOICES */}
+          {/* TAB 2: FINANCE APPLICATIONS & REQUESTS */}
+          {activeTab === 'finance' && (
+            <StaffFinanceTab
+              tenant={tenant}
+              branch={branch}
+              tenantSlug={tenantSlug}
+            />
+          )}
+
+          {/* TAB: INVOICES (Backwards-compatibility) */}
           {activeTab === 'invoices' && (
             <StaffInvoicesTab
               invoices={invoices}
@@ -569,7 +560,16 @@ function StaffContent() {
             />
           )}
 
-          {/* TAB 4: SHOP (MANAGE CUSTOMER PRODUCTS) */}
+          {/* TAB 4: ORDERS (CUSTOMER PORTAL ONLINE ORDERS) */}
+          {activeTab === 'orders' && (
+            <StaffOrdersTab
+              tenant={tenant}
+              branch={branch}
+              tenantSlug={tenantSlug}
+            />
+          )}
+
+          {/* TAB: SHOP (Manage Products) */}
           {activeTab === 'shop' && (
             <StaffShopTab
               products={products}
@@ -607,6 +607,8 @@ function StaffContent() {
           setActiveTab={setActiveTab}
           overdueCount={overdueCount}
           activeRepairsCount={activeRepairsCount}
+          financeRequestsCount={pendingFinanceCount}
+          onlineOrdersCount={awaitingOrdersCount}
         />
 
       </div>

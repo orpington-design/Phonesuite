@@ -13,8 +13,10 @@ export const STAFF_DICTIONARY = {
     // Bottom Navigation
     nav: {
       dashboard: 'Dashboard',
+      finance: 'Finance',
       invoices: 'Invoices',
       sale: 'SALE',
+      orders: 'Orders',
       shop: 'Shop',
       settings: 'Settings'
     },
@@ -236,8 +238,10 @@ export const STAFF_DICTIONARY = {
     // Bottom Navigation
     nav: {
       dashboard: 'Painel',
+      finance: 'Financiamento',
       invoices: 'Faturas',
       sale: 'VENDA',
+      orders: 'Pedidos',
       shop: 'Loja',
       settings: 'Ajustes'
     },
