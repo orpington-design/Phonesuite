@@ -63,6 +63,20 @@ function StaffFinanceDetailContent() {
   const [notesInput, setNotesInput] = useState('');
   const [noteSaved, setNoteSaved] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalClosing, setIsModalClosing] = useState(false);
+
+  const handleOpenProductModal = (prod) => {
+    setIsModalClosing(false);
+    setSelectedProduct(prod);
+  };
+
+  const handleCloseProductModal = () => {
+    setIsModalClosing(true);
+    setTimeout(() => {
+      setSelectedProduct(null);
+      setIsModalClosing(false);
+    }, 260);
+  };
 
   useEffect(() => {
     const found = requests.find(r => r.id === requestId || r.applicationNumber === requestId);
@@ -633,7 +647,7 @@ function StaffFinanceDetailContent() {
               {productsList.map((prod, idx) => (
                 <div 
                   key={prod.id || idx}
-                  onClick={() => setSelectedProduct(prod)}
+                  onClick={() => handleOpenProductModal(prod)}
                   style={{ 
                     display: 'flex', 
                     alignItems: 'center', 
@@ -947,45 +961,62 @@ function StaffFinanceDetailContent() {
 
         </main>
 
-        {/* Product Detail Modal */}
+        {/* Product Detail Bottom Sheet (Sliding from bottom to top) */}
         {selectedProduct && (
           <div 
+            className={isModalClosing ? 'bottom-sheet-overlay-exit' : 'bottom-sheet-overlay-enter'}
             style={{
               position: 'fixed',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: 'rgba(15, 23, 42, 0.75)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
+              backgroundColor: 'rgba(15, 23, 42, 0.68)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
               zIndex: 9999,
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-end',
               justifyContent: 'center',
-              padding: '1rem'
+              padding: 0
             }}
-            onClick={() => setSelectedProduct(null)}
+            onClick={handleCloseProductModal}
           >
             <div 
+              className={isModalClosing ? 'bottom-sheet-content-exit' : 'bottom-sheet-content-enter'}
               style={{
                 background: '#ffffff',
-                borderRadius: '24px',
-                maxWidth: '440px',
+                borderTopLeftRadius: '24px',
+                borderTopRightRadius: '24px',
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                maxWidth: '460px',
                 width: '100%',
-                maxHeight: '90vh',
+                maxHeight: '86vh',
                 overflowY: 'auto',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
+                boxShadow: '0 -10px 40px rgba(0, 0, 0, 0.3)',
                 border: '1px solid #e2e8f0',
-                padding: '1.25rem',
+                borderBottom: 'none',
+                padding: '0.85rem 1.25rem 2.25rem 1.25rem',
                 position: 'relative'
               }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Drag Handle Bar Indicator (Native Mobile Drawer Feel) */}
+              <div 
+                style={{ 
+                  width: '42px', 
+                  height: '4px', 
+                  borderRadius: '9999px', 
+                  background: '#cbd5e1', 
+                  margin: '0 auto 12px auto' 
+                }} 
+              />
+
               {/* Modal Close Button */}
               <button
                 type="button"
-                onClick={() => setSelectedProduct(null)}
+                onClick={handleCloseProductModal}
                 style={{
                   position: 'absolute',
                   top: '14px',
@@ -1093,17 +1124,18 @@ function StaffFinanceDetailContent() {
               {/* Close Button */}
               <button
                 type="button"
-                onClick={() => setSelectedProduct(null)}
+                onClick={handleCloseProductModal}
                 style={{
                   width: '100%',
-                  padding: '12px',
+                  padding: '13px',
                   background: '#0f172a',
                   color: '#ffffff',
-                  borderRadius: '12px',
+                  borderRadius: '14px',
                   border: 'none',
                   fontWeight: '800',
-                  fontSize: '0.82rem',
-                  cursor: 'pointer'
+                  fontSize: '0.84rem',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.2)'
                 }}
               >
                 Close Product Details

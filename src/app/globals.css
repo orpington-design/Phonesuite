@@ -907,5 +907,59 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Bottom Sheet / Drawer Slide-Up Animations */
+@keyframes slideUpDrawer {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes slideDownDrawer {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes fadeInOverlay {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOutOverlay {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.bottom-sheet-overlay-enter {
+  animation: fadeInOverlay 0.25s ease-out forwards;
+}
+
+.bottom-sheet-overlay-exit {
+  animation: fadeOutOverlay 0.25s ease-in forwards;
+}
+
+.bottom-sheet-content-enter {
+  animation: slideUpDrawer 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.bottom-sheet-content-exit {
+  animation: slideDownDrawer 0.26s ease-in forwards;
+}
+
+
 
 
