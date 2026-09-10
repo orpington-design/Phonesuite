@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { 
   Package, 
   Search, 
@@ -30,6 +30,8 @@ import { useStaffLanguage } from '../context/StaffLanguageContext';
 
 export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
   const router = useRouter();
+  const params = useParams();
+  const activeSlug = tenantSlug || params?.tenantSlug || tenant?.slug || 'premiumphonex';
   const { t, language } = useStaffLanguage();
 
   const [orders, setOrders] = useState(() => getSavedOnlineOrders());
@@ -71,47 +73,18 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
     );
   });
 
-  // Action: Advance fulfillment status
-  const handleAdvanceStatus = (orderId) => {
-    setOrders(prev => prev.map(order => {
-      if (order.id !== orderId) return order;
-      let nextStatus = order.fulfillmentStatus;
-      if (order.fulfillmentStatus === 'awaiting_dispatch') {
-        nextStatus = 'dispatched';
-      } else if (order.fulfillmentStatus === 'dispatched') {
-        nextStatus = 'delivered';
-      }
-      return { ...order, fulfillmentStatus: nextStatus };
-    }));
-  };
-
-  // Action: Contact on WhatsApp
-  const handleWhatsAppContact = (order) => {
-    const isPickup = order.fulfillmentType === 'pickup';
-    const statusText = order.fulfillmentStatus === 'awaiting_dispatch'
-      ? (isPickup ? 'is being prepared for your store collection' : 'is currently packed and awaiting courier dispatch')
-      : order.fulfillmentStatus === 'dispatched'
-      ? (isPickup ? 'is ready for collection at the store' : `has been dispatched with tracking number ${order.trackingCode}`)
-      : 'has been delivered';
-
-    const text = encodeURIComponent(
-      `Hello ${order.customerName}, this is ${tenant?.name || 'PhoneSuite UK'} store regarding your online order #${order.orderNumber}.\n\nYour order ${statusText}.\nFulfillment: ${isPickup ? 'Store Collection' : 'Home Delivery'}\nTotal Paid: £${Number(order.total).toFixed(2)}\n\nIf you have any questions, please reply here!`
-    );
-    window.open(`https://wa.me/${order.customerPhone?.replace(/[^0-9]/g, '')}?text=${text}`, '_blank');
-  };
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', paddingBottom: '2rem' }}>
       
-      {/* 1. Header Banner & Store Info */}
+      {/* 1. Header Banner & Store Info - Orange Luxury Card */}
       <div 
         style={{ 
-          background: 'linear-gradient(135deg, #0b132b 0%, #1c2541 100%)', 
+          background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)', 
           borderRadius: '18px', 
           padding: '1.25rem', 
           color: '#ffffff',
-          boxShadow: '0 4px 20px rgba(11, 19, 43, 0.15)',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
+          boxShadow: '0 8px 24px rgba(234, 88, 12, 0.28)',
+          border: '1px solid rgba(255, 255, 255, 0.25)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
@@ -121,21 +94,21 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                 width: '38px', 
                 height: '38px', 
                 borderRadius: '12px', 
-                background: 'rgba(234, 88, 12, 0.2)', 
-                border: '1px solid rgba(234, 88, 12, 0.4)', 
+                background: 'rgba(255, 255, 255, 0.22)', 
+                border: '1px solid rgba(255, 255, 255, 0.35)', 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
-                color: '#ff7a00' 
+                color: '#ffffff' 
               }}
             >
               <Package size={20} strokeWidth={2.4} />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.1rem', fontWeight: '900', margin: 0, letterSpacing: '-0.02em' }}>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: '900', margin: 0, letterSpacing: '-0.02em', color: '#ffffff' }}>
                 {language === 'pt' ? 'Pedidos da Loja Online' : 'Customer Portal Orders'}
               </h2>
-              <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: 0 }}>
+              <p style={{ fontSize: '0.74rem', color: '#ffedd5', margin: 0 }}>
                 {language === 'pt' ? 'Pedidos pagos via portal do cliente' : 'Paid customer orders ready for fulfillment'}
               </p>
             </div>
@@ -147,8 +120,9 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
               fontWeight: '800', 
               padding: '3px 8px', 
               borderRadius: '9999px', 
-              background: '#10b981', 
+              background: 'rgba(255, 255, 255, 0.25)', 
               color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.4)',
               letterSpacing: '0.04em'
             }}
           >
@@ -158,45 +132,45 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
 
         {/* Top 3 KPI Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', marginTop: '1rem' }}>
-          <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '0.65rem', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-            <div style={{ fontSize: '0.62rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: '700' }}>
+          <div style={{ background: 'rgba(255, 255, 255, 0.18)', borderRadius: '12px', padding: '0.65rem', border: '1px solid rgba(255, 255, 255, 0.25)' }}>
+            <div style={{ fontSize: '0.62rem', color: '#ffedd5', textTransform: 'uppercase', fontWeight: '700' }}>
               {language === 'pt' ? 'Total Pedidos' : 'Total Orders'}
             </div>
             <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#ffffff', marginTop: '2px' }}>
               {totalOrders}
             </div>
-            <div style={{ fontSize: '0.62rem', color: '#10b981', fontWeight: '600', marginTop: '2px' }}>
+            <div style={{ fontSize: '0.62rem', color: '#ffffff', fontWeight: '700', marginTop: '2px' }}>
               £{totalRevenue.toFixed(2)}
             </div>
           </div>
 
-          <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '0.65rem', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-            <div style={{ fontSize: '0.62rem', color: '#fbbf24', textTransform: 'uppercase', fontWeight: '700' }}>
+          <div style={{ background: 'rgba(255, 255, 255, 0.18)', borderRadius: '12px', padding: '0.65rem', border: '1px solid rgba(255, 255, 255, 0.25)' }}>
+            <div style={{ fontSize: '0.62rem', color: '#ffedd5', textTransform: 'uppercase', fontWeight: '700' }}>
               {language === 'pt' ? 'Pendente Envio' : 'Awaiting'}
             </div>
-            <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#fef08a', marginTop: '2px' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#ffffff', marginTop: '2px' }}>
               {awaitingCount}
             </div>
-            <div style={{ fontSize: '0.62rem', color: '#94a3b8', fontWeight: '500', marginTop: '2px' }}>
+            <div style={{ fontSize: '0.62rem', color: '#ffedd5', fontWeight: '600', marginTop: '2px' }}>
               Needs Pack &amp; Post
             </div>
           </div>
 
-          <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '0.65rem', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-            <div style={{ fontSize: '0.62rem', color: '#60a5fa', textTransform: 'uppercase', fontWeight: '700' }}>
+          <div style={{ background: 'rgba(255, 255, 255, 0.18)', borderRadius: '12px', padding: '0.65rem', border: '1px solid rgba(255, 255, 255, 0.25)' }}>
+            <div style={{ fontSize: '0.62rem', color: '#ffedd5', textTransform: 'uppercase', fontWeight: '700' }}>
               {language === 'pt' ? 'Em Trânsito' : 'Dispatched'}
             </div>
-            <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#93c5fd', marginTop: '2px' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#ffffff', marginTop: '2px' }}>
               {dispatchedCount}
             </div>
-            <div style={{ fontSize: '0.62rem', color: '#94a3b8', fontWeight: '500', marginTop: '2px' }}>
+            <div style={{ fontSize: '0.62rem', color: '#ffedd5', fontWeight: '600', marginTop: '2px' }}>
               With Couriers
             </div>
           </div>
         </div>
       </div>
 
-      {/* 2. Search & Filter Segmented Controls */}
+      {/* 2. Search & Segmented Filter Bar */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
         {/* Search Bar */}
         <div style={{ position: 'relative' }}>
@@ -242,15 +216,17 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
           )}
         </div>
 
-        {/* Filter Segmented Pills */}
+        {/* Filter Segmented Pills - Scrollable and never overlapping */}
         <div 
           style={{ 
             display: 'flex', 
-            background: '#f1f5f9', 
-            borderRadius: '12px', 
-            padding: '3px', 
-            gap: '3px',
-            overflowX: 'auto'
+            alignItems: 'center',
+            gap: '6px',
+            overflowX: 'auto',
+            padding: '2px 0 6px 0',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch'
           }}
         >
           {filterTabs.map(tab => {
@@ -261,21 +237,19 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                 type="button"
                 onClick={() => setStatusFilter(tab.id)}
                 style={{
-                  flex: 1,
-                  minWidth: '78px',
-                  padding: '6px 8px',
-                  borderRadius: '9px',
-                  border: 'none',
-                  background: isActive ? '#ffffff' : 'transparent',
-                  color: isActive ? '#0f172a' : '#64748b',
-                  fontSize: '0.72rem',
+                  flexShrink: 0,
+                  padding: '7px 13px',
+                  borderRadius: '10px',
+                  border: isActive ? '1.5px solid #ea580c' : '1px solid #e2e8f0',
+                  background: isActive ? '#fff7ed' : '#ffffff',
+                  color: isActive ? '#c2410c' : '#64748b',
+                  fontSize: '0.74rem',
                   fontWeight: isActive ? '800' : '600',
-                  boxShadow: isActive ? '0 1px 4px rgba(0, 0, 0, 0.08)' : 'none',
+                  boxShadow: isActive ? '0 1px 4px rgba(234, 88, 12, 0.15)' : '0 1px 2px rgba(0,0,0,0.03)',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px',
+                  gap: '6px',
                   whiteSpace: 'nowrap',
                   transition: 'all 0.15s ease'
                 }}
@@ -283,12 +257,13 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                 <span>{tab.label}</span>
                 <span 
                   style={{ 
-                    fontSize: '0.62rem', 
-                    padding: '1px 5px', 
+                    fontSize: '0.64rem', 
+                    padding: '2px 6px', 
                     borderRadius: '9999px',
-                    background: isActive ? '#ea580c' : '#e2e8f0',
-                    color: isActive ? '#ffffff' : '#64748b',
-                    fontWeight: '800'
+                    background: isActive ? '#ea580c' : '#f1f5f9',
+                    color: isActive ? '#ffffff' : '#475569',
+                    fontWeight: '800',
+                    lineHeight: 1
                   }}
                 >
                   {tab.count}
@@ -299,7 +274,7 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
         </div>
       </div>
 
-      {/* 3. Orders List */}
+      {/* 3. Orders List - Clickable Cards Without Cluttering Buttons */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
         {filteredOrders.length === 0 ? (
           <div 
@@ -331,6 +306,7 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
             return (
               <div
                 key={order.id}
+                onClick={() => router.push(`/${activeSlug}/staff/orders/${order.id}`)}
                 style={{
                   background: '#ffffff',
                   borderRadius: '16px',
@@ -339,14 +315,16 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '0.85rem'
+                  gap: '0.85rem',
+                  cursor: 'pointer',
+                  transition: 'transform 0.12s ease, box-shadow 0.12s ease'
                 }}
               >
                 {/* Header: Order #, Date, Status Badges */}
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '0.86rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.01em' }}>
+                      <span style={{ fontSize: '0.88rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.01em' }}>
                         #{order.orderNumber}
                       </span>
                       <span 
@@ -462,7 +440,7 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', color: '#64748b' }}>
                     <MapPin size={12} color="#94a3b8" />
-                    <span>{order.deliveryAddress}</span>
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{order.deliveryAddress}</span>
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '2px', fontSize: '0.7rem', color: '#64748b' }}>
@@ -471,7 +449,7 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                   </div>
                 </div>
 
-                {/* Ordered Items List */}
+                {/* Ordered Items Preview */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <div style={{ fontSize: '0.66rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                     ORDERED ITEMS ({order.items?.length || 0})
@@ -483,7 +461,7 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'space-between',
-                        padding: '4px 0',
+                        padding: '3px 0',
                         borderBottom: idx !== order.items.length - 1 ? '1px dashed #f1f5f9' : 'none'
                       }}
                     >
@@ -492,171 +470,47 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
                           <img 
                             src={item.image} 
                             alt={item.name} 
-                            style={{ width: '32px', height: '32px', borderRadius: '7px', objectFit: 'cover', border: '1px solid #e2e8f0' }} 
+                            style={{ width: '30px', height: '30px', borderRadius: '7px', objectFit: 'cover', border: '1px solid #e2e8f0' }} 
                           />
                         ) : (
-                          <div style={{ width: '32px', height: '32px', borderRadius: '7px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
-                            <ShoppingBag size={14} />
+                          <div style={{ width: '30px', height: '30px', borderRadius: '7px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+                            <ShoppingBag size={13} />
                           </div>
                         )}
                         <div>
-                          <div style={{ fontSize: '0.78rem', fontWeight: '700', color: '#0f172a' }}>
+                          <div style={{ fontSize: '0.76rem', fontWeight: '700', color: '#0f172a' }}>
                             {item.name}
                           </div>
-                          <div style={{ fontSize: '0.66rem', color: '#64748b' }}>
+                          <div style={{ fontSize: '0.64rem', color: '#64748b' }}>
                             Qty: {item.qty || 1} × £{Number(item.price).toFixed(2)}
                           </div>
                         </div>
                       </div>
-                      <div style={{ fontSize: '0.82rem', fontWeight: '800', color: '#0f172a' }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: '800', color: '#0f172a' }}>
                         £{(Number(item.price) * (item.qty || 1)).toFixed(2)}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Financial Summary Line */}
+                {/* Clickable Card Footer with Total & Details Link */}
                 <div 
                   style={{ 
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'space-between', 
-                    paddingTop: '0.5rem', 
+                    paddingTop: '0.65rem', 
                     borderTop: '1px solid #f1f5f9' 
                   }}
                 >
                   <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
-                    Paid via <span style={{ fontWeight: '700', color: '#0f172a' }}>{order.paymentMethod}</span>
+                    Total: <strong style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: '900' }}>£{Number(order.total).toFixed(2)}</strong>
                   </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.65rem', color: '#94a3b8' }}>Total (inc. VAT)</div>
-                    <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em' }}>
-                      £{Number(order.total).toFixed(2)}
-                    </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ea580c', fontSize: '0.74rem', fontWeight: '800' }}>
+                    <span>View Order Details</span>
+                    <ChevronRight size={15} strokeWidth={2.4} />
                   </div>
-                </div>
-
-                {/* Operations Action Buttons */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: '0.45rem', marginTop: '0.2rem' }}>
-                  
-                  {/* Status Progression Button */}
-                  {isAwaiting && (
-                    <button
-                      type="button"
-                      onClick={() => handleAdvanceStatus(order.id)}
-                      style={{
-                        background: '#ea580c',
-                        border: 'none',
-                        borderRadius: '10px',
-                        padding: '8px 10px',
-                        color: '#ffffff',
-                        fontSize: '0.74rem',
-                        fontWeight: '800',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '5px',
-                        boxShadow: '0 2px 6px rgba(234, 88, 12, 0.3)'
-                      }}
-                    >
-                      <Truck size={14} strokeWidth={2.4} />
-                      <span>{isPickup ? 'Mark Ready' : 'Dispatch'}</span>
-                    </button>
-                  )}
-
-                  {isDispatched && (
-                    <button
-                      type="button"
-                      onClick={() => handleAdvanceStatus(order.id)}
-                      style={{
-                        background: '#10b981',
-                        border: 'none',
-                        borderRadius: '10px',
-                        padding: '8px 10px',
-                        color: '#ffffff',
-                        fontSize: '0.74rem',
-                        fontWeight: '800',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '5px',
-                        boxShadow: '0 2px 6px rgba(16, 185, 129, 0.3)'
-                      }}
-                    >
-                      <CheckCircle2 size={14} strokeWidth={2.4} />
-                      <span>Complete</span>
-                    </button>
-                  )}
-
-                  {isDelivered && (
-                    <div
-                      style={{
-                        background: '#f1f5f9',
-                        borderRadius: '10px',
-                        padding: '8px 10px',
-                        color: '#64748b',
-                        fontSize: '0.72rem',
-                        fontWeight: '700',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '4px'
-                      }}
-                    >
-                      <CheckCircle2 size={13} color="#10b981" />
-                      <span>Fulfilled</span>
-                    </div>
-                  )}
-
-                  {/* WhatsApp Action */}
-                  <button
-                    type="button"
-                    onClick={() => handleWhatsAppContact(order)}
-                    style={{
-                      background: '#ffffff',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '10px',
-                      padding: '8px 8px',
-                      color: '#0f172a',
-                      fontSize: '0.72rem',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '4px'
-                    }}
-                    title="Notify customer on WhatsApp"
-                  >
-                    <MessageSquare size={13} color="#16a34a" />
-                    <span>WhatsApp</span>
-                  </button>
-
-                  {/* Packing Slip / Invoice Action */}
-                  <button
-                    type="button"
-                    onClick={() => setActivePackingSlip(order)}
-                    style={{
-                      background: '#ffffff',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '10px',
-                      padding: '8px 8px',
-                      color: '#0f172a',
-                      fontSize: '0.72rem',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '4px'
-                    }}
-                  >
-                    <Printer size={13} color="#64748b" />
-                    <span>Packing Slip</span>
-                  </button>
-
                 </div>
 
               </div>
@@ -664,151 +518,6 @@ export default function StaffOrdersTab({ tenant, branch, tenantSlug }) {
           })
         )}
       </div>
-
-      {/* 4. Packing Slip & Dispatch Note Modal */}
-      {activePackingSlip && (
-        <div 
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.65)',
-            backdropFilter: 'blur(4px)',
-            zIndex: 999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '1rem'
-          }}
-          onClick={() => setActivePackingSlip(null)}
-        >
-          <div 
-            style={{
-              background: '#ffffff',
-              borderRadius: '20px',
-              maxWidth: '440px',
-              width: '100%',
-              padding: '1.5rem',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-              maxHeight: '90vh',
-              overflowY: 'auto'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.75rem', marginBottom: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#fff7ed', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ea580c' }}>
-                  <Printer size={17} />
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '0.95rem', fontWeight: '900', color: '#0f172a', margin: 0 }}>
-                    Dispatch Packing Slip
-                  </h3>
-                  <p style={{ fontSize: '0.7rem', color: '#94a3b8', margin: 0 }}>
-                    Official Order #{activePackingSlip.orderNumber}
-                  </p>
-                </div>
-              </div>
-              <button 
-                type="button" 
-                onClick={() => setActivePackingSlip(null)}
-                style={{ background: '#f8fafc', border: 'none', borderRadius: '50%', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            {/* Slip Paper Sheet Look */}
-            <div 
-              style={{ 
-                border: '1px dashed #cbd5e1', 
-                borderRadius: '12px', 
-                padding: '1.25rem', 
-                background: '#fafafa',
-                fontFamily: 'monospace'
-              }}
-            >
-              <div style={{ textAlign: 'center', borderBottom: '1px dashed #cbd5e1', paddingBottom: '0.75rem', marginBottom: '0.75rem' }}>
-                <div style={{ fontSize: '1rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase' }}>
-                  {tenant?.name || 'PhoneSuite UK'}
-                </div>
-                <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
-                  E-Commerce Dispatch Hub &bull; {activePackingSlip.branch}
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.74rem', color: '#334155', marginBottom: '0.75rem' }}>
-                <div><strong>Order Reference:</strong> #{activePackingSlip.orderNumber}</div>
-                <div><strong>Date Paid:</strong> {new Date(activePackingSlip.createdAt).toLocaleString()}</div>
-                <div><strong>Customer:</strong> {activePackingSlip.customerName}</div>
-                <div><strong>Contact:</strong> {activePackingSlip.customerPhone}</div>
-                <div><strong>Address:</strong> {activePackingSlip.deliveryAddress}</div>
-                <div><strong>Fulfillment Method:</strong> {activePackingSlip.fulfillmentType === 'pickup' ? 'Click & Collect' : 'Courier Dispatch'}</div>
-                <div><strong>Tracking / Waybill:</strong> {activePackingSlip.trackingCode}</div>
-              </div>
-
-              <div style={{ borderTop: '1px dashed #cbd5e1', borderBottom: '1px dashed #cbd5e1', padding: '0.65rem 0', margin: '0.75rem 0' }}>
-                <div style={{ fontSize: '0.72rem', fontWeight: 'bold', marginBottom: '4px' }}>ORDER ITEMS:</div>
-                {activePackingSlip.items?.map((item, idx) => (
-                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', padding: '2px 0' }}>
-                    <span>[{item.qty || 1}x] {item.name}</span>
-                    <span>£{(Number(item.price) * (item.qty || 1)).toFixed(2)}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', fontWeight: '900', marginTop: '0.5rem' }}>
-                <span>TOTAL PAID IN FULL:</span>
-                <span>£{Number(activePackingSlip.total).toFixed(2)}</span>
-              </div>
-            </div>
-
-            {/* Print & Close Actions */}
-            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem' }}>
-              <button
-                type="button"
-                onClick={() => window.print()}
-                style={{
-                  flex: 1,
-                  background: '#0f172a',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '12px',
-                  padding: '0.75rem',
-                  fontSize: '0.82rem',
-                  fontWeight: '800',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px'
-                }}
-              >
-                <Printer size={15} />
-                <span>Print Dispatch Note</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActivePackingSlip(null)}
-                style={{
-                  background: '#f1f5f9',
-                  color: '#475569',
-                  border: 'none',
-                  borderRadius: '12px',
-                  padding: '0.75rem 1.25rem',
-                  fontSize: '0.82rem',
-                  fontWeight: '700',
-                  cursor: 'pointer'
-                }}
-              >
-                Close
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
 
     </div>
   );
