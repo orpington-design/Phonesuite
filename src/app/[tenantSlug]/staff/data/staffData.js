@@ -566,6 +566,8 @@ export const INITIAL_FINANCE_REQUESTS = [
     id: 'fin-201',
     applicationNumber: 'FIN-2026-0412',
     customerName: 'Liam O\'Connor',
+    customerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    customerStatus: 'Regular Customer',
     customerPhone: '+44 7899 112233',
     customerEmail: 'liam.oc@devstudio.co.uk',
     customerAddress: '22 Brick Lane, Tower Hamlets, London E1 6RF',
@@ -573,6 +575,11 @@ export const INITIAL_FINANCE_REQUESTS = [
     creditTier: 'Excellent',
     creditLimit: 2500.00,
     employmentStatus: 'Full-Time Software Engineer (£3,800/mo net)',
+    employerName: 'DevStudio Cloud Labs Ltd',
+    jobTitle: 'Senior Full-Stack Engineer',
+    employmentType: 'Permanent Full-Time',
+    monthlyIncome: 3800.00,
+    payrollVerified: true,
     requestedItem: 'Apple iPhone 15 Pro Max 256GB (Natural Titanium)',
     itemPrice: 1199.00,
     downPayment: 150.00,
@@ -585,12 +592,25 @@ export const INITIAL_FINANCE_REQUESTS = [
     status: 'pending_review', // 'pending_review' | 'approved' | 'guarantor_required' | 'rejected'
     decisionNotes: '',
     createdAt: '2026-09-10T07:45:00Z',
-    branch: 'London Central Branch'
+    branch: 'London Central Branch',
+    products: [
+      {
+        id: 'p-101',
+        name: 'Apple iPhone 15 Pro Max 256GB (Natural Titanium)',
+        specs: 'A17 Pro Bionic, 48MP Triple Camera, 6.7" Super Retina XDR OLED, USB-C',
+        price: 1199.00,
+        vat: 199.83,
+        qty: 1,
+        image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80'
+      }
+    ]
   },
   {
     id: 'fin-202',
     applicationNumber: 'FIN-2026-0413',
     customerName: 'Chloe Bennett',
+    customerAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+    customerStatus: 'New Customer',
     customerPhone: '+44 7933 671234',
     customerEmail: 'chloe.bennett@designcraft.com',
     customerAddress: '34 Shoreditch High St, London E1 6PG',
@@ -598,6 +618,11 @@ export const INITIAL_FINANCE_REQUESTS = [
     creditTier: 'Good',
     creditLimit: 1800.00,
     employmentStatus: 'Self-Employed Graphic Designer (£2,400/mo)',
+    employerName: 'DesignCraft Studio Ltd',
+    jobTitle: 'Lead Brand Identity Designer',
+    employmentType: 'Self-Employed (3+ yrs)',
+    monthlyIncome: 2400.00,
+    payrollVerified: true,
     requestedItem: 'Apple iPad Pro 12.9" M2 256GB + Apple Pencil 2',
     itemPrice: 989.00,
     downPayment: 100.00,
@@ -610,12 +635,34 @@ export const INITIAL_FINANCE_REQUESTS = [
     status: 'pending_review',
     decisionNotes: '',
     createdAt: '2026-09-09T18:20:00Z',
-    branch: 'London Central Branch'
+    branch: 'London Central Branch',
+    products: [
+      {
+        id: 'p-102',
+        name: 'Apple iPad Pro 12.9" M2 256GB (Space Grey)',
+        specs: 'Apple Silicon M2, Liquid Retina XDR Mini-LED, ProMotion 120Hz',
+        price: 860.00,
+        vat: 143.33,
+        qty: 1,
+        image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&auto=format&fit=crop&q=80'
+      },
+      {
+        id: 'p-103',
+        name: 'Apple Pencil (2nd Generation)',
+        specs: 'Magnetic Pairing & Charging, Wireless Bluetooth, Pressure Sensitivity',
+        price: 129.00,
+        vat: 21.50,
+        qty: 1,
+        image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&auto=format&fit=crop&q=80'
+      }
+    ]
   },
   {
     id: 'fin-203',
     applicationNumber: 'FIN-2026-0409',
     customerName: 'Marcus Vance',
+    customerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    customerStatus: 'Regular Customer',
     customerPhone: '+44 7700 900789',
     customerEmail: 'm.vance@techmedia.co.uk',
     customerAddress: '88 Deansgate, Manchester M3 2FW',
@@ -623,6 +670,11 @@ export const INITIAL_FINANCE_REQUESTS = [
     creditTier: 'Prime Tier',
     creditLimit: 3500.00,
     employmentStatus: 'Senior Studio Producer (£4,200/mo net)',
+    employerName: 'MediaWorks UK Broadcasting',
+    jobTitle: 'Senior Studio Producer & Director',
+    employmentType: 'Permanent Full-Time (5+ yrs)',
+    monthlyIncome: 4200.00,
+    payrollVerified: true,
     requestedItem: 'MacBook Pro 16" M3 Max 1TB (Space Black)',
     itemPrice: 2899.00,
     downPayment: 350.00,
@@ -635,12 +687,25 @@ export const INITIAL_FINANCE_REQUESTS = [
     status: 'approved',
     decisionNotes: 'Clean credit history, approved with £350 upfront downpayment.',
     createdAt: '2026-09-08T14:10:00Z',
-    branch: 'London Central Branch'
+    branch: 'London Central Branch',
+    products: [
+      {
+        id: 'p-104',
+        name: 'MacBook Pro 16" M3 Max 1TB (Space Black)',
+        specs: '16-Core CPU, 40-Core GPU, 48GB Unified Memory, 1TB SSD Storage',
+        price: 2899.00,
+        vat: 483.17,
+        qty: 1,
+        image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80'
+      }
+    ]
   },
   {
     id: 'fin-204',
     applicationNumber: 'FIN-2026-0401',
     customerName: 'Jordan Reed',
+    customerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    customerStatus: 'New Customer',
     customerPhone: '+44 7766 554433',
     customerEmail: 'jordan.reed@freemail.co.uk',
     customerAddress: '5 Stratford Broadway, London E15 4BQ',
@@ -648,6 +713,11 @@ export const INITIAL_FINANCE_REQUESTS = [
     creditTier: 'High Risk',
     creditLimit: 600.00,
     employmentStatus: 'Part-Time Courier (£1,100/mo)',
+    employerName: 'Express Logistics Courier Network',
+    jobTitle: 'Dispatch Driver / Courier',
+    employmentType: 'Part-Time Contractor',
+    monthlyIncome: 1100.00,
+    payrollVerified: false,
     requestedItem: 'Sony PlayStation 5 Pro Console + 2 DualSense Controllers',
     itemPrice: 799.00,
     downPayment: 50.00,
@@ -660,7 +730,27 @@ export const INITIAL_FINANCE_REQUESTS = [
     status: 'guarantor_required',
     decisionNotes: 'Requested UK homeowner guarantor or 35% cash downpayment.',
     createdAt: '2026-09-07T16:30:00Z',
-    branch: 'London Central Branch'
+    branch: 'London Central Branch',
+    products: [
+      {
+        id: 'p-105',
+        name: 'Sony PlayStation 5 Pro Console 2TB',
+        specs: 'PlayStation Spectral Super Resolution (PSSR), Enhanced Ray Tracing, 2TB SSD',
+        price: 699.00,
+        vat: 116.50,
+        qty: 1,
+        image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80'
+      },
+      {
+        id: 'p-106',
+        name: 'DualSense Wireless Controller (Midnight Black)',
+        specs: 'Haptic Feedback, Dynamic Adaptive Triggers, Built-in Microphone',
+        price: 100.00,
+        vat: 16.67,
+        qty: 1,
+        image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop&q=80'
+      }
+    ]
   }
 ];
 

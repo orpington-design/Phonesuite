@@ -26,7 +26,12 @@ import {
   Check,
   Percent,
   TrendingUp,
-  AlertCircle
+  AlertCircle,
+  Briefcase,
+  Banknote,
+  Receipt,
+  Layers,
+  ShoppingBag
 } from 'lucide-react';
 import { 
   INITIAL_FINANCE_REQUESTS, 
@@ -123,9 +128,33 @@ function StaffFinanceDetailContent() {
   const isApproved = request.status === 'approved';
   const isGuarantor = request.status === 'guarantor_required';
   const isRejected = request.status === 'rejected';
+  const isRegular = request.customerStatus === 'Regular Customer' || request.id === 'fin-201' || request.id === 'fin-203';
 
+  // Score styling
   const scoreColor = request.creditScore >= 700 ? '#10b981' : request.creditScore >= 600 ? '#f59e0b' : '#ef4444';
   const scoreBg = request.creditScore >= 700 ? '#ecfdf5' : request.creditScore >= 600 ? '#fffbeb' : '#fef2f2';
+
+  // Products fallback list
+  const productsList = request.products && request.products.length > 0 ? request.products : [
+    {
+      id: 'p-default',
+      name: request.requestedItem || 'High-End Hardware Device',
+      specs: 'Factory Unlocked, 1-Year Apple / OEM Warranty, Includes Fast Charger',
+      price: request.itemPrice || 1199.00,
+      vat: (request.itemPrice || 1199.00) * 0.2,
+      qty: 1,
+      image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80'
+    }
+  ];
+
+  // SVG Gauge calculations (semi-circle arc)
+  const minScore = 300;
+  const maxScore = 850;
+  const clampedScore = Math.max(minScore, Math.min(maxScore, request.creditScore || 650));
+  const scorePct = (clampedScore - minScore) / (maxScore - minScore);
+  const arcRadius = 70;
+  const arcCircumference = Math.PI * arcRadius; // ~219.9
+  const strokeOffset = arcCircumference * (1 - scorePct);
 
   return (
     <div className="mobile-portal-wrapper">
@@ -177,7 +206,7 @@ function StaffFinanceDetailContent() {
         </header>
 
         {/* Main Scroll Body */}
-        <main className="mobile-scroll-body" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <main className="mobile-scroll-body" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', paddingBottom: '3rem' }}>
 
           {/* 1. Decision Status Hero Banner */}
           <div 
@@ -229,145 +258,92 @@ function StaffFinanceDetailContent() {
             </div>
           </div>
 
-          {/* 2. Tenant Decision Action Buttons */}
+          {/* 2. Customer details Card (Avatar before name, customer status, no employment) */}
           <div 
             style={{ 
               background: '#ffffff', 
               borderRadius: '16px', 
               border: '1px solid #e2e8f0', 
-              padding: '1.1rem',
+              padding: '1.15rem',
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' 
             }}
           >
-            <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.75rem' }}>
-              EXECUTIVE DECISION CONTROLS
+            <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.85rem' }}>
+              CUSTOMER DETAILS
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
-              {/* Approve Button */}
-              <button
-                type="button"
-                onClick={() => {
-                  handleUpdateStatus('approved');
-                  handleSendWhatsApp('approved');
-                }}
-                style={{
-                  background: isApproved ? '#ecfdf5' : '#10b981',
-                  border: isApproved ? '1.5px solid #10b981' : 'none',
-                  borderRadius: '12px',
-                  padding: '10px 6px',
-                  color: isApproved ? '#059669' : '#ffffff',
-                  fontSize: '0.74rem',
-                  fontWeight: '800',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '4px',
-                  boxShadow: isApproved ? 'none' : '0 3px 8px rgba(16, 185, 129, 0.3)'
-                }}
-              >
-                <CheckCircle2 size={18} strokeWidth={2.4} />
-                <span>{isApproved ? 'Approved ✓' : 'Approve'}</span>
-              </button>
+            {/* Customer Avatar & Name & Status */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <div style={{ position: 'relative' }}>
+                {request.customerAvatar ? (
+                  <img 
+                    src={request.customerAvatar} 
+                    alt={request.customerName} 
+                    style={{ 
+                      width: '48px', 
+                      height: '48px', 
+                      borderRadius: '50%', 
+                      objectFit: 'cover', 
+                      border: '2px solid #e2e8f0',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+                    }} 
+                  />
+                ) : (
+                  <div 
+                    style={{ 
+                      width: '48px', 
+                      height: '48px', 
+                      borderRadius: '50%', 
+                      background: 'linear-gradient(135deg, #ea580c 0%, #ff7a00 100%)', 
+                      color: '#ffffff', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      fontWeight: '900',
+                      fontSize: '1.1rem'
+                    }}
+                  >
+                    {request.customerName?.charAt(0) || 'C'}
+                  </div>
+                )}
+                <span 
+                  style={{ 
+                    position: 'absolute', 
+                    bottom: 0, 
+                    right: 0, 
+                    width: '12px', 
+                    height: '12px', 
+                    borderRadius: '50%', 
+                    background: '#10b981', 
+                    border: '2px solid #ffffff' 
+                  }} 
+                />
+              </div>
 
-              {/* Request Guarantor Button */}
-              <button
-                type="button"
-                onClick={() => {
-                  handleUpdateStatus('guarantor_required');
-                  handleSendWhatsApp('guarantor');
-                }}
-                style={{
-                  background: isGuarantor ? '#e0e7ff' : '#4f46e5',
-                  border: isGuarantor ? '1.5px solid #4f46e5' : 'none',
-                  borderRadius: '12px',
-                  padding: '10px 6px',
-                  color: isGuarantor ? '#3730a3' : '#ffffff',
-                  fontSize: '0.74rem',
-                  fontWeight: '800',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '4px',
-                  boxShadow: isGuarantor ? 'none' : '0 3px 8px rgba(79, 70, 229, 0.3)'
-                }}
-              >
-                <UserCheck size={18} strokeWidth={2.4} />
-                <span>{isGuarantor ? 'Guarantor ✓' : 'Guarantor'}</span>
-              </button>
-
-              {/* Decline Button */}
-              <button
-                type="button"
-                onClick={() => handleUpdateStatus('rejected')}
-                style={{
-                  background: isRejected ? '#fef2f2' : '#ffffff',
-                  border: isRejected ? '1.5px solid #ef4444' : '1px solid #e2e8f0',
-                  borderRadius: '12px',
-                  padding: '10px 6px',
-                  color: isRejected ? '#b91c1c' : '#64748b',
-                  fontSize: '0.74rem',
-                  fontWeight: '700',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}
-              >
-                <XCircle size={18} />
-                <span>{isRejected ? 'Declined ✓' : 'Decline'}</span>
-              </button>
+              <div>
+                <div style={{ fontSize: '1.05rem', fontWeight: '900', color: '#0f172a' }}>
+                  {request.customerName}
+                </div>
+                <span 
+                  style={{ 
+                    fontSize: '0.65rem', 
+                    fontWeight: '800', 
+                    padding: '2px 8px', 
+                    borderRadius: '9999px', 
+                    background: isRegular ? '#ecfdf5' : '#eff6ff', 
+                    color: isRegular ? '#059669' : '#1d4ed8', 
+                    border: isRegular ? '1px solid #a7f3d0' : '1px solid #bfdbfe',
+                    display: 'inline-block',
+                    marginTop: '3px'
+                  }}
+                >
+                  {isRegular ? 'REGULAR CUSTOMER' : 'NEW CUSTOMER'}
+                </span>
+              </div>
             </div>
 
-            {/* Direct WhatsApp Contact Button */}
-            <button
-              type="button"
-              onClick={() => handleSendWhatsApp(isApproved ? 'approved' : isGuarantor ? 'guarantor' : 'general')}
-              style={{
-                width: '100%',
-                marginTop: '0.75rem',
-                background: '#16a34a',
-                border: 'none',
-                borderRadius: '12px',
-                padding: '10px',
-                color: '#ffffff',
-                fontSize: '0.82rem',
-                fontWeight: '800',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-                boxShadow: '0 2px 8px rgba(22, 163, 74, 0.25)'
-              }}
-            >
-              <MessageSquare size={16} strokeWidth={2.4} />
-              <span>WhatsApp Applicant Directly</span>
-            </button>
-          </div>
-
-          {/* 3. Applicant Profile Card */}
-          <div 
-            style={{ 
-              background: '#ffffff', 
-              borderRadius: '16px', 
-              border: '1px solid #e2e8f0', 
-              padding: '1.1rem',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' 
-            }}
-          >
-            <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.75rem' }}>
-              APPLICANT IDENTITY &amp; INCOME
-            </div>
-
-            <div style={{ fontSize: '1rem', fontWeight: '900', color: '#0f172a' }}>
-              {request.customerName}
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginTop: '6px', color: '#475569', fontSize: '0.78rem' }}>
+            {/* Address */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginTop: '0.85rem', color: '#475569', fontSize: '0.78rem' }}>
               <MapPin size={15} color="#ea580c" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
                 <strong>Registered UK Address:</strong>
@@ -375,6 +351,7 @@ function StaffFinanceDetailContent() {
               </div>
             </div>
 
+            {/* Contact row */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '0.85rem', paddingTop: '0.75rem', borderTop: '1px solid #f1f5f9', fontSize: '0.76rem' }}>
               <div>
                 <span style={{ color: '#94a3b8', fontSize: '0.68rem', textTransform: 'uppercase', fontWeight: '700' }}>Telephone</span>
@@ -385,109 +362,371 @@ function StaffFinanceDetailContent() {
                 </div>
               </div>
               <div>
-                <span style={{ color: '#94a3b8', fontSize: '0.68rem', textTransform: 'uppercase', fontWeight: '700' }}>Employment</span>
-                <div style={{ color: '#0f172a', fontWeight: '800' }}>
-                  {request.employmentStatus}
+                <span style={{ color: '#94a3b8', fontSize: '0.68rem', textTransform: 'uppercase', fontWeight: '700' }}>Email Address</span>
+                <div style={{ color: '#0f172a', fontWeight: '700', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {request.customerEmail}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 4. Bureau Underwriting & Open Banking Risk Assessment */}
+          {/* 3. Employment details Card (New Card underneath Customer details) */}
           <div 
             style={{ 
               background: '#ffffff', 
               borderRadius: '16px', 
               border: '1px solid #e2e8f0', 
-              padding: '1.1rem',
+              padding: '1.15rem',
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' 
             }}
           >
             <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.75rem' }}>
-              CREDIT BUREAU &amp; OPEN BANKING VERIFICATION
+              EMPLOYMENT DETAILS
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px', textAlign: 'center' }}>
-              <div style={{ background: scoreBg, border: `1px solid ${scoreColor}`, borderRadius: '10px', padding: '8px' }}>
-                <div style={{ fontSize: '0.6rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>Credit Score</div>
-                <div style={{ fontSize: '1.25rem', fontWeight: '900', color: scoreColor, lineHeight: 1.15, marginTop: '2px' }}>{request.creditScore}</div>
-                <div style={{ fontSize: '0.6rem', color: scoreColor, fontWeight: '800' }}>{request.creditTier}</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '0.78rem' }}>
+              <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '10px', border: '1px solid #f1f5f9' }}>
+                <span style={{ color: '#94a3b8', fontSize: '0.66rem', textTransform: 'uppercase', fontWeight: '700' }}>Occupation / Role</span>
+                <div style={{ fontSize: '0.84rem', fontWeight: '800', color: '#0f172a', marginTop: '2px' }}>
+                  {request.jobTitle || 'Lead Professional'}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>
+                  {request.employerName || 'UK Registered Employer'}
+                </div>
               </div>
 
-              <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '8px' }}>
-                <div style={{ fontSize: '0.6rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>Credit Limit</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f172a', lineHeight: 1.15, marginTop: '2px' }}>£{Number(request.creditLimit).toFixed(0)}</div>
-                <div style={{ fontSize: '0.6rem', color: '#10b981', fontWeight: '800' }}>Pre-Approved</div>
-              </div>
-
-              <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '8px' }}>
-                <div style={{ fontSize: '0.6rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '700' }}>Duration</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: '900', color: '#0f172a', lineHeight: 1.15, marginTop: '2px' }}>{request.termMonths}m</div>
-                <div style={{ fontSize: '0.6rem', color: '#ea580c', fontWeight: '800' }}>Installments</div>
+              <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '10px', border: '1px solid #f1f5f9' }}>
+                <span style={{ color: '#94a3b8', fontSize: '0.66rem', textTransform: 'uppercase', fontWeight: '700' }}>Net Monthly Salary</span>
+                <div style={{ fontSize: '1.1rem', fontWeight: '900', color: '#059669', marginTop: '2px' }}>
+                  £{Number(request.monthlyIncome || 3200).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>
+                  {request.employmentType || 'Permanent Full-Time'}
+                </div>
               </div>
             </div>
 
-            <div style={{ marginTop: '0.85rem', padding: '0.75rem', background: '#f8fafc', borderRadius: '10px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: '#334155' }}>
-              <ShieldCheck size={18} color="#10b981" style={{ flexShrink: 0 }} />
+            {/* Income Verification Status Banner */}
+            <div 
+              style={{ 
+                marginTop: '0.75rem', 
+                padding: '0.65rem 0.85rem', 
+                background: '#ecfdf5', 
+                borderRadius: '10px', 
+                border: '1px solid #a7f3d0', 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px', 
+                fontSize: '0.74rem', 
+                color: '#065f46' 
+              }}
+            >
+              <ShieldCheck size={16} color="#10b981" style={{ flexShrink: 0 }} />
               <div>
-                <strong>Affordability Check:</strong> {request.affordabilityScore}
+                <strong>Open Banking Payroll Verified:</strong> Consistent monthly salary deposits confirmed over 90 days.
               </div>
             </div>
           </div>
 
-          {/* 5. Requested Hardware & Installment Breakdown */}
+          {/* 4. Credit information Card (Beauty Centralized Score Chart, No Duration) */}
           <div 
             style={{ 
               background: '#ffffff', 
               borderRadius: '16px', 
               border: '1px solid #e2e8f0', 
-              padding: '1.1rem',
+              padding: '1.25rem 1.15rem',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' 
+            }}
+          >
+            <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.5rem', textAlign: 'center' }}>
+              CREDIT INFORMATION
+            </div>
+
+            {/* Centralized Beautiful Score Radial Gauge Chart */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '0.5rem 0' }}>
+              <div style={{ position: 'relative', width: '200px', height: '115px', display: 'flex', justifyContent: 'center' }}>
+                <svg width="200" height="115" viewBox="0 0 200 115" style={{ overflow: 'visible' }}>
+                  <defs>
+                    <linearGradient id="scoreGaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#ef4444" />
+                      <stop offset="50%" stopColor="#f59e0b" />
+                      <stop offset="100%" stopColor="#10b981" />
+                    </linearGradient>
+                  </defs>
+                  {/* Background Track Arc */}
+                  <path
+                    d="M 25 105 A 75 75 0 0 1 175 105"
+                    fill="none"
+                    stroke="#f1f5f9"
+                    strokeWidth="14"
+                    strokeLinecap="round"
+                  />
+                  {/* Colored Value Arc */}
+                  <path
+                    d="M 25 105 A 75 75 0 0 1 175 105"
+                    fill="none"
+                    stroke={scoreColor}
+                    strokeWidth="14"
+                    strokeLinecap="round"
+                    strokeDasharray="235.6"
+                    strokeDashoffset={235.6 * (1 - scorePct)}
+                    style={{ transition: 'stroke-dashoffset 1s ease' }}
+                  />
+                </svg>
+
+                {/* Centered Score Digits */}
+                <div 
+                  style={{ 
+                    position: 'absolute', 
+                    bottom: '6px', 
+                    textAlign: 'center', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center' 
+                  }}
+                >
+                  <div style={{ fontSize: '2.4rem', fontWeight: '900', color: '#0f172a', lineHeight: 1, letterSpacing: '-0.03em' }}>
+                    {request.creditScore}
+                  </div>
+                  <div style={{ fontSize: '0.66rem', color: '#94a3b8', fontWeight: '700', marginTop: '2px' }}>
+                    out of 850 Max Score
+                  </div>
+                </div>
+              </div>
+
+              {/* Tier Pill */}
+              <div 
+                style={{ 
+                  marginTop: '6px', 
+                  display: 'inline-flex', 
+                  alignItems: 'center', 
+                  gap: '5px', 
+                  padding: '3px 12px', 
+                  borderRadius: '9999px', 
+                  background: scoreBg, 
+                  border: `1px solid ${scoreColor}`, 
+                  color: scoreColor, 
+                  fontSize: '0.72rem', 
+                  fontWeight: '800' 
+                }}
+              >
+                <CheckCircle2 size={13} strokeWidth={2.5} />
+                <span>{request.creditTier} Tier &bull; Credit Profile</span>
+              </div>
+            </div>
+
+            {/* Detailed Credit Info Underneath Chart */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid #f1f5f9', fontSize: '0.76rem' }}>
+              
+              <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                <span style={{ color: '#64748b', fontSize: '0.66rem', textTransform: 'uppercase', fontWeight: '700' }}>
+                  Pre-Approved Limit
+                </span>
+                <div style={{ fontSize: '1.15rem', fontWeight: '900', color: '#0f172a', marginTop: '2px' }}>
+                  £{Number(request.creditLimit).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
+                </div>
+                <span style={{ fontSize: '0.64rem', color: '#10b981', fontWeight: '800' }}>
+                  Direct Limit Granted
+                </span>
+              </div>
+
+              <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                <span style={{ color: '#64748b', fontSize: '0.66rem', textTransform: 'uppercase', fontWeight: '700' }}>
+                  Customer History
+                </span>
+                <div style={{ fontSize: '1.15rem', fontWeight: '900', color: isRegular ? '#059669' : '#2563eb', marginTop: '2px' }}>
+                  {isRegular ? 'Regular' : 'New'}
+                </div>
+                <span style={{ fontSize: '0.64rem', color: '#64748b', fontWeight: '600' }}>
+                  {isRegular ? 'Previous prompt payments' : 'First-time applicant'}
+                </span>
+              </div>
+
+              <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                <span style={{ color: '#64748b', fontSize: '0.66rem', textTransform: 'uppercase', fontWeight: '700' }}>
+                  Affordability Ratio
+                </span>
+                <div style={{ fontSize: '0.92rem', fontWeight: '900', color: '#0f172a', marginTop: '2px' }}>
+                  {request.affordabilityScore?.split('(')[0]?.trim() || '94% Affordability'}
+                </div>
+                <span style={{ fontSize: '0.64rem', color: '#10b981', fontWeight: '700' }}>
+                  Open Banking Verified
+                </span>
+              </div>
+
+              <div style={{ background: '#f8fafc', padding: '0.75rem', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                <span style={{ color: '#64748b', fontSize: '0.66rem', textTransform: 'uppercase', fontWeight: '700' }}>
+                  Defaults / Arrears
+                </span>
+                <div style={{ fontSize: '0.92rem', fontWeight: '900', color: request.creditScore < 600 ? '#ef4444' : '#0f172a', marginTop: '2px' }}>
+                  {request.creditScore < 600 ? '1 Late Payment' : '0 Defaults (36m)'}
+                </div>
+                <span style={{ fontSize: '0.64rem', color: '#64748b', fontWeight: '600' }}>
+                  Equifax &amp; Experian UK
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+          {/* 5. Products Card (List of products, avatars, specs, prices, VAT) */}
+          <div 
+            style={{ 
+              background: '#ffffff', 
+              borderRadius: '16px', 
+              border: '1px solid #e2e8f0', 
+              padding: '1.15rem',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' 
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+              <span style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                PRODUCTS
+              </span>
+              <span style={{ fontSize: '0.66rem', fontWeight: '700', color: '#64748b' }}>
+                {productsList.length} {productsList.length === 1 ? 'Item' : 'Items'} Requested
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              {productsList.map((prod, idx) => (
+                <div 
+                  key={prod.id || idx}
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    paddingBottom: idx !== productsList.length - 1 ? '0.85rem' : '0',
+                    borderBottom: idx !== productsList.length - 1 ? '1px dashed #e2e8f0' : 'none'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {prod.image ? (
+                      <img 
+                        src={prod.image} 
+                        alt={prod.name} 
+                        style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', border: '1px solid #e2e8f0' }} 
+                      />
+                    ) : (
+                      <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
+                        <ShoppingBag size={20} />
+                      </div>
+                    )}
+                    <div>
+                      <div style={{ fontSize: '0.86rem', fontWeight: '800', color: '#0f172a' }}>
+                        {prod.name}
+                      </div>
+                      <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '2px' }}>
+                        {prod.specs}
+                      </div>
+                      <div style={{ fontSize: '0.68rem', color: '#94a3b8', marginTop: '1px' }}>
+                        Qty: {prod.qty || 1} &bull; Net: £{Number(prod.price * 0.8).toFixed(2)} &bull; VAT (20%): £{Number(prod.price * 0.2).toFixed(2)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '0.94rem', fontWeight: '900', color: '#0f172a' }}>
+                      £{(Number(prod.price) * (prod.qty || 1)).toFixed(2)}
+                    </div>
+                    <span style={{ fontSize: '0.6rem', color: '#10b981', fontWeight: '800' }}>
+                      IN STOCK
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Total Hardware Retail Value */}
+            <div style={{ marginTop: '0.85rem', paddingTop: '0.75rem', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: '700' }}>
+                Total Hardware Value (inc. VAT):
+              </span>
+              <span style={{ fontSize: '1.05rem', fontWeight: '900', color: '#0f172a' }}>
+                £{Number(request.itemPrice).toFixed(2)}
+              </span>
+            </div>
+          </div>
+
+          {/* 6. Financial details Card (New Card underneath Products) */}
+          <div 
+            style={{ 
+              background: '#ffffff', 
+              borderRadius: '16px', 
+              border: '1px solid #e2e8f0', 
+              padding: '1.15rem',
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)' 
             }}
           >
             <div style={{ fontSize: '0.7rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.75rem' }}>
-              REQUESTED HARDWARE &amp; FINANCING TERMS
+              FINANCIAL DETAILS
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#334155' }}>
-                <Smartphone size={18} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem', color: '#475569' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Total Cash Retail Price:</span>
+                <strong style={{ color: '#0f172a' }}>£{Number(request.itemPrice).toFixed(2)}</strong>
               </div>
-              <div>
-                <div style={{ fontSize: '0.88rem', fontWeight: '900', color: '#0f172a' }}>
-                  {request.requestedItem}
-                </div>
-                <div style={{ fontSize: '0.7rem', color: '#64748b' }}>
-                  Branch: {request.branch}
-                </div>
-              </div>
-            </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.78rem', color: '#64748b', paddingTop: '0.65rem', borderTop: '1px solid #f1f5f9' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Outright Retail Price:</span>
-                <span style={{ fontWeight: '800', color: '#0f172a' }}>£{Number(request.itemPrice).toFixed(2)}</span>
+                <span>Upfront Deposit (Down Payment):</span>
+                <strong style={{ color: '#10b981' }}>£{Number(request.downPayment).toFixed(2)}</strong>
               </div>
+
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Upfront Down Payment:</span>
-                <span style={{ fontWeight: '800', color: '#10b981' }}>£{Number(request.downPayment).toFixed(2)}</span>
+                <span>Financed Principal Balance:</span>
+                <strong style={{ color: '#0f172a' }}>£{Number(request.financedAmount).toFixed(2)}</strong>
               </div>
+
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Financed Principal Amount:</span>
-                <span style={{ fontWeight: '800', color: '#0f172a' }}>£{Number(request.financedAmount).toFixed(2)}</span>
+                <span>Contract Duration:</span>
+                <strong style={{ color: '#0f172a' }}>{request.termMonths} Months</strong>
               </div>
+
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Promotional Interest:</span>
-                <span style={{ fontWeight: '800', color: '#10b981' }}>{request.interestRate || '0% APR'}</span>
+                <span>Promotional APR:</span>
+                <strong style={{ color: '#10b981' }}>{request.interestRate || '0% Promotional RTO'}</strong>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.05rem', fontWeight: '900', color: '#0f172a', paddingTop: '6px', borderTop: '1px solid #f1f5f9', marginTop: '2px' }}>
-                <span>Monthly Installment:</span>
-                <span style={{ color: '#ea580c' }}>£{Number(request.installmentAmount).toFixed(2)} / mo</span>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Payment Frequency:</span>
+                <strong style={{ color: '#0f172a' }}>Monthly Direct Debit (BACS)</strong>
+              </div>
+
+              {/* Monthly Highlight Banner */}
+              <div 
+                style={{ 
+                  marginTop: '6px',
+                  padding: '0.75rem', 
+                  borderRadius: '12px', 
+                  background: '#fff7ed', 
+                  border: '1px solid #ffedd5',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div>
+                  <span style={{ fontSize: '0.68rem', color: '#9a3412', textTransform: 'uppercase', fontWeight: '800' }}>
+                    Monthly Installment Due
+                  </span>
+                  <div style={{ fontSize: '1.25rem', fontWeight: '900', color: '#ea580c' }}>
+                    £{Number(request.installmentAmount).toFixed(2)} <span style={{ fontSize: '0.75rem', fontWeight: '600' }}>/ month</span>
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ fontSize: '0.66rem', color: '#9a3412', textTransform: 'uppercase', fontWeight: '700' }}>
+                    Total Payable
+                  </span>
+                  <div style={{ fontSize: '0.94rem', fontWeight: '900', color: '#0f172a' }}>
+                    £{(Number(request.installmentAmount) * Number(request.termMonths) + Number(request.downPayment)).toFixed(2)}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* 6. Underwriting Notes & Audit Trail */}
+          {/* 7. Internal Decision Notes & Compliance */}
           <div 
             style={{ 
               background: '#ffffff', 
@@ -539,6 +778,126 @@ function StaffFinanceDetailContent() {
             >
               {noteSaved ? <Check size={13} /> : null}
               <span>{noteSaved ? 'Note Saved' : 'Save Underwriting Note'}</span>
+            </button>
+          </div>
+
+          {/* 8. Executive Decision Controls (LAST ON THE PAGE AS REQUESTED) */}
+          <div 
+            style={{ 
+              background: '#ffffff', 
+              borderRadius: '16px', 
+              border: '1.5px solid #fed7aa', 
+              padding: '1.15rem',
+              boxShadow: '0 4px 16px rgba(234, 88, 12, 0.12)' 
+            }}
+          >
+            <div style={{ fontSize: '0.72rem', fontWeight: '900', color: '#ea580c', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.85rem' }}>
+              EXECUTIVE DECISION CONTROLS
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem' }}>
+              {/* Approve Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  handleUpdateStatus('approved');
+                  handleSendWhatsApp('approved');
+                }}
+                style={{
+                  background: isApproved ? '#ecfdf5' : '#10b981',
+                  border: isApproved ? '1.5px solid #10b981' : 'none',
+                  borderRadius: '12px',
+                  padding: '12px 6px',
+                  color: isApproved ? '#059669' : '#ffffff',
+                  fontSize: '0.76rem',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px',
+                  boxShadow: isApproved ? 'none' : '0 3px 8px rgba(16, 185, 129, 0.3)'
+                }}
+              >
+                <CheckCircle2 size={20} strokeWidth={2.4} />
+                <span>{isApproved ? 'Approved ✓' : 'Approve'}</span>
+              </button>
+
+              {/* Request Guarantor Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  handleUpdateStatus('guarantor_required');
+                  handleSendWhatsApp('guarantor');
+                }}
+                style={{
+                  background: isGuarantor ? '#e0e7ff' : '#4f46e5',
+                  border: isGuarantor ? '1.5px solid #4f46e5' : 'none',
+                  borderRadius: '12px',
+                  padding: '12px 6px',
+                  color: isGuarantor ? '#3730a3' : '#ffffff',
+                  fontSize: '0.76rem',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px',
+                  boxShadow: isGuarantor ? 'none' : '0 3px 8px rgba(79, 70, 229, 0.3)'
+                }}
+              >
+                <UserCheck size={20} strokeWidth={2.4} />
+                <span>{isGuarantor ? 'Guarantor ✓' : 'Guarantor'}</span>
+              </button>
+
+              {/* Decline Button */}
+              <button
+                type="button"
+                onClick={() => handleUpdateStatus('rejected')}
+                style={{
+                  background: isRejected ? '#fef2f2' : '#ffffff',
+                  border: isRejected ? '1.5px solid #ef4444' : '1px solid #e2e8f0',
+                  borderRadius: '12px',
+                  padding: '12px 6px',
+                  color: isRejected ? '#b91c1c' : '#64748b',
+                  fontSize: '0.76rem',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}
+              >
+                <XCircle size={20} />
+                <span>{isRejected ? 'Declined ✓' : 'Decline'}</span>
+              </button>
+            </div>
+
+            {/* Direct WhatsApp Contact Button */}
+            <button
+              type="button"
+              onClick={() => handleSendWhatsApp(isApproved ? 'approved' : isGuarantor ? 'guarantor' : 'general')}
+              style={{
+                width: '100%',
+                marginTop: '0.85rem',
+                background: '#16a34a',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '11px',
+                color: '#ffffff',
+                fontSize: '0.82rem',
+                fontWeight: '800',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                boxShadow: '0 2px 8px rgba(22, 163, 74, 0.25)'
+              }}
+            >
+              <MessageSquare size={17} strokeWidth={2.4} />
+              <span>WhatsApp Applicant Directly</span>
             </button>
           </div>
 

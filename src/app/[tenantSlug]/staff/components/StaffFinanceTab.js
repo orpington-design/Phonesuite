@@ -493,12 +493,25 @@ export default function StaffFinanceTab({ tenant, branch, tenantSlug }) {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ fontSize: '0.84rem', fontWeight: '900', color: '#0f172a' }}>
-                        {req.customerName}
-                      </div>
-                      <div style={{ fontSize: '0.7rem', color: '#64748b' }}>
-                        {req.employmentStatus}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {req.customerAvatar ? (
+                        <img 
+                          src={req.customerAvatar} 
+                          alt={req.customerName} 
+                          style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #e2e8f0' }} 
+                        />
+                      ) : (
+                        <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ea580c', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem' }}>
+                          {req.customerName?.charAt(0)}
+                        </div>
+                      )}
+                      <div>
+                        <div style={{ fontSize: '0.84rem', fontWeight: '900', color: '#0f172a' }}>
+                          {req.customerName}
+                        </div>
+                        <span style={{ fontSize: '0.6rem', fontWeight: '700', padding: '1px 6px', borderRadius: '9999px', background: (req.customerStatus === 'Regular Customer' || req.id === 'fin-201' || req.id === 'fin-203') ? '#ecfdf5' : '#eff6ff', color: (req.customerStatus === 'Regular Customer' || req.id === 'fin-201' || req.id === 'fin-203') ? '#059669' : '#1d4ed8' }}>
+                          {(req.customerStatus === 'Regular Customer' || req.id === 'fin-201' || req.id === 'fin-203') ? 'Regular Customer' : 'New Customer'}
+                        </span>
                       </div>
                     </div>
 
