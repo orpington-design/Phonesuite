@@ -54,23 +54,37 @@ export default function DeliveriesPage() {
   );
 }
 
-// Preset Map Coordinates for London Delivery Nodes
+// Real London Coordinates for Central Depot & Delivery Stops
 const STORE_DEPOT = {
   id: 'depot-lon',
   name: 'PhoneSuite Central Hub',
   address: '42 Baker Street, Marylebone, London NW1 6XE',
   postcode: 'NW1 6XE',
-  x: 290,
-  y: 200,
+  lat: 51.5186,
+  lng: -0.1565,
   isDepot: true
 };
 
-const STOP_COORDINATES = {
-  'del-101': { x: 550, y: 350 }, // Greenwich
-  'del-102': { x: 380, y: 110 }, // Highbury
-  'del-103': { x: 190, y: 360 }, // Chelsea
-  'del-104': { x: 510, y: 250 }, // Canary Wharf
+const STOP_GEO_COORDINATES = {
+  'del-101': { lat: 51.4816, lng: -0.0098, name: 'Greenwich', address: '19 Greenwich Church St, London SE10 9BJ' },
+  'del-102': { lat: 51.5542, lng: -0.0968, name: 'Highbury', address: '72 Highbury New Park, London N5 2DJ' },
+  'del-103': { lat: 51.4754, lng: -0.1812, name: 'Chelsea', address: '15 Chelsea Harbour Dr, London SW10 0XE' },
+  'del-104': { lat: 51.5054, lng: -0.0210, name: 'Canary Wharf', address: '14 Canary Wharf Pier, London E14 4SG' },
 };
+
+const SIMULATED_DRIVER_PATH = [
+  { lat: 51.5186, lng: -0.1565, label: 'Departing Central Hub (Baker St)', speed: 18, eta: '12 mins to Stop 1' },
+  { lat: 51.5240, lng: -0.1430, label: 'Marylebone Rd / Regent’s Park', speed: 22, eta: '9 mins to Stop 1' },
+  { lat: 51.5285, lng: -0.1330, label: 'Euston Road / St Pancras', speed: 28, eta: '7 mins to Stop 1' },
+  { lat: 51.5320, lng: -0.1060, label: 'Angel Islington / Upper St', speed: 21, eta: '4 mins to Stop 1' },
+  { lat: 51.5542, lng: -0.0968, label: 'Arrived at Stop 1 (Highbury N5)', speed: 0, eta: 'At Location' },
+  { lat: 51.5350, lng: -0.0650, label: 'En Route A10 to Canary Wharf', speed: 30, eta: '11 mins to Stop 2' },
+  { lat: 51.5054, lng: -0.0210, label: 'Arrived at Stop 2 (Canary Wharf E14)', speed: 0, eta: 'At Location' },
+  { lat: 51.4920, lng: -0.0150, label: 'Blackwall Approach to Greenwich', speed: 26, eta: '8 mins to Stop 3' },
+  { lat: 51.4816, lng: -0.0098, label: 'Approaching Stop 3 (Greenwich SE10)', speed: 14, eta: '3 mins to Stop 3' },
+  { lat: 51.4880, lng: -0.1100, label: 'Thames Embankment toward Chelsea', speed: 32, eta: '14 mins to Stop 4' },
+  { lat: 51.4754, lng: -0.1812, label: 'Approaching Stop 4 (Chelsea SW10)', speed: 12, eta: '2 mins to Stop 4' },
+];
 
 function DeliveriesPageContent() {
   const router = useRouter();
@@ -86,6 +100,18 @@ function DeliveriesPageContent() {
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
+
+  // Google Maps State & Refs
+  const mapContainerRef = useRef(null);
+  const googleMapRef = useRef(null);
+  const markersRef = useRef([]);
+  const polylineRef = useRef(null);
+  const trafficLayerRef = useRef(null);
+  const driverMarkerRef = useRef(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapLoadError, setMapLoadError] = useState(false);
+  const [mapType, setMapType] = useState('roadmap'); // 'roadmap' | 'satellite'
+  const [showTraffic, setShowTraffic] = useState(false);
 
   // Map & Live GPS Telemetry State
   const [selectedPinId, setSelectedPinId] = useState(null);
@@ -119,26 +145,272 @@ function DeliveriesPageContent() {
   }, [deliveries]);
 
   // Live Driver Movement Simulation along route coordinates
-  const simulatedRoutePath = [
-    { x: 290, y: 200, label: 'Leaving Baker St Hub', speed: 18, heading: 45 },
-    { x: 330, y: 160, label: 'Euston Rd / King’s Cross', speed: 28, heading: 40 },
-    { x: 380, y: 110, label: 'Approaching Stop 1 (Highbury N5)', speed: 15, heading: 30 },
-    { x: 440, y: 170, label: 'Heading to East London A10', speed: 32, heading: 120 },
-    { x: 510, y: 250, label: 'Canary Wharf Highway', speed: 25, heading: 140 },
-    { x: 550, y: 350, label: 'Approaching Stop 2 (Greenwich SE10)', speed: 12, heading: 160 },
-    { x: 420, y: 370, label: 'Thames Crossing Vauxhall', speed: 30, heading: 240 },
-    { x: 190, y: 360, label: 'Approaching Stop 3 (Chelsea SW10)', speed: 14, heading: 260 },
-  ];
-
   useEffect(() => {
     if (!isSimulating) return;
     const interval = setInterval(() => {
-      setDriverPosIndex(prev => (prev + 1) % simulatedRoutePath.length);
+      setDriverPosIndex(prev => (prev + 1) % SIMULATED_DRIVER_PATH.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [isSimulating, simulatedRoutePath.length]);
+  }, [isSimulating]);
 
-  const currentDriverPos = simulatedRoutePath[driverPosIndex];
+  const currentDriverPos = SIMULATED_DRIVER_PATH[driverPosIndex];
+
+  // -------------------------------------------------------------
+  // Google Maps SDK Loader
+  // -------------------------------------------------------------
+  useEffect(() => {
+    if (viewMode !== 'map') return;
+
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!apiKey) {
+      setMapLoadError(true);
+      return;
+    }
+
+    if (typeof window !== 'undefined' && window.google && window.google.maps) {
+      setMapLoaded(true);
+      return;
+    }
+
+    if (typeof window !== 'undefined') {
+      window.gm_authFailure = () => {
+        console.warn('Google Maps authentication warning - switching to embed fallback');
+        setMapLoadError(true);
+      };
+    }
+
+    const scriptId = 'google-maps-js-sdk';
+    const existing = document.getElementById(scriptId);
+    if (!existing) {
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry,places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        setMapLoaded(true);
+      };
+      script.onerror = () => {
+        setMapLoadError(true);
+      };
+      document.head.appendChild(script);
+    } else {
+      setMapLoaded(true);
+    }
+  }, [viewMode]);
+
+  // -------------------------------------------------------------
+  // Initialize Google Map Instance & Interactive Pins
+  // -------------------------------------------------------------
+  useEffect(() => {
+    if (!mapLoaded || viewMode !== 'map' || !mapContainerRef.current || mapLoadError) return;
+    if (typeof window === 'undefined' || !window.google || !window.google.maps) return;
+
+    try {
+      const map = new window.google.maps.Map(mapContainerRef.current, {
+        center: { lat: STORE_DEPOT.lat, lng: STORE_DEPOT.lng },
+        zoom: 12,
+        mapTypeId: mapType,
+        disableDefaultUI: false,
+        zoomControl: true,
+        mapTypeControl: false,
+        scaleControl: true,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: true,
+        gestureHandling: 'greedy'
+      });
+
+      googleMapRef.current = map;
+
+      // Traffic Layer
+      const trafficLayer = new window.google.maps.TrafficLayer();
+      trafficLayerRef.current = trafficLayer;
+      if (showTraffic) {
+        trafficLayer.setMap(map);
+      }
+
+      const bounds = new window.google.maps.LatLngBounds();
+      bounds.extend(new window.google.maps.LatLng(STORE_DEPOT.lat, STORE_DEPOT.lng));
+
+      // Clean existing markers
+      markersRef.current.forEach(m => m.setMap(null));
+      markersRef.current = [];
+
+      // 1. Central Depot Marker
+      const depotSvg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="38" height="46" viewBox="0 0 38 46">
+          <defs>
+            <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.4)" />
+            </filter>
+          </defs>
+          <path d="M 19 0 C 8.5 0 0 8.5 0 19 C 0 31 19 44 19 44 C 19 44 38 31 38 19 C 38 8.5 29.5 0 19 0 Z" fill="#ea580c" stroke="#ffffff" stroke-width="2.5" filter="url(#s)" />
+          <circle cx="19" cy="18" r="11" fill="#ffffff" />
+          <text x="19" y="22" font-size="12" font-family="Arial, sans-serif" font-weight="900" fill="#ea580c" text-anchor="middle">🏢</text>
+        </svg>
+      `;
+      const depotMarker = new window.google.maps.Marker({
+        position: { lat: STORE_DEPOT.lat, lng: STORE_DEPOT.lng },
+        map,
+        title: STORE_DEPOT.name,
+        icon: {
+          url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(depotSvg)}`,
+          scaledSize: new window.google.maps.Size(38, 46),
+          anchor: new window.google.maps.Point(19, 44)
+        }
+      });
+      depotMarker.addListener('click', () => {
+        setSelectedPinId('depot');
+        map.panTo({ lat: STORE_DEPOT.lat, lng: STORE_DEPOT.lng });
+      });
+      markersRef.current.push(depotMarker);
+
+      // 2. Stop Markers
+      const activeRouteStops = routeSequence.length > 0 ? routeSequence : deliveries;
+      const polyPath = [{ lat: STORE_DEPOT.lat, lng: STORE_DEPOT.lng }];
+
+      activeRouteStops.forEach((del, idx) => {
+        const geo = STOP_GEO_COORDINATES[del.id] || { 
+          lat: 51.5186 + (idx * 0.015), 
+          lng: -0.1565 + (idx * 0.02) 
+        };
+        polyPath.push({ lat: geo.lat, lng: geo.lng });
+        bounds.extend(new window.google.maps.LatLng(geo.lat, geo.lng));
+
+        const isDelivered = del.status === 'delivered';
+        const isEnRoute = del.status === 'out_for_delivery';
+        const pinColor = isDelivered ? '#10b981' : isEnRoute ? '#0284c7' : '#f59e0b';
+
+        const stopSvg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="44" viewBox="0 0 36 44">
+            <defs>
+              <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.35)" />
+              </filter>
+            </defs>
+            <path d="M 18 0 C 8.1 0 0 8.1 0 18 C 0 29 18 42 18 42 C 18 42 36 29 36 18 C 36 8.1 27.9 0 18 0 Z" fill="${pinColor}" stroke="#ffffff" stroke-width="2.5" filter="url(#s)" />
+            <circle cx="18" cy="17" r="10" fill="#ffffff" />
+            <text x="18" y="21" font-size="11" font-family="Arial, sans-serif" font-weight="900" fill="${pinColor}" text-anchor="middle">${idx + 1}</text>
+          </svg>
+        `;
+
+        const stopMarker = new window.google.maps.Marker({
+          position: { lat: geo.lat, lng: geo.lng },
+          map,
+          title: `Stop ${idx + 1}: ${del.customerName}`,
+          icon: {
+            url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(stopSvg)}`,
+            scaledSize: new window.google.maps.Size(36, 44),
+            anchor: new window.google.maps.Point(18, 42)
+          }
+        });
+
+        stopMarker.addListener('click', () => {
+          setSelectedPinId(del.id);
+          map.panTo({ lat: geo.lat, lng: geo.lng });
+        });
+
+        markersRef.current.push(stopMarker);
+      });
+
+      // 3. Polyline along route
+      if (polylineRef.current) polylineRef.current.setMap(null);
+      polylineRef.current = new window.google.maps.Polyline({
+        path: polyPath,
+        geodesic: true,
+        strokeColor: '#0284c7',
+        strokeOpacity: 0.85,
+        strokeWeight: 4,
+        map
+      });
+
+      // 4. Driver Marker
+      const initialPos = SIMULATED_DRIVER_PATH[driverPosIndex] || SIMULATED_DRIVER_PATH[0];
+      const driverSvg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46">
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="b" />
+              <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <circle cx="23" cy="23" r="21" fill="rgba(2, 132, 199, 0.25)" />
+          <circle cx="23" cy="23" r="15" fill="#0284c7" stroke="#ffffff" stroke-width="2.5" filter="url(#glow)" />
+          <path d="M 16 21 L 19 18 L 24 18 L 26 21 L 28 21 L 28 26 L 16 26 Z" fill="#ffffff" />
+          <circle cx="18" cy="26" r="1.8" fill="#0f172a" />
+          <circle cx="25" cy="26" r="1.8" fill="#0f172a" />
+        </svg>
+      `;
+
+      const driverMarker = new window.google.maps.Marker({
+        position: { lat: initialPos.lat, lng: initialPos.lng },
+        map,
+        title: `${assignedDriver} (Live GPS)`,
+        icon: {
+          url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(driverSvg)}`,
+          scaledSize: new window.google.maps.Size(46, 46),
+          anchor: new window.google.maps.Point(23, 23)
+        },
+        zIndex: 999
+      });
+      driverMarkerRef.current = driverMarker;
+
+      map.fitBounds(bounds, { top: 40, bottom: 40, left: 40, right: 40 });
+
+    } catch (err) {
+      console.error('Error initializing Google Map:', err);
+      setMapLoadError(true);
+    }
+  }, [mapLoaded, viewMode, routeSequence, deliveries, mapLoadError, showTraffic, mapType]);
+
+  // Update Driver Marker Live Position
+  useEffect(() => {
+    if (!driverMarkerRef.current || !googleMapRef.current) return;
+    const pos = SIMULATED_DRIVER_PATH[driverPosIndex];
+    if (pos && window.google?.maps) {
+      driverMarkerRef.current.setPosition(new window.google.maps.LatLng(pos.lat, pos.lng));
+    }
+  }, [driverPosIndex]);
+
+  // Update Map Type
+  useEffect(() => {
+    if (googleMapRef.current) {
+      googleMapRef.current.setMapTypeId(mapType);
+    }
+  }, [mapType]);
+
+  // Update Traffic Layer
+  useEffect(() => {
+    if (trafficLayerRef.current && googleMapRef.current) {
+      trafficLayerRef.current.setMap(showTraffic ? googleMapRef.current : null);
+    }
+  }, [showTraffic]);
+
+  const handleCenterDriver = () => {
+    if (googleMapRef.current) {
+      const pos = SIMULATED_DRIVER_PATH[driverPosIndex];
+      if (pos && window.google?.maps) {
+        googleMapRef.current.panTo({ lat: pos.lat, lng: pos.lng });
+        googleMapRef.current.setZoom(15);
+      }
+    }
+  };
+
+  const handleFitAllStops = () => {
+    if (googleMapRef.current && window.google?.maps) {
+      const bounds = new window.google.maps.LatLngBounds();
+      bounds.extend(new window.google.maps.LatLng(STORE_DEPOT.lat, STORE_DEPOT.lng));
+      deliveries.forEach(del => {
+        const geo = STOP_GEO_COORDINATES[del.id];
+        if (geo) bounds.extend(new window.google.maps.LatLng(geo.lat, geo.lng));
+      });
+      googleMapRef.current.fitBounds(bounds, { top: 40, bottom: 40, left: 40, right: 40 });
+    }
+  };
 
   // Statistics
   const totalCount = deliveries.length;
@@ -217,11 +489,11 @@ function DeliveriesPageContent() {
   // Action: Auto-Optimize Route (Shortest Path Heuristic)
   const handleOptimizeSequence = () => {
     const sorted = [...routeSequence].sort((a, b) => {
-      const posA = STOP_COORDINATES[a.id] || { x: 400, y: 300 };
-      const posB = STOP_COORDINATES[b.id] || { x: 400, y: 300 };
+      const posA = STOP_GEO_COORDINATES[a.id] || { lat: 51.51, lng: -0.12 };
+      const posB = STOP_GEO_COORDINATES[b.id] || { lat: 51.51, lng: -0.12 };
       // Distances from Baker St Hub
-      const distA = Math.hypot(posA.x - STORE_DEPOT.x, posA.y - STORE_DEPOT.y);
-      const distB = Math.hypot(posB.x - STORE_DEPOT.x, posB.y - STORE_DEPOT.y);
+      const distA = Math.hypot(posA.lat - STORE_DEPOT.lat, posA.lng - STORE_DEPOT.lng);
+      const distB = Math.hypot(posB.lat - STORE_DEPOT.lat, posB.lng - STORE_DEPOT.lng);
       return distA - distB;
     });
     setRouteSequence(sorted);
@@ -552,252 +824,209 @@ function DeliveriesPageContent() {
                 </div>
               </div>
 
-              {/* INTERACTIVE VECTOR CARTOGRAPHY MAP */}
+              {/* ========================================================
+                  GENUINE GOOGLE MAPS PLATFORM VIEW
+              ======================================================== */}
               <div 
                 style={{ 
-                  background: '#0f172a', 
+                  background: '#ffffff', 
                   borderRadius: '20px', 
-                  border: '1.5px solid #334155', 
+                  border: '1.5px solid #cbd5e1', 
                   position: 'relative',
-                  height: '370px',
                   overflow: 'hidden',
-                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)'
+                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)'
                 }}
               >
-                {/* SVG MAP CANVAS */}
-                <svg 
-                  viewBox="0 0 700 450" 
-                  style={{ width: '100%', height: '100%', display: 'block' }}
+                {/* Google Maps Top Bar Controls */}
+                <div 
+                  style={{ 
+                    padding: '8px 12px', 
+                    background: '#f8fafc', 
+                    borderBottom: '1px solid #e2e8f0', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '6px'
+                  }}
                 >
-                  <defs>
-                    {/* Road glow filter */}
-                    <filter id="glowPath" x="-20%" y="-20%" width="140%" height="140%">
-                      <feGaussianBlur stdDeviation="3" result="blur" />
-                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
-                    
-                    <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#38bdf8" />
-                      <stop offset="50%" stopColor="#06b6d4" />
-                      <stop offset="100%" stopColor="#10b981" />
-                    </linearGradient>
+                  {/* Left: Map Type Switcher & Traffic */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setMapType('roadmap')}
+                      style={{
+                        padding: '5px 10px',
+                        borderRadius: '8px',
+                        border: mapType === 'roadmap' ? '1px solid #0284c7' : '1px solid #cbd5e1',
+                        background: mapType === 'roadmap' ? '#0284c7' : '#ffffff',
+                        color: mapType === 'roadmap' ? '#ffffff' : '#475569',
+                        fontSize: '0.68rem',
+                        fontWeight: '800',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {isPt ? '🗺️ Mapa' : '🗺️ Map'}
+                    </button>
 
-                    <radialGradient id="radarWave" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.8" />
-                      <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.25" />
-                      <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
-                    </radialGradient>
-                  </defs>
+                    <button
+                      type="button"
+                      onClick={() => setMapType('satellite')}
+                      style={{
+                        padding: '5px 10px',
+                        borderRadius: '8px',
+                        border: mapType === 'satellite' ? '1px solid #0284c7' : '1px solid #cbd5e1',
+                        background: mapType === 'satellite' ? '#0284c7' : '#ffffff',
+                        color: mapType === 'satellite' ? '#ffffff' : '#475569',
+                        fontSize: '0.68rem',
+                        fontWeight: '800',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {isPt ? '🛰️ Satélite' : '🛰️ Satellite'}
+                    </button>
 
-                  {/* London Background Geography / Parks */}
-                  <rect x="0" y="0" width="700" height="450" fill="#090d16" />
-                  
-                  {/* London Green Parks */}
-                  <path d="M 230 140 Q 250 120 280 150 Q 290 190 260 210 Q 220 180 230 140 Z" fill="#143026" opacity="0.65" /> {/* Regent's Park */}
-                  <path d="M 180 260 Q 220 240 240 270 Q 220 310 170 300 Z" fill="#143026" opacity="0.65" /> {/* Hyde Park */}
-                  <path d="M 520 340 Q 560 320 580 360 Q 560 400 510 380 Z" fill="#143026" opacity="0.65" /> {/* Greenwich Park */}
+                    <button
+                      type="button"
+                      onClick={() => setShowTraffic(!showTraffic)}
+                      style={{
+                        padding: '5px 10px',
+                        borderRadius: '8px',
+                        border: showTraffic ? '1px solid #10b981' : '1px solid #cbd5e1',
+                        background: showTraffic ? '#dcfce7' : '#ffffff',
+                        color: showTraffic ? '#15803d' : '#475569',
+                        fontSize: '0.68rem',
+                        fontWeight: '800',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {isPt ? '🚦 Tráfego' : '🚦 Traffic'}
+                    </button>
+                  </div>
 
-                  {/* River Thames Curving through London */}
-                  <path 
-                    d="M 50 440 Q 150 420 220 370 Q 290 320 370 290 Q 460 280 520 320 Q 570 340 620 310 Q 660 280 700 270" 
-                    fill="none" 
-                    stroke="#1e3a5f" 
-                    strokeWidth="32" 
-                    strokeLinecap="round" 
-                  />
-                  <path 
-                    d="M 50 440 Q 150 420 220 370 Q 290 320 370 290 Q 460 280 520 320 Q 570 340 620 310 Q 660 280 700 270" 
-                    fill="none" 
-                    stroke="#2563eb" 
-                    strokeWidth="12" 
-                    strokeOpacity="0.4"
-                    strokeLinecap="round" 
-                  />
+                  {/* Right: Quick Zoom & Driver Controls */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <button
+                      type="button"
+                      onClick={handleCenterDriver}
+                      style={{
+                        padding: '5px 9px',
+                        borderRadius: '8px',
+                        border: '1px solid #cbd5e1',
+                        background: '#ffffff',
+                        color: '#0284c7',
+                        fontSize: '0.68rem',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                      title="Center on Live Driver"
+                    >
+                      <LocateFixed size={12} />
+                      <span>{isPt ? 'Motorista' : 'Driver'}</span>
+                    </button>
 
-                  {/* Secondary City Arterials / Street Grid */}
-                  <path d="M 50 160 L 650 160" stroke="#1e293b" strokeWidth="3" />
-                  <path d="M 120 50 L 120 400" stroke="#1e293b" strokeWidth="3" />
-                  <path d="M 330 50 L 330 420" stroke="#1e293b" strokeWidth="4" />
-                  <path d="M 480 50 L 480 420" stroke="#1e293b" strokeWidth="3" />
-                  <path d="M 50 320 L 650 320" stroke="#1e293b" strokeWidth="3" />
-                  <path d="M 100 80 L 620 380" stroke="#1e293b" strokeWidth="3" />
-                  <path d="M 150 380 L 600 80" stroke="#1e293b" strokeWidth="3" />
+                    <button
+                      type="button"
+                      onClick={handleFitAllStops}
+                      style={{
+                        padding: '5px 9px',
+                        borderRadius: '8px',
+                        border: '1px solid #cbd5e1',
+                        background: '#ffffff',
+                        color: '#475569',
+                        fontSize: '0.68rem',
+                        fontWeight: '800',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                      title="Fit All Stops"
+                    >
+                      <Maximize2 size={12} />
+                      <span>{isPt ? 'Paradas' : 'All Stops'}</span>
+                    </button>
+                  </div>
+                </div>
 
-                  {/* Key Landmarks Text */}
-                  <text x="235" y="165" fill="#475569" fontSize="9" fontWeight="700">Regent&apos;s Park</text>
-                  <text x="175" y="275" fill="#475569" fontSize="9" fontWeight="700">Hyde Park</text>
-                  <text x="530" y="360" fill="#475569" fontSize="9" fontWeight="700">Greenwich</text>
-                  <text x="360" y="315" fill="#3b82f6" fontSize="9" fontWeight="800" opacity="0.6">River Thames</text>
-
-                  {/* DELIVERY ROUTE POLYLINE (Store -> Stop 1 -> Stop 4 -> Stop 2 -> Stop 3) */}
-                  <path 
-                    d="M 290 200 L 380 110 L 510 250 L 550 350 L 190 360"
-                    fill="none" 
-                    stroke="rgba(56, 189, 248, 0.25)" 
-                    strokeWidth="10" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                  />
-                  <path 
-                    d="M 290 200 L 380 110 L 510 250 L 550 350 L 190 360"
-                    fill="none" 
-                    stroke="url(#routeGradient)" 
-                    strokeWidth="4" 
-                    strokeDasharray="8 6" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    filter="url(#glowPath)"
-                  />
-
-                  {/* STORE DEPOT NODE */}
-                  <g transform="translate(290, 200)" onClick={() => setSelectedPinId('depot')} style={{ cursor: 'pointer' }}>
-                    <circle r="16" fill="rgba(234, 88, 12, 0.25)" />
-                    <circle r="9" fill="#ea580c" stroke="#ffffff" strokeWidth="2.5" />
-                    <text x="0" y="22" fill="#fed7aa" fontSize="10" fontWeight="900" textAnchor="middle">
-                      PhoneSuite Hub
-                    </text>
-                  </g>
-
-                  {/* DELIVERY STOP PINS */}
-                  {deliveries.map((del, idx) => {
-                    const coords = STOP_COORDINATES[del.id] || { x: 350, y: 250 };
-                    const isSelected = selectedPinId === del.id;
-                    const isDelivered = del.status === 'delivered';
-                    const isEnRoute = del.status === 'out_for_delivery';
-                    const pinColor = isDelivered ? '#10b981' : isEnRoute ? '#38bdf8' : '#f59e0b';
-
-                    return (
-                      <g 
-                        key={del.id} 
-                        transform={`translate(${coords.x}, ${coords.y})`}
-                        onClick={() => setSelectedPinId(del.id)}
-                        style={{ cursor: 'pointer', transition: 'transform 0.2s ease' }}
-                      >
-                        {isSelected && (
-                          <circle r="22" fill={pinColor} opacity="0.3" />
-                        )}
-                        <circle r="13" fill={pinColor} stroke="#ffffff" strokeWidth="2.5" />
-                        <text x="0" y="4" fill="#0f172a" fontSize="10" fontWeight="900" textAnchor="middle">
-                          {idx + 1}
-                        </text>
-                        <text x="0" y="22" fill="#ffffff" fontSize="9" fontWeight="800" textAnchor="middle">
-                          {del.customerName.split(' ')[0]}
-                        </text>
-                      </g>
-                    );
-                  })}
-
-                  {/* LIVE DRIVER VAN MARKER (Animated Radar Waves + Icon) */}
-                  <g transform={`translate(${currentDriverPos.x}, ${currentDriverPos.y})`}>
-                    {/* Radar Pulse Animation Waves */}
-                    <circle r="26" fill="url(#radarWave)">
-                      <animate attributeName="r" values="10;32;10" dur="2.4s" repeatCount="indefinite" />
-                      <animate attributeName="opacity" values="0.8;0;0.8" dur="2.4s" repeatCount="indefinite" />
-                    </circle>
-
-                    {/* Driver Outer Halo */}
-                    <circle r="14" fill="#0284c7" stroke="#ffffff" strokeWidth="3" />
-                    
-                    {/* Van Symbol */}
-                    <path 
-                      d="M -6 -3 L -3 -6 L 3 -6 L 6 -3 L 6 4 L -6 4 Z" 
-                      fill="#ffffff" 
+                {/* Google Map Viewport */}
+                <div style={{ position: 'relative', width: '100%', height: '390px' }}>
+                  {mapLoadError ? (
+                    <iframe
+                      title="Google Maps Fleet View"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      src={`https://maps.google.com/maps?q=${STORE_DEPOT.lat},${STORE_DEPOT.lng}&z=12&output=embed`}
+                      allowFullScreen
+                      loading="lazy"
                     />
-                    <circle cx="-3" cy="4" r="1.5" fill="#0f172a" />
-                    <circle cx="3" cy="4" r="1.5" fill="#0f172a" />
+                  ) : (
+                    <div 
+                      ref={mapContainerRef} 
+                      style={{ width: '100%', height: '100%', background: '#e5e7eb' }} 
+                    />
+                  )}
 
-                    {/* Driver Name Tag */}
-                    <rect x="-40" y="-28" width="80" height="15" rx="5" fill="rgba(15, 23, 42, 0.9)" stroke="#38bdf8" strokeWidth="1" />
-                    <text x="0" y="-17" fill="#38bdf8" fontSize="8" fontWeight="800" textAnchor="middle">
-                      🚚 Van #04 Live
-                    </text>
-                  </g>
-
-                </svg>
-
-                {/* Floating Map Controls overlay */}
-                <div style={{ position: 'absolute', top: '12px', right: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedPinId(null);
-                    }}
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      background: 'rgba(15, 23, 42, 0.85)',
-                      backdropFilter: 'blur(6px)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      color: '#ffffff',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer'
-                    }}
-                    title="Fit All Stops"
-                  >
-                    <Maximize2 size={14} />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedPinId('depot');
-                    }}
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      background: 'rgba(15, 23, 42, 0.85)',
-                      backdropFilter: 'blur(6px)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      color: '#ea580c',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      cursor: 'pointer'
-                    }}
-                    title="Center on Store Hub"
-                  >
-                    <MapPin size={14} />
-                  </button>
+                  {!mapLoaded && !mapLoadError && (
+                    <div 
+                      style={{ 
+                        position: 'absolute', 
+                        inset: 0, 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        background: '#f8fafc',
+                        gap: '8px',
+                        color: '#64748b'
+                      }}
+                    >
+                      <MapIcon size={28} color="#0284c7" />
+                      <span style={{ fontSize: '0.78rem', fontWeight: '700' }}>
+                        {isPt ? 'Carregando Google Maps...' : 'Loading Google Maps...'}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Map Bottom Legend Strip */}
                 <div 
                   style={{ 
-                    position: 'absolute', 
-                    bottom: '8px', 
-                    left: '10px', 
-                    right: '10px', 
-                    background: 'rgba(15, 23, 42, 0.85)', 
-                    backdropFilter: 'blur(8px)',
-                    borderRadius: '10px',
-                    padding: '5px 10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    fontSize: '0.62rem',
-                    color: '#94a3b8',
-                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                    padding: '8px 12px', 
+                    background: '#ffffff', 
+                    borderTop: '1px solid #e2e8f0', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between', 
+                    fontSize: '0.68rem', 
+                    color: '#64748b' 
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#ea580c', fontWeight: '800' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ea580c' }} /> Hub
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ea580c', fontWeight: '800' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ea580c', display: 'inline-block' }} /> 
+                      {isPt ? 'Hub' : 'Hub'}
                     </span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#38bdf8', fontWeight: '800' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#38bdf8' }} /> En Route
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#0284c7', fontWeight: '800' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#0284c7', display: 'inline-block' }} /> 
+                      {isPt ? 'Em Rota' : 'En Route'}
                     </span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#f59e0b', fontWeight: '800' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b' }} /> Booked
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#d97706', fontWeight: '800' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }} /> 
+                      {isPt ? 'Agendada' : 'Booked'}
                     </span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: '#10b981', fontWeight: '800' }}>
-                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} /> Delivered
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#059669', fontWeight: '800' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} /> 
+                      {isPt ? 'Entregue' : 'Delivered'}
                     </span>
                   </div>
-                  <span style={{ color: '#38bdf8', fontWeight: '800' }}>Tap pin to view stop</span>
+                  <span style={{ color: '#0284c7', fontWeight: '800' }}>
+                    {isPt ? 'Toque no marcador para detalhes' : 'Tap pin to view stop'}
+                  </span>
                 </div>
               </div>
 
