@@ -918,3 +918,134 @@ export function persistFinanceRequests(list) {
     localStorage.setItem('phonesuite_staff_finance_requests', JSON.stringify(list));
   } catch (e) {}
 }
+
+// -------------------------------------------------------------
+// DELIVERY PROGRESS & DISPATCH FIXTURES & HELPERS
+// -------------------------------------------------------------
+export const INITIAL_DELIVERIES = [
+  {
+    id: 'del-101',
+    deliveryNumber: 'DEL-2026-081',
+    orderNumber: 'ORD-2026-9801',
+    customerName: 'Marcus Bell',
+    customerPhone: '+44 7711 334455',
+    customerEmail: 'm.bell99@gmail.com',
+    deliveryAddress: '19 Greenwich Church St, London SE10 9BJ',
+    postcode: 'SE10 9BJ',
+    items: 'Apple iPhone 15 Pro 128GB (Natural Titanium) + 30W Fast Charging Kit',
+    itemCount: 2,
+    courier: 'DPD Express Next-Day',
+    trackingCode: 'DPD-GB-891289',
+    scheduledDate: '2026-09-11',
+    timeWindow: '13:30 - 15:30',
+    status: 'out_for_delivery', // 'booked' | 'in_transit' | 'out_for_delivery' | 'delivered'
+    totalAmount: 934.00,
+    driverName: 'Liam Patterson (DPD Driver #42)',
+    driverPhone: '+44 7700 900551',
+    notes: 'Please buzz flat 4B. Signature required upon receipt.',
+    timeline: [
+      { step: 'Booked & Manifested', time: '08:30 AM', completed: true },
+      { step: 'Collected by Courier', time: '10:15 AM', completed: true },
+      { step: 'Out for Delivery', time: '12:45 PM', completed: true },
+      { step: 'Delivered', time: 'Pending', completed: false }
+    ]
+  },
+  {
+    id: 'del-102',
+    deliveryNumber: 'DEL-2026-082',
+    orderNumber: 'ORD-2026-9788',
+    customerName: 'Sarah Jenkins',
+    customerPhone: '+44 7922 112233',
+    customerEmail: 's.jenkins@outlook.com',
+    deliveryAddress: '72 Highbury New Park, London N5 2DJ',
+    postcode: 'N5 2DJ',
+    items: 'Samsung Galaxy S24 Ultra 256GB + Belkin Wireless Duo Charging Pad',
+    itemCount: 2,
+    courier: 'Royal Mail Special Delivery 24',
+    trackingCode: 'RM-TRK-771802',
+    scheduledDate: '2026-09-11',
+    timeWindow: '15:00 - 17:00',
+    status: 'out_for_delivery',
+    totalAmount: 1094.00,
+    driverName: 'Royal Mail Depot London N',
+    driverPhone: '+44 800 740 740',
+    notes: 'Leave with building concierge if not answering.',
+    timeline: [
+      { step: 'Booked & Manifested', time: '09:00 AM', completed: true },
+      { step: 'Collected by Courier', time: '11:00 AM', completed: true },
+      { step: 'Out for Delivery', time: '01:30 PM', completed: true },
+      { step: 'Delivered', time: 'Pending', completed: false }
+    ]
+  },
+  {
+    id: 'del-103',
+    deliveryNumber: 'DEL-2026-083',
+    orderNumber: 'ORD-2026-9815',
+    customerName: 'Oliver Smith',
+    customerPhone: '+44 7899 443322',
+    customerEmail: 'o.smith@londonlaw.co.uk',
+    deliveryAddress: '15 Chelsea Harbour Dr, London SW10 0XE',
+    postcode: 'SW10 0XE',
+    items: 'iPad Pro 13" M4 256GB + Apple Pencil Pro',
+    itemCount: 2,
+    courier: 'Store Same-Day Express Van',
+    trackingCode: 'PS-EXPRESS-019',
+    scheduledDate: '2026-09-11',
+    timeWindow: '17:00 - 19:00',
+    status: 'booked',
+    totalAmount: 1449.00,
+    driverName: 'Alex Rivera (Staff Driver)',
+    driverPhone: '+44 7700 900123',
+    notes: 'Call customer 10 minutes before arrival.',
+    timeline: [
+      { step: 'Booked & Manifested', time: '11:30 AM', completed: true },
+      { step: 'Packed & Awaiting Van Pickup', time: '02:00 PM', completed: true },
+      { step: 'Out for Delivery', time: 'Scheduled 5:00 PM', completed: false },
+      { step: 'Delivered', time: 'Pending', completed: false }
+    ]
+  },
+  {
+    id: 'del-104',
+    deliveryNumber: 'DEL-2026-080',
+    orderNumber: 'ORD-2026-9772',
+    customerName: 'David Kim',
+    customerPhone: '+44 7788 990011',
+    customerEmail: 'david.kim@fintech.co.uk',
+    deliveryAddress: '14 Canary Wharf Pier, London E14 4SG',
+    postcode: 'E14 4SG',
+    items: 'MacBook Air 15" M3 512GB (Midnight)',
+    itemCount: 1,
+    courier: 'DPD Express 24',
+    trackingCode: 'DPD-GB-771891',
+    scheduledDate: '2026-09-10',
+    timeWindow: '11:00 - 13:00',
+    status: 'delivered',
+    totalAmount: 1399.00,
+    driverName: 'Liam Patterson (DPD Driver #42)',
+    driverPhone: '+44 7700 900551',
+    notes: 'Delivered to reception desk. Signed by D. Kim.',
+    timeline: [
+      { step: 'Booked & Manifested', time: 'Yesterday', completed: true },
+      { step: 'Collected by Courier', time: 'Yesterday', completed: true },
+      { step: 'Out for Delivery', time: 'Yesterday', completed: true },
+      { step: 'Delivered', time: 'Yesterday 12:15 PM', completed: true }
+    ]
+  }
+];
+
+export function getSavedDeliveries() {
+  if (typeof window === 'undefined') return INITIAL_DELIVERIES;
+  try {
+    const saved = localStorage.getItem('phonesuite_staff_deliveries');
+    if (saved) return JSON.parse(saved);
+  } catch (e) {}
+  return INITIAL_DELIVERIES;
+}
+
+export function persistDeliveries(list) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem('phonesuite_staff_deliveries', JSON.stringify(list));
+  } catch (e) {}
+}
+
