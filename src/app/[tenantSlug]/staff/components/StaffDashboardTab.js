@@ -146,138 +146,123 @@ export default function StaffDashboardTab({
           </span>
         </div>
 
-        {/* 2x2 Grid Matching Reference Image */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+        {/* 4 Action Cards Row (Fast Flow) */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.55rem' }}>
           
-          {/* Action 1: SALE / POS (Top-Left: Blue) */}
+          {/* Action 1: SALE / POS (Navigates to /staff/new-sale) */}
           <button
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff/new-sale`)}
             style={{
-              background: '#ffffff',
-              border: '1px solid #f1f5f9',
-              borderRadius: '20px',
-              padding: '1.15rem 1rem',
+              background: 'linear-gradient(135deg, #ff7a00 0%, #ea580c 100%)',
+              border: 'none',
+              borderRadius: '16px',
+              padding: '0.9rem 0.4rem',
+              color: '#ffffff',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              minHeight: '115px',
-              textAlign: 'left',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 6px 16px rgba(234, 88, 12, 0.35)',
               cursor: 'pointer',
-              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+              transition: 'transform 0.15s ease'
             }}
           >
-            <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: '#eff6ff', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-              <ShoppingCart size={19} strokeWidth={2.4} />
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '6px' }}>
+              <ShoppingCart size={17} color="#ffffff" strokeWidth={2.4} />
             </div>
-            <div>
-              <div style={{ fontSize: '0.80rem', fontWeight: '900', textTransform: 'uppercase', color: '#0f172a', letterSpacing: '-0.01em' }}>
-                SALE
-              </div>
-              <div style={{ fontSize: '0.72rem', fontWeight: '500', color: '#64748b', marginTop: '2px' }}>
-                New POS
-              </div>
+            <div style={{ fontSize: '0.78rem', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
+              SALE
+            </div>
+            <div style={{ fontSize: '0.62rem', color: 'rgba(255, 255, 255, 0.88)', marginTop: '1px', fontWeight: '500' }}>
+              New POS
             </div>
           </button>
 
-          {/* Action 2: CUSTOMER / Register (Top-Right: Red) */}
+          {/* Action 2: CUSTOMER / Register */}
           <button
             type="button"
             onClick={onOpenNewCustomer}
             style={{
               background: '#ffffff',
-              border: '1px solid #f1f5f9',
-              borderRadius: '20px',
-              padding: '1.15rem 1rem',
+              border: '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '0.9rem 0.4rem',
+              color: '#0f172a',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              minHeight: '115px',
-              textAlign: 'left',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
-              cursor: 'pointer',
-              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+              cursor: 'pointer'
             }}
           >
-            <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: '#fef2f2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-              <UserPlus size={19} strokeWidth={2.4} />
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff7ed', border: '1px solid #fed7aa', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '6px', color: '#ea580c' }}>
+              <UserPlus size={16} strokeWidth={2.4} />
             </div>
-            <div>
-              <div style={{ fontSize: '0.80rem', fontWeight: '900', textTransform: 'uppercase', color: '#dc2626', letterSpacing: '-0.01em' }}>
-                CUSTOMER
-              </div>
-              <div style={{ fontSize: '0.72rem', fontWeight: '500', color: '#64748b', marginTop: '2px' }}>
-                Register
-              </div>
+            <div style={{ fontSize: '0.74rem', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
+              CUSTOMER
+            </div>
+            <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: '1px', fontWeight: '500' }}>
+              Register
             </div>
           </button>
 
-          {/* Action 3: REPAIR / Workshop (Bottom-Left: Amber) */}
+          {/* Action 3: REPAIR / Job Ticket */}
           <button
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff/repairs`)}
             style={{
               background: '#ffffff',
-              border: '1px solid #f1f5f9',
-              borderRadius: '20px',
-              padding: '1.15rem 1rem',
+              border: '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '0.9rem 0.4rem',
+              color: '#0f172a',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              minHeight: '115px',
-              textAlign: 'left',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
-              cursor: 'pointer',
-              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+              cursor: 'pointer'
             }}
           >
-            <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: '#fffbeb', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-              <Wrench size={19} strokeWidth={2.4} />
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#eff6ff', border: '1px solid #bfdbfe', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '6px', color: '#2563eb' }}>
+              <Wrench size={16} strokeWidth={2.4} />
             </div>
-            <div>
-              <div style={{ fontSize: '0.80rem', fontWeight: '900', textTransform: 'uppercase', color: '#0f172a', letterSpacing: '-0.01em' }}>
-                REPAIR
-              </div>
-              <div style={{ fontSize: '0.72rem', fontWeight: '500', color: '#64748b', marginTop: '2px' }}>
-                Workshop
-              </div>
+            <div style={{ fontSize: '0.74rem', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
+              REPAIR
+            </div>
+            <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: '1px', fontWeight: '500' }}>
+              Workshop
             </div>
           </button>
 
-          {/* Action 4: INVOICE / Create Bill (Bottom-Right: Amber) */}
+          {/* Action 4: INVOICE / Create Bill */}
           <button
             type="button"
             onClick={() => router.push(`/${tenantSlug}/staff/overdue`)}
             style={{
               background: '#ffffff',
-              border: '1px solid #f1f5f9',
-              borderRadius: '20px',
-              padding: '1.15rem 1rem',
+              border: '1px solid #e2e8f0',
+              borderRadius: '16px',
+              padding: '0.9rem 0.4rem',
+              color: '#0f172a',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              minHeight: '115px',
-              textAlign: 'left',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
-              cursor: 'pointer',
-              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+              cursor: 'pointer'
             }}
           >
-            <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: '#fffbeb', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-              <Receipt size={19} strokeWidth={2.4} />
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#ecfdf5', border: '1px solid #a7f3d0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '6px', color: '#059669' }}>
+              <Receipt size={16} strokeWidth={2.4} />
             </div>
-            <div>
-              <div style={{ fontSize: '0.80rem', fontWeight: '900', textTransform: 'uppercase', color: '#d97706', letterSpacing: '-0.01em' }}>
-                INVOICE
-              </div>
-              <div style={{ fontSize: '0.72rem', fontWeight: '500', color: '#64748b', marginTop: '2px' }}>
-                Overdue
-              </div>
+            <div style={{ fontSize: '0.74rem', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
+              INVOICE
+            </div>
+            <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: '1px', fontWeight: '500' }}>
+              Overdue
             </div>
           </button>
 
@@ -356,7 +341,7 @@ export default function StaffDashboardTab({
 
             {/* Label, Large Value & Subtitle */}
             <div style={{ marginTop: '0.65rem' }}>
-              <div style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: '900', color: '#dc2626', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
                 OVERDUE INVOICES
               </div>
               <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
@@ -420,7 +405,7 @@ export default function StaffDashboardTab({
 
             {/* Label, Large Value & Subtitle */}
             <div style={{ marginTop: '0.65rem' }}>
-              <div style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
                 DEVICES COLLECTIONS
               </div>
               <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
@@ -484,7 +469,7 @@ export default function StaffDashboardTab({
 
             {/* Label, Large Value & Subtitle */}
             <div style={{ marginTop: '0.65rem' }}>
-              <div style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
                 STORE SALES
               </div>
               <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
@@ -520,11 +505,11 @@ export default function StaffDashboardTab({
                   width: '38px', 
                   height: '38px', 
                   borderRadius: '12px', 
-                  background: '#eff6ff', 
+                  background: '#fffbeb', 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
-                  color: '#2563eb' 
+                  color: '#d97706' 
                 }}
               >
                 <Wrench size={19} strokeWidth={2.4} />
@@ -536,8 +521,8 @@ export default function StaffDashboardTab({
                   fontWeight: '800', 
                   padding: '2px 8px', 
                   borderRadius: '9999px', 
-                  background: '#eff6ff', 
-                  color: '#2563eb', 
+                  background: '#fffbeb', 
+                  color: '#d97706', 
                   textTransform: 'uppercase',
                   letterSpacing: '0.04em'
                 }}
@@ -548,7 +533,7 @@ export default function StaffDashboardTab({
 
             {/* Label, Large Value & Subtitle */}
             <div style={{ marginTop: '0.65rem' }}>
-              <div style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: '900', color: '#d97706', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
                 ACTIVE REPAIRS
               </div>
               <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
@@ -612,7 +597,7 @@ export default function StaffDashboardTab({
 
             {/* Label, Large Value & Subtitle */}
             <div style={{ marginTop: '0.65rem' }}>
-              <div style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
                 ONLINE ORDERS
               </div>
               <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
@@ -676,7 +661,7 @@ export default function StaffDashboardTab({
 
             {/* Label, Large Value & Subtitle */}
             <div style={{ marginTop: '0.65rem' }}>
-              <div style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: '900', color: '#d97706', textTransform: 'uppercase', letterSpacing: '-0.01em', marginBottom: '2px' }}>
                 FINANCE REQUESTS
               </div>
               <div style={{ fontSize: '1.45rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
@@ -723,7 +708,7 @@ export default function StaffDashboardTab({
                   <Truck size={19} strokeWidth={2.4} />
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.74rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
+                  <div style={{ fontSize: '0.78rem', fontWeight: '900', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
                     DELIVERY PROGRESS
                   </div>
                   <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: '500' }}>
