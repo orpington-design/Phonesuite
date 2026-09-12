@@ -179,152 +179,145 @@ export default function DashboardTab({
         )}
       </div>
 
-      {/* 2. Active Repair Status Tracker */}
+      {/* 2. Active Repair Status Tracker (Active Service Jobs Style) */}
       {activeRepair && (
-        <div className="mobile-card" style={{ position: 'relative' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div 
-                style={{ 
-                  padding: '6px', 
-                  borderRadius: '8px', 
-                  background: 'rgba(67, 24, 255, 0.08)', 
-                  color: '#4318ff' 
-                }}
-              >
-                <Wrench size={18} />
-              </div>
-              <div>
-                <h3 style={{ fontSize: '0.95rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
-                  {t.dashboard.repairTracker}
-                </h3>
-                <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+              <Clock size={16} color="#d97706" />
+              <span style={{ fontSize: '0.78rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                ACTIVE SERVICE JOBS (1)
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setActiveTab('settings')}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '0.72rem',
+                fontWeight: '800',
+                color: '#ea580c',
+                cursor: 'pointer',
+                textTransform: 'uppercase',
+                letterSpacing: '0.03em'
+              }}
+            >
+              VIEW ALL
+            </button>
+          </div>
+
+          <div 
+            style={{ 
+              background: '#ffffff',
+              border: '1px solid #f1f5f9',
+              borderRadius: '20px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
+              padding: '1.15rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.45rem'
+            }}
+          >
+            {/* Top line: Yellow License Plate Badge + Device Model + Status Badge */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                <span 
+                  style={{ 
+                    background: '#fde047', 
+                    color: '#000000', 
+                    fontWeight: '900', 
+                    fontSize: '0.74rem', 
+                    padding: '3px 8px', 
+                    borderRadius: '6px', 
+                    letterSpacing: '0.04em' 
+                  }}
+                >
+                  TK-{(activeRepair.id?.slice(0, 6) || '1F2602').toUpperCase()}
+                </span>
+                <span style={{ fontWeight: '900', fontSize: '0.88rem', color: '#0f172a' }}>
                   {activeRepair.device_model}
                 </span>
               </div>
+
+              <span 
+                style={{ 
+                  fontSize: '0.65rem', 
+                  fontWeight: '800', 
+                  padding: '3px 10px', 
+                  borderRadius: '9999px', 
+                  background: activeRepair.status === 'ready' ? '#ecfdf5' : activeRepair.status === 'diagnosing' ? '#fffbeb' : '#eff6ff', 
+                  color: activeRepair.status === 'ready' ? '#059669' : activeRepair.status === 'diagnosing' ? '#d97706' : '#2563eb', 
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em'
+                }}
+              >
+                {activeRepair.status === 'ready' ? t.dashboard.readyForPickup : activeRepair.status === 'diagnosing' ? 'WAITING' : 'OPEN'}
+              </span>
             </div>
 
-            <span 
-              style={{ 
-                fontSize: '0.7rem', 
-                fontWeight: '700',
-                padding: '3px 9px', 
-                borderRadius: '9999px',
-                background: activeRepair.status === 'ready' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)',
-                color: activeRepair.status === 'ready' ? '#059669' : '#d97706',
-                textTransform: 'uppercase',
-                border: `1px solid ${activeRepair.status === 'ready' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`
-              }}
-            >
-              {activeRepair.status === 'ready' ? t.dashboard.readyForPickup : activeRepair.status}
-            </span>
-          </div>
+            {/* Reference line */}
+            <div style={{ fontSize: '0.72rem', fontWeight: '600', color: '#94a3b8', margin: '2px 0 4px 0' }}>
+              REF: JB-{(activeRepair.id?.slice(0, 6) || '1F2602').toUpperCase()}
+            </div>
 
-          {/* Visual Step Pipeline */}
-          {(() => {
-            const currentStep = getStatusStepIndex(activeRepair.status);
-            const stepLabels = [
-              t.dashboard.stepReceived, 
-              t.dashboard.stepDiagnosing, 
-              t.dashboard.stepRepairing, 
-              t.dashboard.stepReady, 
-              t.dashboard.stepPickedUp
-            ];
+            {/* Sleek Blue Progress Bar */}
+            <div style={{ width: '100%', height: '6px', background: '#f1f5f9', borderRadius: '9999px', overflow: 'hidden', margin: '3px 0 6px 0' }}>
+              <div 
+                style={{ 
+                  height: '100%', 
+                  background: '#2563eb', 
+                  borderRadius: '9999px', 
+                  width: `${Math.max(25, ((getStatusStepIndex(activeRepair.status) + 1) / 5) * 100)}%`,
+                  transition: 'width 0.3s ease'
+                }} 
+              />
+            </div>
 
-            return (
-              <div style={{ margin: '1.25rem 0 0.75rem 0' }}>
-                <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  {/* Background track */}
-                  <div 
-                    style={{ 
-                      position: 'absolute', 
-                      top: '12px', 
-                      left: '12px', 
-                      right: '12px', 
-                      height: '3px', 
-                      background: '#e2e8f0',
-                      zIndex: 1
-                    }} 
-                  >
-                    <div 
-                      style={{ 
-                        height: '100%', 
-                        width: `${(currentStep / 4) * 100}%`, 
-                        background: '#4318ff', 
-                        transition: 'width 0.4s ease' 
-                      }} 
-                    />
-                  </div>
+            {/* Date on Left & View Job Card on Right */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '2px' }}>
+              <span style={{ fontSize: '0.72rem', fontWeight: '500', color: '#94a3b8' }}>
+                {activeRepair.created_at ? new Date(activeRepair.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '6 Sept 2026'}
+              </span>
+              <button
+                type="button"
+                onClick={() => setActiveTab('settings')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '0.72rem',
+                  fontWeight: '900',
+                  color: '#0f172a',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: 0,
+                  letterSpacing: '0.02em'
+                }}
+              >
+                VIEW JOB CARD &gt;
+              </button>
+            </div>
 
-                  {stepLabels.map((label, idx) => {
-                    const isCompleted = idx <= currentStep;
-                    const isCurrent = idx === currentStep;
-
-                    return (
-                      <div 
-                        key={idx} 
-                        style={{ 
-                          display: 'flex', 
-                          flexDirection: 'column', 
-                          alignItems: 'center', 
-                          zIndex: 2,
-                          position: 'relative' 
-                        }}
-                      >
-                        <div 
-                          style={{ 
-                            width: '24px', 
-                            height: '24px', 
-                            borderRadius: '50%', 
-                            background: isCompleted ? '#4318ff' : '#f8fafc', 
-                            border: `2px solid ${isCurrent ? '#4318ff' : isCompleted ? '#4318ff' : '#cbd5e1'}`,
-                            color: isCompleted ? '#ffffff' : '#64748b',
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center',
-                            fontSize: '0.65rem',
-                            fontWeight: '800',
-                            boxShadow: isCurrent ? '0 0 10px rgba(67, 24, 255, 0.4)' : 'none'
-                          }}
-                        >
-                          {isCompleted ? '✓' : idx + 1}
-                        </div>
-                        <span 
-                          style={{ 
-                            fontSize: '0.62rem', 
-                            marginTop: '5px', 
-                            color: isCurrent ? '#0f172a' : isCompleted ? '#475569' : '#94a3b8',
-                            fontWeight: isCurrent ? '700' : '500',
-                            whiteSpace: 'nowrap'
-                          }}
-                        >
-                          {label}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+            {/* Diagnostic Note */}
+            {activeRepair.diagnostic_notes && (
+              <div 
+                style={{ 
+                  marginTop: '0.65rem', 
+                  padding: '0.65rem 0.75rem', 
+                  background: '#f8fafc', 
+                  borderRadius: '10px', 
+                  borderLeft: '3px solid #2563eb',
+                  fontSize: '0.74rem',
+                  lineHeight: 1.4
+                }}
+              >
+                <strong style={{ color: '#2563eb' }}>{t.dashboard.techNotes}: </strong>
+                <span style={{ color: '#334155' }}>{activeRepair.diagnostic_notes}</span>
               </div>
-            );
-          })()}
-
-          {/* Diagnostic Note */}
-          {activeRepair.diagnostic_notes && (
-            <div 
-              style={{ 
-                marginTop: '0.85rem', 
-                padding: '0.75rem 0.85rem', 
-                background: '#f8fafc', 
-                borderRadius: '10px', 
-                borderLeft: '3px solid #4318ff',
-                fontSize: '0.76rem',
-                lineHeight: 1.4
-              }}
-            >
-              <strong style={{ color: '#4318ff' }}>{t.dashboard.techNotes}: </strong>
-              <span style={{ color: '#334155' }}>{activeRepair.diagnostic_notes}</span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
 
@@ -406,90 +399,146 @@ export default function DashboardTab({
       )}
 
       {/* 5. Quick Actions Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.65rem' }}>
-        <button
-          onClick={() => setActiveTab('shop')}
-          style={{
-            background: '#ffffff',
-            border: '1px solid #e2e8f0',
-            borderRadius: '14px',
-            padding: '0.85rem',
-            textAlign: 'left',
-            cursor: 'pointer',
-            color: '#0f172a',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.35rem',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-          }}
-        >
-          <div style={{ color: '#4318ff' }}><ShoppingBag size={20} /></div>
-          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>{t.dashboard.shopTech}</span>
-          <span style={{ fontSize: '0.68rem', color: '#64748b' }}>{t.shop.all}</span>
-        </button>
+      <div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+          <span style={{ fontSize: '0.74rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            QUICK ACTIONS
+          </span>
+        </div>
 
-        <button
-          onClick={() => setActiveTab('bills')}
-          style={{
-            background: '#ffffff',
-            border: '1px solid #e2e8f0',
-            borderRadius: '14px',
-            padding: '0.85rem',
-            textAlign: 'left',
-            cursor: 'pointer',
-            color: '#0f172a',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.35rem',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-          }}
-        >
-          <div style={{ color: '#10b981' }}><CreditCard size={20} /></div>
-          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>{t.dashboard.myBills}</span>
-          <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Stripe & Cards</span>
-        </button>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+          {/* Card 1: Shop (Top-Left: Blue) */}
+          <button
+            onClick={() => setActiveTab('shop')}
+            style={{
+              background: '#ffffff',
+              border: '1px solid #f1f5f9',
+              borderRadius: '20px',
+              padding: '1.15rem 1rem',
+              textAlign: 'left',
+              cursor: 'pointer',
+              color: '#0f172a',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              minHeight: '115px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
+              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+            }}
+          >
+            <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: '#eff6ff', color: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+              <ShoppingBag size={19} strokeWidth={2.4} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.80rem', fontWeight: '900', textTransform: 'uppercase', color: '#0f172a', letterSpacing: '-0.01em' }}>
+                {t.dashboard.shopTech}
+              </div>
+              <div style={{ fontSize: '0.72rem', fontWeight: '500', color: '#64748b', marginTop: '2px' }}>
+                {t.shop.all}
+              </div>
+            </div>
+          </button>
 
-        <button
-          onClick={() => setActiveTab('score')}
-          style={{
-            background: '#ffffff',
-            border: '1px solid #e2e8f0',
-            borderRadius: '14px',
-            padding: '0.85rem',
-            textAlign: 'left',
-            cursor: 'pointer',
-            color: '#0f172a',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.35rem',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-          }}
-        >
-          <div style={{ color: '#d97706' }}><Award size={20} /></div>
-          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>{t.dashboard.creditPower}</span>
-          <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Tier perks & limits</span>
-        </button>
+          {/* Card 2: My Bills (Top-Right: Red) */}
+          <button
+            onClick={() => setActiveTab('bills')}
+            style={{
+              background: '#ffffff',
+              border: '1px solid #f1f5f9',
+              borderRadius: '20px',
+              padding: '1.15rem 1rem',
+              textAlign: 'left',
+              cursor: 'pointer',
+              color: '#0f172a',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              minHeight: '115px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
+              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+            }}
+          >
+            <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: '#fef2f2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+              <CreditCard size={19} strokeWidth={2.4} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.80rem', fontWeight: '900', textTransform: 'uppercase', color: '#dc2626', letterSpacing: '-0.01em' }}>
+                {t.dashboard.myBills}
+              </div>
+              <div style={{ fontSize: '0.72rem', fontWeight: '500', color: '#64748b', marginTop: '2px' }}>
+                Stripe &amp; Cards
+              </div>
+            </div>
+          </button>
 
-        <button
-          onClick={() => setActiveTab('settings')}
-          style={{
-            background: '#ffffff',
-            border: '1px solid #e2e8f0',
-            borderRadius: '14px',
-            padding: '0.85rem',
-            textAlign: 'left',
-            cursor: 'pointer',
-            color: '#0f172a',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.35rem',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-          }}
-        >
-          <div style={{ color: '#7c3aed' }}><ShieldCheck size={20} /></div>
-          <span style={{ fontSize: '0.82rem', fontWeight: '800' }}>{t.dashboard.storeHelp}</span>
-          <span style={{ fontSize: '0.68rem', color: '#64748b' }}>Security & store info</span>
-        </button>
+          {/* Card 3: Credit Power (Bottom-Left: Amber) */}
+          <button
+            onClick={() => setActiveTab('score')}
+            style={{
+              background: '#ffffff',
+              border: '1px solid #f1f5f9',
+              borderRadius: '20px',
+              padding: '1.15rem 1rem',
+              textAlign: 'left',
+              cursor: 'pointer',
+              color: '#0f172a',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              minHeight: '115px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
+              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+            }}
+          >
+            <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: '#fffbeb', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+              <Award size={19} strokeWidth={2.4} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.80rem', fontWeight: '900', textTransform: 'uppercase', color: '#0f172a', letterSpacing: '-0.01em' }}>
+                {t.dashboard.creditPower}
+              </div>
+              <div style={{ fontSize: '0.72rem', fontWeight: '500', color: '#64748b', marginTop: '2px' }}>
+                Tier perks &amp; limits
+              </div>
+            </div>
+          </button>
+
+          {/* Card 4: Store Help (Bottom-Right: Amber) */}
+          <button
+            onClick={() => setActiveTab('settings')}
+            style={{
+              background: '#ffffff',
+              border: '1px solid #f1f5f9',
+              borderRadius: '20px',
+              padding: '1.15rem 1rem',
+              textAlign: 'left',
+              cursor: 'pointer',
+              color: '#0f172a',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              minHeight: '115px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.025)',
+              transition: 'transform 0.15s ease, box-shadow 0.15s ease'
+            }}
+          >
+            <div style={{ width: '38px', height: '38px', borderRadius: '12px', background: '#fffbeb', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
+              <ShieldCheck size={19} strokeWidth={2.4} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.80rem', fontWeight: '900', textTransform: 'uppercase', color: '#d97706', letterSpacing: '-0.01em' }}>
+                {t.dashboard.storeHelp}
+              </div>
+              <div style={{ fontSize: '0.72rem', fontWeight: '500', color: '#64748b', marginTop: '2px' }}>
+                Security &amp; store info
+              </div>
+            </div>
+          </button>
+        </div>
       </div>
 
     </div>
